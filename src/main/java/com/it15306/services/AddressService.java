@@ -9,7 +9,7 @@ import com.it15306.entities.User;
 public interface AddressService {
 	List<AddressOrder> getAllAddressByUserId(String user_id);
 	
-	AddressOrder getAddressById(String id,String user_id);
+	AddressOrder getByIdAddressOrder(String id,String user_id);
 	
 	AddressOrder saveAddressOrder(AddressOrder address, String user_id);
 	
