@@ -20,7 +20,7 @@ public class UserDetailsImpl implements UserDetails{
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.enabled = user.getActivated();
+        this.enabled = user.getIsActive();
         this.authorities = Arrays.stream(user.getRoles().split(",")).
                 map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
