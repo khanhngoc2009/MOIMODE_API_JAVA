@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.it15306.entities.Product;
 import com.it15306.repository.ProductRepository;
 
-public class ProductService implements com.it15306.services.ProductService {
+public class ProductServiceImpl implements com.it15306.services.ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;

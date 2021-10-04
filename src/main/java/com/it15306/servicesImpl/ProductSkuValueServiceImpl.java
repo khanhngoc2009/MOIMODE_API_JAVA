@@ -12,7 +12,7 @@ import com.it15306.entities.User;
 import com.it15306.repository.ProductRepository;
 import com.it15306.repository.ProductSkuValuesRepository;
 
-public class ProductSkuValueService implements com.it15306.services.ProductSkuValueService{
+public class ProductSkuValueServiceImpl implements com.it15306.services.ProductSkuValueService{
 
 	@Autowired
 	private ProductSkuValuesRepository productSkuValuesRepository;
