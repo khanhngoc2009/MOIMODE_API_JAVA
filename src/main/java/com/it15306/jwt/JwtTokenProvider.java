@@ -35,7 +35,7 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + EXPIRATIONTIME);
         // Tạo chuỗi json web token từ id của user.
         return Jwts.builder()
-                   .setSubject(Integer.toString(userDetails.getUser().getId()))
+                   .setSubject(Integer.toString(userDetails.getUser().getUser_id()))
                    .setIssuedAt(now)
                    .setExpiration(expiryDate)
                    .signWith(SignatureAlgorithm.HS512, SECRET)

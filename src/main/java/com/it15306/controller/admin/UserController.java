@@ -66,8 +66,8 @@ public class UserController {
 		String hashPass = HashUtil.hash(user.getPassword());
 		user.setPassword(hashPass);
 		
-		String nameFile = user.getPhoto();
-		user.setPhoto("http://localhost:9090/storages/"+nameFile);
+		String nameFile = user.getProfile_url();
+		user.setProfile_url("http://localhost:9090/storages/"+nameFile);
 		
 		this.userService.saveUser(user);
 		return user;
@@ -91,12 +91,12 @@ public class UserController {
 		User user = mapper.ConvertToEntity(dto);
 		User oldUser = userService.getById(String.valueOf(id));
 		
-		if(!oldUser.getPhoto().equalsIgnoreCase(user.getPhoto())) {
-			String nameFile = user.getPhoto();
-			user.setPhoto("http://localhost:9090/storages/"+nameFile);
+		if(!oldUser.getProfile_url().equalsIgnoreCase(user.getProfile_url())) {
+			String nameFile = user.getProfile_url();
+			user.setProfile_url("http://localhost:9090/storages/"+nameFile);
 		}
 		
-		user.setId(id);
+		user.setUser_id(id);
 		this.userService.saveUser(user);
 		return user;
 	}
@@ -105,7 +105,7 @@ public class UserController {
 	@ResponseBody
 	public UserDTO delete(@PathVariable("id") User user) {
 		UserDTO userDTO = mapper.ConvertToDTO(user);
-		this.userService.delete(String.valueOf(user.getId()));
+		this.userService.delete(String.valueOf(user.getUser_id()));
 		return userDTO;
 
 	}
