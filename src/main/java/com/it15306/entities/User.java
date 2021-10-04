@@ -56,13 +56,14 @@ public class User {
 	@JoinColumn(name = "district_id")
 	private District district = new District();
 	
+//	@ManyToOne
+//	@JoinColumn(name = "username")
+//	private Authority auth = new Authority();
+	
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	private Ward ward = new Ward();
 	
-	@ManyToOne
-	@JoinColumn(name = "username")
-	private Authority auth = new Authority();
 	
 	@OneToMany(mappedBy = "user")
 	private List<Cart> cart = new ArrayList<>();
@@ -187,13 +188,13 @@ public class User {
 		this.ward = ward;
 	}
 
-	public Authority getAuth() {
-		return auth;
-	}
-
-	public void setAuth(Authority auth) {
-		this.auth = auth;
-	}
+//	public Authority getAuth() {
+//		return auth;
+//	}
+//
+//	public void setAuth(Authority auth) {
+//		this.auth = auth;
+//	}
 
 	public List<Cart> getCart() {
 		return cart;

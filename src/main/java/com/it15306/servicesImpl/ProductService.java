@@ -8,7 +8,7 @@ import com.it15306.entities.Product;
 import com.it15306.repository.ProductRepository;
 
 public class ProductService implements com.it15306.services.ProductService {
-	
+
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -35,6 +35,9 @@ public class ProductService implements com.it15306.services.ProductService {
 		// TODO Auto-generated method stub
 		productRepository.delete(product);
 //		return ;
+	}
+	public List<Product> Search(String startDate, String endDate,Integer status,String productname  ) {
+		return productRepository.searchProduct(startDate, endDate, status, productname);
 	}
 	
 }

@@ -7,26 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.it15306.entities.OptionProduct;
 //import com.it15306.entities.Category;
-
+import com.it15306.entities.Product;
 import com.it15306.repository.OptionProductRepository;
 
 
 public class OptionProductService implements com.it15306.services.OptionProductService {
 
+
 	@Autowired
 	private OptionProductRepository optionProductRepository;
 	
 	@Override
-	public List<OptionProduct> getAllOptionProductByProduct(String product_id) {
+	public List<OptionProduct> getAllOptionProductByProduct(Product product) {
 		// TODO Auto-generated method stub
-		return optionProductRepository.findAllOptionProductByProductId(product_id);
+		return optionProductRepository.findAllOptionProductByProduct(product);
 	}
 
 	@Override
-	public Optional<OptionProduct> getById(Integer option_id) {
+	public OptionProduct getById(Integer option_id) {
 		// TODO Auto-generated method stub
-		
-		return optionProductRepository.findById(option_id);
+		Optional<OptionProduct> valueRs = optionProductRepository.findById(option_id);
+		return null;
 	}
 
 	@Override
