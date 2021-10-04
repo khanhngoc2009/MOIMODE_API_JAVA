@@ -1,7 +1,7 @@
 package com.it15306.repository;
 
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Modifying;
@@ -11,28 +11,22 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.entities.User;
+import com.it15306.entities.Province;
 
 
 @Repository
-public interface ProvinceRepository extends JpaRepository<User, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM User u";
-	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
-	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
-	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
+public interface ProvinceRepository extends JpaRepository<Province, Integer>  {
+	final String SELECT_ALL = "SELECT p FROM Province p";
+	final String SELECT_BY_NAME = "SELECT p FROM Province p WHERE p.province_name =:province_name";
+	final String SELECT_BY_STATUS = "SELECT p FROM Province p WHERE p.status =:status";
 
 	@Query(SELECT_ALL)
-	List<User> findAllUser();
+	List<Province> findAllDistrict();
+
+	@Query(SELECT_BY_NAME)
+	Province findByName(@Param("province_name") String name);
 	
-	@Query(SELECT_BY_EMAIL)
-	User findByEmail(@Param("email") String email);
-	
-	@Query(SELECT_BY_USERNAME)
-	User findByUsername2(String username);
-	
-	@Query(SELECT_BY_ID)
-	User findById(@Param("id") String id);
-	
-	Optional<User> findByUsername(String userName);
+	@Query(SELECT_BY_STATUS)
+	List<Province> findByStatus(@Param("status") Integer status);
 
 }
