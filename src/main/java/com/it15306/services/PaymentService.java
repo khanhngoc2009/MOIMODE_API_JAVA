@@ -8,7 +8,7 @@ import com.it15306.entities.User;
 
 public interface PaymentService {
 	List<Payment> getAllPayment();
-	User getById(String payment_id);
+	Payment getById(String payment_id);
 	Payment savePaymnet(Payment payment);
 	void delete(String payment_id);
 }
