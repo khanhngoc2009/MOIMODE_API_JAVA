@@ -1,5 +1,6 @@
 package com.it15306.repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>  {
 	final String SELECT_BY_CATEGORY = "SELECT p FROM Product p WHERE p.category =:category";
 	final String SELECT_BY_ID = "SELECT p FROM Product p WHERE p.product_id =:product_id";
 	final String SEARCH = "SELECT p FROM Product p WHERE"
-			+ " p.create_date > :start_date "
-			+ "AND p.create_date < :end_date "
+			+ " p.create_date BETWEEN :start_date AND :end_date "
 			+ "AND p.status = :status "
 			+ "AND p.product_name = :product_name ";
 //	
@@ -32,8 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>  {
 //	
 	@Query(SEARCH)
 	List<Product> searchProduct(
-			@Param("start_date") String start_date,
-			@Param("end_date") String end_date,
+			@Param("start_date") Date start_date,
+			@Param("end_date") Date end_date,
 			@Param("status") Integer status,
 			@Param("product_name") String product_name
 			);
