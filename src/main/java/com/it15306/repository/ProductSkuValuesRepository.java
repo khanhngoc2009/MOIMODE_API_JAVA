@@ -11,28 +11,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.ProductSkuValues;
 import com.it15306.entities.User;
 
 
 @Repository
 public interface ProductSkuValuesRepository extends JpaRepository<User, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM User u";
-	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
-	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
-	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
+	final String SELECT_ALL = "SELECT psv FROM ProductSkuValues"
+			+ " where psv.option_value_id_1=:option_value_id_1"
+			+ " and psv.option_value_id_2=:option_value_id_2"
+			+ " and psv.option_value_id_3=:option_value_id_3 "
+			+ "and product_id=:product_id";
 
 	@Query(SELECT_ALL)
-	List<User> findAllUser();
-	
-	@Query(SELECT_BY_EMAIL)
-	User findByEmail(@Param("email") String email);
-	
-	@Query(SELECT_BY_USERNAME)
-	User findByUsername2(String username);
-	
-	@Query(SELECT_BY_ID)
-	User findById(@Param("id") String id);
-	
-	Optional<User> findByUsername(String userName);
+	List<ProductSkuValues> findAllProductSkuValues(
+			@Param("option_value_id_1") String option_value_id_1,
+			@Param("option_value_id_2") String option_value_id_2,
+			@Param("option_value_id_3") String option_value_id_3,
+			@Param("product_id") String product_id
+			);
 
 }

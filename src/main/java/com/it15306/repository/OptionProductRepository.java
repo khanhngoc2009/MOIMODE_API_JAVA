@@ -11,28 +11,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.OptionProduct;
 import com.it15306.entities.User;
 
 
 @Repository
-public interface OptionProductRepository extends JpaRepository<User, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM User u";
-	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
-	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
-	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
-
+public interface OptionProductRepository extends JpaRepository<OptionProduct, Integer>  {
+	final String SELECT_ALL = "SELECT op  FROM OptionProduct op WHERE op.product_id=:product_id";
+	
 	@Query(SELECT_ALL)
-	List<User> findAllUser();
+	List<OptionProduct> findAllOptionProductByProductId(@Param("product_id") String id);
 	
-	@Query(SELECT_BY_EMAIL)
-	User findByEmail(@Param("email") String email);
-	
-	@Query(SELECT_BY_USERNAME)
-	User findByUsername2(String username);
-	
-	@Query(SELECT_BY_ID)
-	User findById(@Param("id") String id);
-	
-	Optional<User> findByUsername(String userName);
-
 }
