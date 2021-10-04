@@ -11,28 +11,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.Product;
 import com.it15306.entities.User;
 
 
 @Repository
-public interface ProductRepository extends JpaRepository<User, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM User u";
-	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
-	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
-	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
+public interface ProductRepository extends JpaRepository<Product, Integer>  {
+	final String SELECT_ALL = "SELECT p FROM Product p";
+	final String SELECT_BY_CATEGORY = "SELECT p FROM Product p WHERE p.category_id =:category_id";
+	final String SELECT_BY_ID = "SELECT p FROM Product p WHERE p.product_id =:product_id";
+	
 
 	@Query(SELECT_ALL)
-	List<User> findAllUser();
+	List<Product> findAllProduct();
 	
-	@Query(SELECT_BY_EMAIL)
-	User findByEmail(@Param("email") String email);
-	
-	@Query(SELECT_BY_USERNAME)
-	User findByUsername2(String username);
+	@Query(SELECT_BY_CATEGORY)
+	List<Product> findProductByCategory(@Param("product_id") String id);
 	
 	@Query(SELECT_BY_ID)
-	User findById(@Param("id") String id);
-	
-	Optional<User> findByUsername(String userName);
+	Product findById(@Param("product_id") String id);
 
 }
