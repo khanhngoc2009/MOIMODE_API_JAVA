@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<User> _userOp = iUserService.findByUsername(userName);
 
-        System.out.println(_userOp.get().toString());
+        System.out.println("ussernmae");
         _userOp.orElseThrow( () -> new UsernameNotFoundException("Not found " + userName));
         return _userOp.map(UserDetailsImpl::new).get();
     }

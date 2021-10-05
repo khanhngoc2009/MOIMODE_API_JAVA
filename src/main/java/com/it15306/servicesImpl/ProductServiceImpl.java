@@ -1,5 +1,6 @@
 package com.it15306.servicesImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.it15306.entities.Product;
 import com.it15306.repository.ProductRepository;
 
-public class ProductService implements com.it15306.services.ProductService {
-	
+public class ProductServiceImpl implements com.it15306.services.ProductService {
+
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -35,6 +36,9 @@ public class ProductService implements com.it15306.services.ProductService {
 		// TODO Auto-generated method stub
 		productRepository.delete(product);
 //		return ;
+	}
+	public List<Product> Search(Date startDate, Date endDate,Integer status,String productname  ) {
+		return productRepository.searchProduct(startDate, endDate, status, productname);
 	}
 	
 }

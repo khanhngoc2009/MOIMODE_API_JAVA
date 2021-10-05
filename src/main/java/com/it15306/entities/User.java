@@ -42,6 +42,7 @@ public class User {
 	private String roles;
 	private Integer isActive;
 	private String profile_url;
+	private Integer Admin;
 	private String phone;
 	@Basic
 	@Column(name = "create_date")
@@ -56,13 +57,14 @@ public class User {
 	@JoinColumn(name = "district_id")
 	private District district = new District();
 	
+//	@ManyToOne
+//	@JoinColumn(name = "username")
+//	private Authority auth = new Authority();
+	
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	private Ward ward = new Ward();
 	
-	@ManyToOne
-	@JoinColumn(name = "username")
-	private Authority auth = new Authority();
 	
 	@OneToMany(mappedBy = "user")
 	private List<Cart> cart = new ArrayList<>();
@@ -186,13 +188,22 @@ public class User {
 	public void setWard(Ward ward) {
 		this.ward = ward;
 	}
+	
 
-	public Authority getAuth() {
-		return auth;
+//	public Authority getAuth() {
+//		return auth;
+//	}
+//
+//	public void setAuth(Authority auth) {
+//		this.auth = auth;
+//	}
+
+	public Integer getAdmin() {
+		return Admin;
 	}
 
-	public void setAuth(Authority auth) {
-		this.auth = auth;
+	public void setAdmin(Integer admin) {
+		Admin = admin;
 	}
 
 	public List<Cart> getCart() {

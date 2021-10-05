@@ -19,95 +19,86 @@ import lombok.Setter;
 @AllArgsConstructor
 @Component
 public class UserDTO {
-	private Integer id;
-	@NotNull
-	@NotBlank
-	private String username;
-	private String password;
+private Integer user_id;
 	
-	@NotNull
-	@Email(message = "Chưa đúng định dạng email")
-	@NotBlank
 	private String email;
-	
-//	@NotNull
-//	@NotBlank
-//	private String password;
-	
-	private String photo;
-	
-	
-	@NotNull
-	private Integer admin;
-	
+	private String password;
+	private String username;
+	private Integer status;
+	private Integer gender;
 	private String roles;
-	
-	@NotNull
-	private Integer activated;
-
-	public Integer getId() {
-		return id;
+	private Integer isActive;
+	private String profile_url;
+	private Integer Admin;
+	private String phone;
+	public Integer getUser_id() {
+		return user_id;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPhoto() {
-		return photo;
+	public String getPassword() {
+		return password;
 	}
-
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public Integer getAdmin() {
-		return admin;
+	public String getUsername() {
+		return username;
 	}
-
-	public void setAdmin(Integer admin) {
-		this.admin = admin;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public Integer getGender() {
+		return gender;
+	}
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
 	public String getRoles() {
 		return roles;
 	}
-
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
-
-	public Integer getActivated() {
-		return activated;
+	public Integer getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Integer isActive) {
+		this.isActive = isActive;
+	}
+	public String getProfile_url() {
+		return profile_url;
+	}
+	public void setProfile_url(String profile_url) {
+		this.profile_url = profile_url;
+	}
+	public Integer getAdmin() {
+		return Admin;
+	}
+	public void setAdmin(Integer admin) {
+		Admin = admin;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public void setActivated(Integer activated) {
-		this.activated = activated;
-	}
+	
 	
 	
 }

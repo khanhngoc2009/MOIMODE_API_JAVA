@@ -6,27 +6,30 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.it15306.entities.OptionProduct;
+import com.it15306.entities.OptionValue;
+import com.it15306.entities.Product;
 //import com.it15306.entities.Category;
-
+import com.it15306.entities.User;
 import com.it15306.repository.OptionProductRepository;
+import com.it15306.repository.ProductRepository;
+import com.it15306.services.OptionProductService;
 
-
-public class OptionProductService implements com.it15306.services.OptionProductService {
+public class OptionValueServiceImpl implements OptionProductService {
 
 	@Autowired
 	private OptionProductRepository optionProductRepository;
 	
 	@Override
-	public List<OptionProduct> getAllOptionProductByProduct(String product_id) {
-		// TODO Auto-generated method stub
-		return optionProductRepository.findAllOptionProductByProductId(product_id);
+	public List<OptionProduct> getAllOptionProductByProduct(Product product) {
+		
+		return optionProductRepository.findAllOptionProductByProduct(product);
 	}
 
 	@Override
-	public Optional<OptionProduct> getById(Integer option_id) {
+	public OptionProduct getById(Integer option_id) {
 		// TODO Auto-generated method stub
-		
-		return optionProductRepository.findById(option_id);
+		 Optional<OptionProduct> dataRes = optionProductRepository.findById(option_id);
+		 return null;
 	}
 
 	@Override
@@ -37,8 +40,8 @@ public class OptionProductService implements com.it15306.services.OptionProductS
 
 	@Override
 	public void delete(OptionProduct option) {
+		// TODO Auto-generated method stub
 		optionProductRepository.delete(option);
-		
 	}
 	
 }
