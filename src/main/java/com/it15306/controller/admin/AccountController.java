@@ -46,11 +46,13 @@ public class AccountController {
 	@Autowired
 	private UserServiceImpl userDetailsService;
 
-	@PostMapping("/login")
+	@RequestMapping(value = "/login",method = RequestMethod.POST,consumes =MediaType.APPLICATION_JSON_VALUE ,
+            headers = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
 	protected ResponseEntity<?> login(@RequestBody RequestLogin request) {
+		System.out.println("khansh");
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 		final String jwt = tokenProvider.generateToken(userDetails);
 		return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
@@ -64,7 +66,6 @@ public class AccountController {
 		ModelMapper modelMapper = new ModelMapper();
 		User user = userservice.getByUsername(username);
 		return modelMapper.map(user, UserDTO.class);
-
 	}
 
 }

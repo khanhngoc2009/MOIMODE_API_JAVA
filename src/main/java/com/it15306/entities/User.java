@@ -42,6 +42,7 @@ public class User {
 	private String roles;
 	private Integer isActive;
 	private String profile_url;
+	private Integer Admin;
 	private String phone;
 	@Basic
 	@Column(name = "create_date")
@@ -187,6 +188,7 @@ public class User {
 	public void setWard(Ward ward) {
 		this.ward = ward;
 	}
+	
 
 //	public Authority getAuth() {
 //		return auth;
@@ -195,6 +197,14 @@ public class User {
 //	public void setAuth(Authority auth) {
 //		this.auth = auth;
 //	}
+
+	public Integer getAdmin() {
+		return Admin;
+	}
+
+	public void setAdmin(Integer admin) {
+		Admin = admin;
+	}
 
 	public List<Cart> getCart() {
 		return cart;
