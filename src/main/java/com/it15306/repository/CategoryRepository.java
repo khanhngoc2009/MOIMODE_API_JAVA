@@ -36,7 +36,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>  {
 	List<Category> findByType(@Param("type") Integer type);
 	
 	@Query(SELECT_BETWEEN_CREATE_DATE)
-	List<Category> findByIdCreateDate(@Param("ngay_bat_dau") Date ngay_bat_dau, @Param("ngay_ket_thuc") Date ngay_ket_thuc);
+	List<Category> findByCreateDate(@Param("ngay_bat_dau") Date ngay_bat_dau, @Param("ngay_ket_thuc") Date ngay_ket_thuc);
 	
 	@Query(SELECT_BY_STATUS)
 	List<Category> findByStatus(@Param("status") Integer status);

@@ -1,5 +1,6 @@
 package com.it15306.servicesImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,12 @@ public class CategoryProductServiceImpl implements CategoryService{
 		// TODO Auto-generated method stub
 		categoryRepository.delete(category);
 		
+	}
+
+	@Override
+	public List<Category> getAllCategoryByCreateDate(Date ngay_bat_dau, Date ngay_ket_thuc) {
+		// TODO Auto-generated method stub
+		return categoryRepository.findByCreateDate(ngay_bat_dau, ngay_ket_thuc);
 	}
 
 }

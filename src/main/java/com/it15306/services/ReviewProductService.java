@@ -2,14 +2,12 @@ package com.it15306.services;
 
 import java.util.List;
 
+import com.it15306.entities.ReviewProduct;
 //import com.it15306.entities.Category;
-import com.it15306.entities.User;
 
 public interface ReviewProductService {
-	List<User> getAllUsers();
-	User getById(String id);
-	User getByEmail(String id);
-	User saveUser(User user);
-	User getByUsername(String username);
+	List<ReviewProduct> getAllReviewProducts();
+	ReviewProduct getById(String id);
+	ReviewProduct saveReviewProduct(ReviewProduct ReviewProduct);
 	void delete(String id);
 }
