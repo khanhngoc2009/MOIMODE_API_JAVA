@@ -34,8 +34,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		final String authorizationHeader = httpServletRequest.getHeader("Authorization");
 		String username = null;
 		String jwt = null;
-
 		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			
 			jwt = authorizationHeader.substring(7);
 			username = jwtTokenProvider.extractUsername(jwt);
 		}
@@ -43,6 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 			// Xác thưc thông tin xem có đúng thông tin hay ko
+			System.out.println(jwt + "\n" + username);
 			if (jwtTokenProvider.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

@@ -20,12 +20,11 @@ public class UserDetailsImpl implements UserDetails{
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.enabled = user.getIsActive();
+        this.enabled = user.getActivated();
         this.authorities = Arrays.stream(user.getRoles().split(",")).
                 map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

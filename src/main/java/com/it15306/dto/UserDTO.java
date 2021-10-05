@@ -2,12 +2,22 @@ package com.it15306.dto;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 import org.springframework.stereotype.Component;
+
+import com.it15306.entities.District;
+import com.it15306.entities.Province;
+import com.it15306.entities.Ward;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,23 +29,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @Component
 public class UserDTO {
-private Integer user_id;
+private Integer id;
 	
 	private String email;
 	private String password;
 	private String username;
-	private Integer status;
-	private Integer gender;
+	private Integer admin;
+	private Integer activated;
+	private String photo;
 	private String roles;
-	private Integer isActive;
-	private String profile_url;
-	private Integer Admin;
-	private String phone;
-	public Integer getUser_id() {
-		return user_id;
+	private Date create_date;
+	private int province_id;
+	private int district_id;
+	private int ward_id;
+	public Integer getId() {
+		return id;
 	}
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getEmail() {
 		return email;
@@ -55,17 +66,23 @@ private Integer user_id;
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public Integer getStatus() {
-		return status;
+	public Integer getAdmin() {
+		return admin;
 	}
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setAdmin(Integer admin) {
+		this.admin = admin;
 	}
-	public Integer getGender() {
-		return gender;
+	public Integer getActivated() {
+		return activated;
 	}
-	public void setGender(Integer gender) {
-		this.gender = gender;
+	public void setActivated(Integer activated) {
+		this.activated = activated;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	public String getRoles() {
 		return roles;
@@ -73,32 +90,30 @@ private Integer user_id;
 	public void setRoles(String roles) {
 		this.roles = roles;
 	}
-	public Integer getIsActive() {
-		return isActive;
+	public Date getCreate_date() {
+		return create_date;
 	}
-	public void setIsActive(Integer isActive) {
-		this.isActive = isActive;
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
 	}
-	public String getProfile_url() {
-		return profile_url;
+	public int getProvince_id() {
+		return province_id;
 	}
-	public void setProfile_url(String profile_url) {
-		this.profile_url = profile_url;
+	public void setProvince_id(int province_id) {
+		this.province_id = province_id;
 	}
-	public Integer getAdmin() {
-		return Admin;
+	public int getDistrict_id() {
+		return district_id;
 	}
-	public void setAdmin(Integer admin) {
-		Admin = admin;
+	public void setDistrict_id(int district_id) {
+		this.district_id = district_id;
 	}
-	public String getPhone() {
-		return phone;
+	public int getWard_id() {
+		return ward_id;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setWard_id(int ward_id) {
+		this.ward_id = ward_id;
 	}
-
-	
 	
 	
 }

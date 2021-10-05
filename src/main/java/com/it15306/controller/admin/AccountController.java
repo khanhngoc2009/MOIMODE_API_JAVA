@@ -46,8 +46,7 @@ public class AccountController {
 	@Autowired
 	private UserServiceImpl userDetailsService;
 
-	@RequestMapping(value = "/login",method = RequestMethod.POST,consumes =MediaType.APPLICATION_JSON_VALUE ,
-            headers = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/login")
     @ResponseBody
 	protected ResponseEntity<?> login(@RequestBody RequestLogin request) {
 		System.out.println("khansh");

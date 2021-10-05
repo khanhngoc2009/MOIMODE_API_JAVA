@@ -1,6 +1,7 @@
 package com.it15306.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.dto.UserDTO;
+import com.it15306.entities.District;
+import com.it15306.entities.Province;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
+import com.it15306.entities.Ward;
 import com.it15306.libs.HashUtil;
 import com.it15306.mapper.UserMapper;
 import com.it15306.repository.UserRepository;
@@ -47,13 +51,25 @@ public class UserController {
 
 	@RequestMapping(value = "/user/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public User register(@Valid @RequestBody UserDTO dto) {
+	public User register(@RequestBody UserDTO dto) {
+		System.out.println(dto);
 		dto.setAdmin(2);
 		User user = mapper.ConvertToEntity(dto);
 		String hashPass = HashUtil.hash(user.getPassword());
 		user.setPassword(hashPass);
+		user.setCreate_date(new Date());
+		Province pr = new Province();
+		pr.setProvince_id(4);
+		District dt = new District();
+		dt.setDistrict_id(4);
+		Ward w = new Ward();
+		w.setWard_id(4);
+		user.setProvince(pr);
+		user.setDistrict(dt);
+		user.setWard(w);
 //		this.userService.saveUser(user);
 		this.userService.saveUser(user);
+		
 		return user;
 	}
 	
@@ -66,8 +82,8 @@ public class UserController {
 		String hashPass = HashUtil.hash(user.getPassword());
 		user.setPassword(hashPass);
 		
-		String nameFile = user.getProfile_url();
-		user.setProfile_url("http://localhost:9090/storages/"+nameFile);
+		String nameFile = user.getPhoto();
+		user.setPhoto("http://localhost:9090/storages/"+nameFile);
 		
 		this.userService.saveUser(user);
 		return user;
@@ -91,12 +107,12 @@ public class UserController {
 		User user = mapper.ConvertToEntity(dto);
 		User oldUser = userService.getById(String.valueOf(id));
 		
-		if(!oldUser.getProfile_url().equalsIgnoreCase(user.getProfile_url())) {
-			String nameFile = user.getProfile_url();
-			user.setProfile_url("http://localhost:9090/storages/"+nameFile);
+		if(!oldUser.getPhoto().equalsIgnoreCase(user.getPhoto())) {
+			String nameFile = user.getPhoto();
+			user.setPhoto("http://localhost:9090/storages/"+nameFile);
 		}
 		
-		user.setUser_id(id);
+		user.setId(id);
 		this.userService.saveUser(user);
 		return user;
 	}
@@ -105,7 +121,7 @@ public class UserController {
 	@ResponseBody
 	public UserDTO delete(@PathVariable("id") User user) {
 		UserDTO userDTO = mapper.ConvertToDTO(user);
-		this.userService.delete(String.valueOf(user.getUser_id()));
+		this.userService.delete(String.valueOf(user.getId()));
 		return userDTO;
 
 	}

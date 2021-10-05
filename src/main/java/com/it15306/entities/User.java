@@ -32,18 +32,16 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
-	private Integer user_id;
+	private Integer id;
 	
 	private String email;
 	private String password;
 	private String username;
-	private Integer status;
-	private Integer gender;
+	private Integer admin;
+	private Integer activated;
+	private String photo;
 	private String roles;
-	private Integer isActive;
-	private String profile_url;
-	private Integer Admin;
-	private String phone;
+	
 	@Basic
 	@Column(name = "create_date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -66,6 +64,7 @@ public class User {
 	private Ward ward = new Ward();
 	
 	
+
 	@OneToMany(mappedBy = "user")
 	private List<Cart> cart = new ArrayList<>();
 	
@@ -75,12 +74,13 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Order> order = new ArrayList<>();
 
-	public Integer getUser_id() {
-		return user_id;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -107,23 +107,6 @@ public class User {
 		this.username = username;
 	}
 
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public Integer getGender() {
-		return gender;
-	}
-
-	public void setGender(Integer gender) {
-		this.gender = gender;
-	}
-
-
 	
 	public String getRoles() {
 		return roles;
@@ -131,30 +114,6 @@ public class User {
 
 	public void setRoles(String roles) {
 		this.roles = roles;
-	}
-
-	public Integer getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(Integer isActive) {
-		this.isActive = isActive;
-	}
-
-	public String getProfile_url() {
-		return profile_url;
-	}
-
-	public void setProfile_url(String profile_url) {
-		this.profile_url = profile_url;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public Date getCreate_date() {
@@ -198,16 +157,18 @@ public class User {
 //		this.auth = auth;
 //	}
 
-	public Integer getAdmin() {
-		return Admin;
-	}
-
-	public void setAdmin(Integer admin) {
-		Admin = admin;
-	}
+	
 
 	public List<Cart> getCart() {
 		return cart;
+	}
+
+	public Integer getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Integer admin) {
+		this.admin = admin;
 	}
 
 	public void setCart(List<Cart> cart) {
@@ -228,6 +189,22 @@ public class User {
 
 	public void setOrder(List<Order> order) {
 		this.order = order;
+	}
+
+	public Integer getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Integer activated) {
+		this.activated = activated;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	
 	

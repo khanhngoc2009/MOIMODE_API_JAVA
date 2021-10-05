@@ -48,4 +48,45 @@ public class Ward {
 	
 	@OneToMany(mappedBy = "ward")
 	private List<User> users = new ArrayList<>();
+
+	public Integer getWard_id() {
+		return ward_id;
+	}
+
+	public void setWard_id(Integer ward_id) {
+		this.ward_id = ward_id;
+	}
+
+	public String getWard_name() {
+		return ward_name;
+	}
+
+	public void setWard_name(String ward_name) {
+		this.ward_name = ward_name;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+	
 }
