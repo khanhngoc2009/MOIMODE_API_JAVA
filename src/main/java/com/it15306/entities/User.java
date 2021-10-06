@@ -40,6 +40,7 @@ public class User {
 	private Integer admin;
 	private Integer activated;
 	private String photo;
+	private String phone;
 	private String roles;
 	
 	@Basic
@@ -206,7 +207,14 @@ public class User {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-	
-	
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	
 }
