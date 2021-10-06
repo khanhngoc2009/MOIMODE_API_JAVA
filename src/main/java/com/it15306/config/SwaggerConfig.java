@@ -2,9 +2,13 @@ package com.it15306.config;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -14,27 +18,42 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @EnableSwagger2
+//@EnableSwagger2WebMvc
 @Configuration
 public class SwaggerConfig {
-
 	@Bean
-	  public Docket api() {
-	    return new Docket(DocumentationType.SWAGGER_2)
-	        .select()
-	        .apis(RequestHandlerSelectors.basePackage("com.world.hello"))
-	        .paths(regex("/api.*"))
-	        .build()
-	        .apiInfo(metaData());
-	  }
-	private ApiInfo metaData() {
-	    return new ApiInfo(
-	        "Spring Boot REST API",
-	        "Spring Boot REST API for User management",
-	        "1.0",
-	        "Terms of service",
-	        new Contact("Hello", "https://helloworld.com", "hello@world.com"),
-	        "Apache License Version 2.0",
-	        "https://www.apache.org/licenses/LICENSE-2.0",
-	        new ArrayList<>());
-	  }
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_2)  
+          .select()                                  
+//          .apis(RequestHandlerSelectors.any())              
+//          .paths(PathSelectors.any())                          
+          .build();                                           
+    }
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//	    registry.addResourceHandler("swagger-ui.html")
+//	      .addResourceLocations("classpath:/META-INF/resources/");
+//
+//	    registry.addResourceHandler("/webjars/**")
+//	      .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//	}
+//	@Bean
+//	  public Docket api() {
+//	    return new Docket(DocumentationType.SWAGGER_2)
+//	        .select()
+//	        .apis(RequestHandlerSelectors.basePackage("com.world.hello"))
+//	        .paths(regex("/api.*"))
+//	        .build()
+//	        .apiInfo(metaData());
+//	  }
+//	private ApiInfo metaData() {
+//	    return new ApiInfo(
+//	        "Spring Boot REST API",
+//	        "Spring Boot REST API for User management",
+//	        "1.0",
+//	        "Terms of service",
+//	        new Contact("Hello", "https://helloworld.com", "hello@world.com"),
+//	        "Apache License Version 2.0",
+//	        "https://www.apache.org/licenses/LICENSE-2.0",
+//	        new ArrayList<>());
+//	  }
 }

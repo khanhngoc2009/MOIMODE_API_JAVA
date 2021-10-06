@@ -65,15 +65,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //         Phân quyền
         http.authorizeRequests()
         
-            .antMatchers( "/api/v1/login", "/api/v1/user/register")
-            .permitAll() 
+//            .antMatchers( "/api/v1/login", "/api/v1/user/register")
+//            .permitAll() 
+//            
+//            .antMatchers(HttpMethod.GET, "/api/v1/products/**", "/api/v1/categories/**","/api/v1/product/**","/api/v1/category/*","/storages/**")
+//            .permitAll() 
             
-            .antMatchers(HttpMethod.GET, "/api/v1/products/**", "/api/v1/categories/**","/api/v1/product/**","/api/v1/category/*","/storages/**")
-            .permitAll() 
-            
-            .antMatchers(HttpMethod.POST, "/api/v1/product/*", "/api/v1/category/*").hasAuthority("ADMIN")
-            .antMatchers(HttpMethod.PUT, "/api/v1/product/*", "/api/v1/category/*").hasAuthority("ADMIN")
-            .anyRequest().authenticated() // Tất cả các request khác đều cần phải xác thực mới được truy cập
+//            .antMatchers(HttpMethod.POST, "/api/v1/product/*", "/api/v1/category/*").hasAuthority("ADMIN")
+//            .antMatchers(HttpMethod.PUT, "/api/v1/product/*", "/api/v1/category/*").hasAuthority("ADMIN")
+            .anyRequest().permitAll()  // Tất cả các request khác đều cần phải xác thực mới được truy cập
         .and().
       exceptionHandling().and().sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
