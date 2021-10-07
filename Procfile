@@ -1,1 +1,1 @@
-web: java -jar target/MOIMODE_API_JAVA-1.0.jar
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war
