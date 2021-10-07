@@ -1,0 +1,1 @@
+web: java -jar target/MOIMODE_API_JAVA-1.0.jar
