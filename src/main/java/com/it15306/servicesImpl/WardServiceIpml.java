@@ -3,11 +3,15 @@ package com.it15306.servicesImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.it15306.entities.District;
 import com.it15306.entities.Ward;
 import com.it15306.repository.WardRepository;
 import com.it15306.services.WardService;
 
+
+@Service("WardServiceIpml")
 public class WardServiceIpml implements WardService{
 	
 	@Autowired
@@ -20,9 +24,9 @@ public class WardServiceIpml implements WardService{
 	}
 
 	@Override
-	public List<Ward> getAllWardByDistrictId(String district_id) {
+	public List<Ward> getAllWardByDistrict(District district) {
 		// TODO Auto-generated method stub
-		return wardRepository.findByDistrict(district_id);
+		return wardRepository.findByDistrict(district);
 	}
 
 	@Override

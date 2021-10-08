@@ -48,30 +48,6 @@ public class UserController {
 
 	@Autowired
 	private UserMapper mapper;
-
-	@RequestMapping(value = "/user/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public User register(@RequestBody UserDTO dto) {
-		System.out.println(dto);
-		dto.setAdmin(2);
-		User user = mapper.ConvertToEntity(dto);
-		String hashPass = HashUtil.hash(user.getPassword());
-		user.setPassword(hashPass);
-		user.setCreate_date(new Date());
-		Province pr = new Province();
-		pr.setProvince_id(4);
-		District dt = new District();
-		dt.setDistrict_id(4);
-		Ward w = new Ward();
-		w.setWard_id(4);
-		user.setProvince(pr);
-		user.setDistrict(dt);
-		user.setWard(w);
-//		this.userService.saveUser(user);
-		this.userService.saveUser(user);
-		
-		return user;
-	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

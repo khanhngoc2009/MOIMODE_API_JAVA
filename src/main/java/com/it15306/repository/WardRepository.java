@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.District;
 import com.it15306.entities.Ward;
 
 @Repository
@@ -31,6 +32,6 @@ public interface WardRepository extends JpaRepository<Ward, Integer> {
 	List<Ward> findByStatus(@Param("status") Integer status);
 
 	@Query(SELECT_BY_DISTRICT)
-	List<Ward> findByDistrict(@Param("district") String district);
+	List<Ward> findByDistrict(@Param("district") District district);
 
 }

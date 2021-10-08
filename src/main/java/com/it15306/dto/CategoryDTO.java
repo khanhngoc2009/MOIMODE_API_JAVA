@@ -1,4 +1,4 @@
-package com.it15306.entities;
+package com.it15306.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,21 +22,11 @@ import org.springframework.stereotype.Component;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "Category")
-@Getter
-@Setter
-@Component
-public class Category {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "category_id")
+
+public class CategoryDTO {
+
 	private Integer category_id;
 	
-	@Basic
-	@Column(name = "create_date")
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date create_date;
 	
 	private Integer status;
@@ -45,10 +35,8 @@ public class Category {
 	private Integer type;
 	private String category_name;
 	private String description;
-	private String url_image;
+	private String ur_image;
 	
-	@OneToMany(mappedBy = "category")
-	private List<Product> products = new ArrayList<>();
 
 	public Integer getCategory_id() {
 		return category_id;
@@ -106,23 +94,14 @@ public class Category {
 		this.description = description;
 	}
 
-
-
-	public List<Product> getProducts() {
-		return products;
+	public String getUr_image() {
+		return ur_image;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setUr_image(String ur_image) {
+		this.ur_image = ur_image;
 	}
 
-	public String getUrl_image() {
-		return url_image;
-	}
 
-	public void setUrl_image(String url_image) {
-		this.url_image = url_image;
-	}
-	
-	
+
 }

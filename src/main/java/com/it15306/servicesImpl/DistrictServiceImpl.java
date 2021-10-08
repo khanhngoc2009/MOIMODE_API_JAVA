@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
 import com.it15306.entities.Product;
+import com.it15306.entities.Province;
 import com.it15306.repository.CategoryRepository;
 import com.it15306.repository.DistrictRepository;
 import com.it15306.repository.ProductSkuValuesRepository;
 import com.it15306.services.CategoryService;
 import com.it15306.services.DistrictService;
 
+@Service("DistrictServiceImpl")
 public class DistrictServiceImpl implements DistrictService{
 	@Autowired
 	private DistrictRepository districtRepository;
@@ -25,9 +28,9 @@ public class DistrictServiceImpl implements DistrictService{
 	}
 
 	@Override
-	public List<District> getAllDistrictsByProvinceId(String province_id) {
+	public List<District> getAllDistrictsByProvinceId(Province province) {
 		// TODO Auto-generated method stub
-		return districtRepository.findByProvince(province_id);
+		return districtRepository.findByProvince(province);
 	}
 
 	@Override

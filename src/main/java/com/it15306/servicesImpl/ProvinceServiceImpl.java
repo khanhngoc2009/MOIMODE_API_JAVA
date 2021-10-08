@@ -3,11 +3,13 @@ package com.it15306.servicesImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.it15306.entities.Province;
 import com.it15306.repository.ProvinceRepository;
 import com.it15306.services.ProvinceService;
 
+@Service("ProvinceServiceImpl")
 public class ProvinceServiceImpl implements ProvinceService{
 	
 	@Autowired

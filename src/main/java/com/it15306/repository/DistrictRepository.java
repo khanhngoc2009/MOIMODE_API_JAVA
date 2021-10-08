@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
 import com.it15306.entities.District;
+import com.it15306.entities.Province;
 
 @Repository
 public interface DistrictRepository extends JpaRepository<District, Integer> {
@@ -29,6 +30,6 @@ public interface DistrictRepository extends JpaRepository<District, Integer> {
 	List<District> findByStatus(@Param("status") Integer status);
 	
 	@Query(SELECT_BY_PROVINCE)
-	List<District> findByProvince(@Param("province") String province);
+	List<District> findByProvince(@Param("province") Province province);
 
 }
