@@ -6,14 +6,14 @@ import com.it15306.dto.OptionDTO;
 import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
 
-public class dataCreateProductDto {
-	private dataProductBodyDto product;
+public class DataCreateProductDtos {
+	private DataProductBodyDtos product;
 	private List<OptionDTO> options;
 	private List<OptionValueDTO> values;
-	public dataProductBodyDto getProduct() {
+	public DataProductBodyDtos getProduct() {
 		return product;
 	}
-	public void setProduct(dataProductBodyDto product) {
+	public void setProduct(DataProductBodyDtos product) {
 		this.product = product;
 	}
 	public List<OptionDTO> getOptions() {

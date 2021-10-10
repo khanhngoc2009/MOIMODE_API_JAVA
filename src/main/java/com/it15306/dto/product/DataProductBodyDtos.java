@@ -2,7 +2,7 @@ package com.it15306.dto.product;
 
 import java.util.Date;
 
-public class dataProductBodyDto {
+public class DataProductBodyDtos {
 	
 	private String product_name;
 	private String description;

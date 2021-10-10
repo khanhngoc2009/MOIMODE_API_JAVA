@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.it15306.dto.OptionDTO;
 import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
-import com.it15306.dto.product.dataCreateProductDto;
-import com.it15306.dto.product.dataProductBodyDto;
+import com.it15306.dto.product.DataCreateProductDtos;
 import com.it15306.entities.OptionProduct;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
@@ -39,7 +38,7 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/createProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<OptionDTO> createProduct(@RequestBody dataCreateProductDto body) {
+	public List<OptionDTO> createProduct(@RequestBody DataCreateProductDtos body) {
 		
 		
 		return body.getOptions();
