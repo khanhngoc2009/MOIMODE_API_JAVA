@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,7 @@ import com.it15306.dto.ProductDTO;
 import com.it15306.dto.ProductSkuValueDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.product.DataBodyFindSkuDto;
 import com.it15306.dto.product.ProductDetailDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
@@ -32,6 +34,7 @@ import com.it15306.entities.ProductSkuValues;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.servicesImpl.ProductServiceImpl;
+import com.it15306.servicesImpl.ProductSkuValueServiceImpl;
 import com.it15306.servicesImpl.ProvinceServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -40,6 +43,9 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
+	
+	@Autowired
+	private ProductSkuValueServiceImpl productSkuValueServiceImpl;
 
 	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -80,7 +86,6 @@ public class CustomerProduct {
 		ModelMapper modelMapper = new ModelMapper();
 		List<OptionClientDto> optionDTOs =new ArrayList<OptionClientDto>();
 		List<ProductSkuValueDto> productSkuDTOs = new ArrayList<ProductSkuValueDto>();
-//		List<OptionValueDTO> valueDTOs =new ArrayList<OptionValueDTO>();
 		if (product.getOptions().size() > 0) {
 			for (int i = 0; i < product.getOptions().size(); i++) {
 				OptionProduct option = product.getOptions().get(i);				
@@ -106,5 +111,21 @@ public class CustomerProduct {
 		pr.setProduct(productDTO);
 		pr.setListProductSku(productSkuDTOs);
 		return pr;
+	}
+	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{sku_value_id_1}/{sku_value_id_2}/{sku_value_id_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ProductSkuValueDto getProductSkuPrice(@PathVariable Integer product_id,@PathVariable Integer sku_value_id_1,@PathVariable Integer sku_value_id_2,@PathVariable Integer sku_value_id_3) {
+		ModelMapper modelMapper = new ModelMapper();
+		Product product = new Product();
+		product.setProduct_id(product_id);
+		ProductSkuValues productSku = productSkuValueServiceImpl.
+		findProductSkuValues(
+				sku_value_id_1,
+				sku_value_id_2,
+				sku_value_id_3,
+				product);
+		ProductSkuValueDto productSkuDto  = modelMapper.map(productSku, ProductSkuValueDto.class);
+		
+		return productSkuDto;
 	}
 }
