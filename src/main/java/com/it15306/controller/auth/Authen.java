@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.BodyForgotPasswordDto;
 import com.it15306.dto.UserDTO;
 import com.it15306.entities.District;
 import com.it15306.entities.Province;
@@ -97,9 +98,26 @@ public class Authen {
 		user.setProvince(pr);
 		user.setDistrict(dt);
 		user.setWard(w);
-//		this.userService.saveUser(user);
-		this.userService.saveUser(user);
-		
+
+		this.userService.saveUser(user);		
 		return user;
+	}
+	@RequestMapping(value = "/user/forgotPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String forgotPassword(@RequestBody BodyForgotPasswordDto body) {
+		User user = userService.getByEmail(body.getEmail());
+		if(user!= null) {
+			try {
+				String hashPass = HashUtil.hash(body.getNewPassword());
+				user.setPassword(hashPass);
+				this.userService.saveUser(user);
+				return "Bạn đã đổi mật khẩu hành công";
+			} catch (Exception e) {
+				return "Fail";
+			}
+		}else {
+			return "Fail";
+		}
+		
 	}
 }

@@ -25,7 +25,6 @@ import lombok.Setter;
 public class ProductDTO {
 
 	private Integer product_id;
-	
 
 	private Date create_date;
 	
@@ -35,8 +34,8 @@ public class ProductDTO {
 	private Integer type;
 	private Integer category_id;
 	private Integer ware_house_id;
-	
-	
+	private Double min_price;
+	private Double max_price;
 	public Integer getProduct_id() {
 		return product_id;
 	}
@@ -99,7 +98,24 @@ public class ProductDTO {
 
 	public void setWare_house_id(Integer ware_house_id) {
 		this.ware_house_id = ware_house_id;
-	}	
+	}
+
+	public Double getMin_price() {
+		return min_price;
+	}
+
+	public void setMin_price(Double min_price) {
+		this.min_price = min_price;
+	}
+
+	public Double getMax_price() {
+		return max_price;
+	}
+
+	public void setMax_price(Double max_price) {
+		this.max_price = max_price;
+	}
+
 	
 	
 }
