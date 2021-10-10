@@ -35,7 +35,7 @@ import com.it15306.services.UserServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/miemode_api/v1")
 public class Authen {
 	@Autowired
 	private UserServiceImpl userService;
@@ -57,18 +57,20 @@ public class Authen {
 
 	@PostMapping("/login")
     @ResponseBody
-	protected ResponseEntity<?> login(@RequestBody RequestLogin request) {
+	protected ResponseEntity<?> login(@RequestBody RequestLogin request,HttpServletRequest httpServletRequest) {
 		System.out.println("khansh");
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 		final String jwt = tokenProvider.generateToken(userDetails);
+//		httpServletRequest.addHeader("Authorization",jwt);
 		return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/infor", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
+//	@ResponseBody
 	public UserDTO getInfor(HttpServletRequest httpServletRequest) {
+		System.out.print("khoong laas dc ," +httpServletRequest.getHeader("Authorization"));
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
 		String username = tokenProvider.getUserNameFromJWT(token);
 		ModelMapper modelMapper = new ModelMapper();

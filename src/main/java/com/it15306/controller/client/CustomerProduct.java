@@ -13,13 +13,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.DistrictDTO;
+import com.it15306.dto.OptionClientDto;
+import com.it15306.dto.OptionDTO;
+import com.it15306.dto.OptionValueClientDto;
+import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
+import com.it15306.dto.ProductSkuValueDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.product.ProductDetailDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
+import com.it15306.entities.OptionProduct;
 import com.it15306.entities.Product;
+import com.it15306.entities.ProductSkuValues;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.servicesImpl.ProductServiceImpl;
@@ -27,8 +36,8 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class ClientProduct {
+@RequestMapping("/miemode_api/v1")
+public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
 
@@ -62,5 +71,40 @@ public class ClientProduct {
 			return ProductDTOs;             
 		}
 		return ProductDTOs;
+	}
+	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
+		Product product= this.productServiceImpl.getByIdProduct(product_id);
+		ProductDetailDto pr = new ProductDetailDto();
+		ModelMapper modelMapper = new ModelMapper();
+		List<OptionClientDto> optionDTOs =new ArrayList<OptionClientDto>();
+		List<ProductSkuValueDto> productSkuDTOs = new ArrayList<ProductSkuValueDto>();
+//		List<OptionValueDTO> valueDTOs =new ArrayList<OptionValueDTO>();
+		if (product.getOptions().size() > 0) {
+			for (int i = 0; i < product.getOptions().size(); i++) {
+				OptionProduct option = product.getOptions().get(i);				
+				List<OptionValueClientDto> optionValueDTOs =new ArrayList<OptionValueClientDto>();
+			
+				
+				for (int j = 0; j < option.getOption_values().size(); j++) {
+					optionValueDTOs.add(modelMapper.map(option.getOption_values().get(j), OptionValueClientDto.class));
+				}
+				OptionClientDto opV = modelMapper.map(product.getOptions().get(i), OptionClientDto.class);
+				opV.setListOptionValue(optionValueDTOs);
+				optionDTOs.add(opV);
+			}
+		}
+		if (product.getProduct_sku_values().size() > 0) {
+			for (int i = 0; i < product.getProduct_sku_values().size(); i++) {
+				ProductSkuValues productSku = product.getProduct_sku_values().get(i);			
+				productSkuDTOs.add(modelMapper.map(productSku,ProductSkuValueDto.class));
+			}
+		}
+		ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
+		pr.setListOption(optionDTOs);
+		pr.setProduct(productDTO);
+		pr.setListProductSku(productSkuDTOs);
+		return pr;
 	}
 }

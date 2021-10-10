@@ -42,12 +42,7 @@ private Integer id;
 	private int province_id;
 	private int district_id;
 	private int ward_id;
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -114,6 +109,13 @@ private Integer id;
 	public void setWard_id(int ward_id) {
 		this.ward_id = ward_id;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	
 	
 }

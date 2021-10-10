@@ -1,38 +1,9 @@
-package com.it15306.entities;
+package com.it15306.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.stereotype.Component;
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Entity
-@Table(name = "Product_Sku_Values")
-@Getter
-@Setter
-@Component
-public class ProductSkuValues {
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_sku_id")
-	private Integer product_sku_id;
+public class ProductSkuValueDto {
+private Integer product_sku_id;
 	
 
 	private String SKU_value;
@@ -43,9 +14,6 @@ public class ProductSkuValues {
 	private Integer option_value_id_3;
 	private String option_value_name_3;
 	
-	@Basic
-	@Column(name = "create_date")
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date create_date;
 	
 	private double price;
@@ -57,9 +25,7 @@ public class ProductSkuValues {
 	
 	private Integer status;
 	
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product = new Product();
+	private ProductDTO product;
 
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
@@ -173,15 +139,11 @@ public class ProductSkuValues {
 		this.status = status;
 	}
 
-	public Product getProduct() {
+	public ProductDTO getProduct() {
 		return product;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(ProductDTO product) {
 		this.product = product;
 	}
-	
-	
-	
-	
 }

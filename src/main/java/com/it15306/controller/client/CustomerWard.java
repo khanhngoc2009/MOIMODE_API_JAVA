@@ -24,8 +24,8 @@ import com.it15306.servicesImpl.WardServiceIpml;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class ClientWard {
+@RequestMapping("/miemode_api/v1")
+public class CustomerWard {
 	@Autowired
 	private WardServiceIpml wardServiceImpl;
 	
@@ -46,7 +46,7 @@ public class ClientWard {
 		}
 		return WardDTOs;
 	}
-
+	@PreAuthorize("hasAuthority('CUSTOMER')")
 	@RequestMapping(value = "/ward/{district_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<WardDTO> getListWardByDistrict(@PathVariable Integer district_id) {

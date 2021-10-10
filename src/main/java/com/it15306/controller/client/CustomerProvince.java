@@ -20,8 +20,8 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class ClientProvince {
+@RequestMapping("/miemode_api/v1")
+public class CustomerProvince {
 	@Autowired
 	private ProvinceServiceImpl provinceServiceImpl;
 

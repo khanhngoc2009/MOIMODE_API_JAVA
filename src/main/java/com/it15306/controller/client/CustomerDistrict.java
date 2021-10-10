@@ -24,8 +24,8 @@ import com.it15306.servicesImpl.DistrictServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class ClientDistrict {
+@RequestMapping("/miemode_api/v1")
+public class CustomerDistrict {
 	@Autowired
 	private DistrictServiceImpl districtServiceImpl;
 

@@ -40,8 +40,8 @@ import com.it15306.services.UserServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class UserController {
+@RequestMapping("/miemode_api/v1")
+public class AdminUser {
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -50,7 +50,7 @@ public class UserController {
 	private UserMapper mapper;
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public User create(@Valid @RequestBody UserDTO dto) {
 		User user = mapper.ConvertToEntity(dto);
@@ -66,11 +66,10 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDTO getDetail(@PathVariable("id") User entity) {
 		UserDTO userDTO = mapper.ConvertToDTO(entity);
-
 		return userDTO;
 	}
 
@@ -92,17 +91,16 @@ public class UserController {
 		this.userService.saveUser(user);
 		return user;
 	}
-
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/user/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDTO delete(@PathVariable("id") User user) {
 		UserDTO userDTO = mapper.ConvertToDTO(user);
 		this.userService.delete(String.valueOf(user.getId()));
 		return userDTO;
-
 	}
-
-	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<UserDTO> getAll() {
 		ModelMapper modelMapper = new ModelMapper();
@@ -113,11 +111,8 @@ public class UserController {
 			for (int i = 0; i < users.size(); i++) {
 				userDTOs.add(modelMapper.map(users.get(i), UserDTO.class));
 			}
-			
-			
 			return userDTOs;
 		}
-
 		return userDTOs;
 
 	}

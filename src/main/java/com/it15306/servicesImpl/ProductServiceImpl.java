@@ -23,9 +23,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	}
 
 	@Override
-	public Product getByIdProduct(String product_id) {
+	public Product getByIdProduct(Integer product_id) {
 		// TODO Auto-generated method stub
-		return productRepository.findById(product_id);
+		return productRepository.findByIdProduct(product_id);
 	}
 
 	@Override

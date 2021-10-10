@@ -42,6 +42,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>  {
 	List<Product> findProductByCategory(@Param("category") Category category);
 //	
 	@Query(SELECT_BY_ID)
-	Product findById(@Param("product_id") String id);
+	Product findByIdProduct(@Param("product_id") Integer id);
 
 }

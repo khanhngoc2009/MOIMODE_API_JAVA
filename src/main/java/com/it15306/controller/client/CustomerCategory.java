@@ -23,8 +23,8 @@ import com.it15306.servicesImpl.CategoryProductServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class ClientCategory {
+@RequestMapping("/miemode_api/v1")
+public class CustomerCategory {
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
