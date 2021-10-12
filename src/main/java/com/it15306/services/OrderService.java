@@ -2,14 +2,12 @@ package com.it15306.services;
 
 import java.util.List;
 
+import com.it15306.entities.Order;
 //import com.it15306.entities.Category;
-import com.it15306.entities.User;
 
 public interface OrderService {
-	List<User> getAllUsers();
-	User getById(String id);
-	User getByEmail(String id);
-	User saveUser(User user);
-	User getByUsername(String username);
+	List<Order> getAllUsers();
+	Order getById(String id);
+	Order saveUser(Order Order);
 	void delete(String id);
 }

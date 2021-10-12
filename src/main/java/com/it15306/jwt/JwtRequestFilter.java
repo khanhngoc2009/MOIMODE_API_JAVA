@@ -1,12 +1,11 @@
 package com.it15306.jwt;
 
+import com.it15306.services.UserServiceImpl;
 import java.io.IOException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.it15306.services.UserServiceImpl;
+
+
 
 @Service
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -31,11 +31,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			FilterChain filterChain) throws ServletException, IOException {
+		// System.out.print("khanh1");
 		final String authorizationHeader = httpServletRequest.getHeader("Authorization");
 		String username = null;
 		String jwt = null;
-
+		
 		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			
 			jwt = authorizationHeader.substring(7);
 			username = jwtTokenProvider.extractUsername(jwt);
 		}
@@ -43,6 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 			// Xác thưc thông tin xem có đúng thông tin hay ko
+			System.out.println(jwt + "\n" + username);
 			if (jwtTokenProvider.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());

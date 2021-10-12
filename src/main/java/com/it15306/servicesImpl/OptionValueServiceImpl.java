@@ -13,35 +13,34 @@ import com.it15306.entities.User;
 import com.it15306.repository.OptionProductRepository;
 import com.it15306.repository.ProductRepository;
 import com.it15306.services.OptionProductService;
+import com.it15306.services.OptionValueService;
 
-public class OptionValueServiceImpl implements OptionProductService {
+public class OptionValueServiceImpl implements OptionValueService {
 
-	@Autowired
-	private OptionProductRepository optionProductRepository;
-	
 	@Override
-	public List<OptionProduct> getAllOptionProductByProduct(Product product) {
+	public List<OptionValue> getAllOptionValueByOption(String option_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public OptionValue getById(String value_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public OptionValue saveOptionValue(OptionValue optionValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(String id) {
+		// TODO Auto-generated method stub
 		
-		return optionProductRepository.findAllOptionProductByProduct(product);
 	}
 
-	@Override
-	public OptionProduct getById(Integer option_id) {
-		// TODO Auto-generated method stub
-		 Optional<OptionProduct> dataRes = optionProductRepository.findById(option_id);
-		 return null;
-	}
-
-	@Override
-	public OptionProduct saveOptionProduct(OptionProduct option) {
-		// TODO Auto-generated method stub
-		return optionProductRepository.save(option);
-	}
-
-	@Override
-	public void delete(OptionProduct option) {
-		// TODO Auto-generated method stub
-		optionProductRepository.delete(option);
-	}
+	
 	
 }

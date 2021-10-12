@@ -12,20 +12,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String username;
     private String password;
+//    private String phone;
     private Integer enabled;
     private List<GrantedAuthority> authorities;
 
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
+//        this.username = user.getPhone();
         this.password = user.getPassword();
-        this.enabled = user.getIsActive();
+        this.enabled = user.getActivated();
         this.authorities = Arrays.stream(user.getRoles().split(",")).
                 map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

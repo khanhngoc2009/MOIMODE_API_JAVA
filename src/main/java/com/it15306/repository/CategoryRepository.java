@@ -30,13 +30,13 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>  {
 	Category findByName(@Param("category_name") String category_name);
 	
 	@Query(SELECT_BY_PARENT_ID)
-	Category findByCategoriId(@Param("category_parent_id") Integer category_parent_id);
+	List<Category> findByCategoryParentId(@Param("category_parent_id") Integer category_parent_id);
 	
 	@Query(SELECT_BY_TYPE)
-	Optional<Category> findByType(@Param("type") Integer type);
+	List<Category> findByType(@Param("type") Integer type);
 	
 	@Query(SELECT_BETWEEN_CREATE_DATE)
-	List<Category> findByIdCreateDate(@Param("ngay_bat_dau") Date ngay_bat_dau, @Param("ngay_ket_thuc") Date ngay_ket_thuc);
+	List<Category> findByCreateDate(@Param("ngay_bat_dau") Date ngay_bat_dau, @Param("ngay_ket_thuc") Date ngay_ket_thuc);
 	
 	@Query(SELECT_BY_STATUS)
 	List<Category> findByStatus(@Param("status") Integer status);

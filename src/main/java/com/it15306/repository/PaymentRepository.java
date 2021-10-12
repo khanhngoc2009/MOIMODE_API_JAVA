@@ -27,7 +27,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer>  {
 	Payment findByName(@Param("name") String name);
 	
 	@Query(SELECT_BY_STATUS)
-	Payment findByStatus(@Param("status") String status);
+	Payment findByStatus(@Param("status") Integer status);
 	
 	@Query(SELECT_BY_TYPE)
 	Payment findByType(@Param("type") Integer type);

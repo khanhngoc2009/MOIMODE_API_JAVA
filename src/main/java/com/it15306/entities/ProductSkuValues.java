@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ProductSkuValues")
+@Table(name = "Product_Sku_Values")
 @Getter
 @Setter
 @Component

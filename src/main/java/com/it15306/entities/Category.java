@@ -45,7 +45,7 @@ public class Category {
 	private Integer type;
 	private String category_name;
 	private String description;
-	private String uri_image;
+	private String url_image;
 	
 	@OneToMany(mappedBy = "category")
 	private List<Product> products = new ArrayList<>();
@@ -106,13 +106,7 @@ public class Category {
 		this.description = description;
 	}
 
-	public String getUri_image() {
-		return uri_image;
-	}
 
-	public void setUri_image(String uri_image) {
-		this.uri_image = uri_image;
-	}
 
 	public List<Product> getProducts() {
 		return products;
@@ -120,6 +114,14 @@ public class Category {
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
+	}
+
+	public String getUrl_image() {
+		return url_image;
+	}
+
+	public void setUrl_image(String url_image) {
+		this.url_image = url_image;
 	}
 	
 	

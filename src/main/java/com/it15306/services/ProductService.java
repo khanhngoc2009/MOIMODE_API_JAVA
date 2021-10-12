@@ -7,8 +7,8 @@ import com.it15306.entities.Product;
 import com.it15306.entities.User;
 
 public interface ProductService {
-	List<Product> getAllProduct();
-	Product getByIdProduct(String product_id);
+//	List<Product> getAllProduct();
+	Object getByIdProduct(Integer product_id);
 	Product saveProduct(Product product);
 	void delete(Product product);
 }

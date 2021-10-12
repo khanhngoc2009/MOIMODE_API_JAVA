@@ -23,7 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "OptionValue")
+@Table(name = "Option_Value")
 @Getter
 @Setter
 @Component

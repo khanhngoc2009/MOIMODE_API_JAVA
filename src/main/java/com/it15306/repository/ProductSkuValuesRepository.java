@@ -18,13 +18,13 @@ import com.it15306.entities.User;
 
 @Repository
 public interface ProductSkuValuesRepository extends JpaRepository<ProductSkuValues, Integer>  {
-	final String SELECT_ALL = "SELECT psv FROM ProductSkuValues psv"
+	final String FIND = "SELECT psv FROM ProductSkuValues psv"
 			+ " where psv.option_value_id_1=:option_value_id_1"
 			+ " and psv.option_value_id_2=:option_value_id_2"
 			+ " and psv.option_value_id_3=:option_value_id_3 "
 			+ "and psv.product=:product";
-	@Query(SELECT_ALL)
-	List<ProductSkuValues> findAllProductSkuValues(
+	@Query(FIND)
+	ProductSkuValues findAllProductSkuValues(
 			@Param("option_value_id_1") Integer option_value_id_1,
 			@Param("option_value_id_2") Integer option_value_id_2,
 			@Param("option_value_id_3") Integer option_value_id_3,

@@ -50,6 +50,16 @@ public class Province {
 	public Integer getProvince_id() {
 		return province_id;
 	}
+	public Province() {
+		
+	}
+	
+	public Province(Integer province_id, String province_name, Integer status) {
+		super();
+		this.province_id = province_id;
+		this.province_name = province_name;
+		this.status = status;
+	}
 
 	public void setProvince_id(Integer province_id) {
 		this.province_id = province_id;
