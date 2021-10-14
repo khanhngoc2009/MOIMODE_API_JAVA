@@ -1,5 +1,6 @@
 package com.it15306.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +24,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "AddressOrder")
-@Getter
-@Setter
-@Component
-public class AddressOrder {
+@Table(name = "Addressorder")
+public class AddressOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,10 +57,10 @@ public class AddressOrder {
 	
 	
 	private String address_detail;
-	private Integer isDefault;
+	private Integer isdefault;
 	private String name_persion;
 	private String phone_persion;
-	private Integer isActive;
+	private Integer isactive;
 	private Integer status;
 	public Integer getAddress_order_id() {
 		return address_order_id;
@@ -106,11 +104,11 @@ public class AddressOrder {
 	public void setAddress_detail(String address_detail) {
 		this.address_detail = address_detail;
 	}
-	public Integer getIsDefault() {
-		return isDefault;
+	public Integer getIsdefault() {
+		return isdefault;
 	}
-	public void setIsDefault(Integer isDefault) {
-		this.isDefault = isDefault;
+	public void setIsdefault(Integer isdefault) {
+		this.isdefault = isdefault;
 	}
 	public String getName_persion() {
 		return name_persion;
@@ -124,11 +122,11 @@ public class AddressOrder {
 	public void setPhone_persion(String phone_persion) {
 		this.phone_persion = phone_persion;
 	}
-	public Integer getIsActive() {
-		return isActive;
+	public Integer getIsactive() {
+		return isactive;
 	}
-	public void setIsActive(Integer isActive) {
-		this.isActive = isActive;
+	public void setIsactive(Integer isactive) {
+		this.isactive = isactive;
 	}
 	public Integer getStatus() {
 		return status;
@@ -136,6 +134,9 @@ public class AddressOrder {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	
 }
