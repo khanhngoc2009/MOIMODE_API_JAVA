@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.it5306.Java5Sof3021Application
