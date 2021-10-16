@@ -90,11 +90,11 @@ public class Authen {
 		user.setPassword(hashPass);
 		user.setCreate_date(new Date());
 		Province pr = new Province();
-		pr.setProvince_id(4);
+		pr.setProvince_id(1);
 		District dt = new District();
-		dt.setDistrict_id(4);
+		dt.setDistrict_id(1);
 		Ward w = new Ward();
-		w.setWard_id(4);
+		w.setWard_id(1);
 		user.setProvince(pr);
 		user.setDistrict(dt);
 		user.setWard(w);
