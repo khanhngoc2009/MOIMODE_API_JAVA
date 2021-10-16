@@ -1,6 +1,7 @@
 package com.it15306.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.dto.UserDTO;
+import com.it15306.entities.District;
+import com.it15306.entities.Province;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
+import com.it15306.entities.Ward;
 import com.it15306.libs.HashUtil;
 import com.it15306.mapper.UserMapper;
 import com.it15306.repository.UserRepository;
@@ -36,29 +40,17 @@ import com.it15306.services.UserServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
-@RequestMapping("/api/v1")
-public class UserController {
+@RequestMapping("/miemode_api/v1")
+public class AdminUser {
 
 	@Autowired
 	private UserServiceImpl userService;
 
 	@Autowired
 	private UserMapper mapper;
-
-	@RequestMapping(value = "/user/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public User register(@Valid @RequestBody UserDTO dto) {
-		dto.setAdmin(2);
-		User user = mapper.ConvertToEntity(dto);
-		String hashPass = HashUtil.hash(user.getPassword());
-		user.setPassword(hashPass);
-//		this.userService.saveUser(user);
-		this.userService.saveUser(user);
-		return user;
-	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public User create(@Valid @RequestBody UserDTO dto) {
 		User user = mapper.ConvertToEntity(dto);
@@ -74,11 +66,10 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDTO getDetail(@PathVariable("id") User entity) {
 		UserDTO userDTO = mapper.ConvertToDTO(entity);
-
 		return userDTO;
 	}
 
@@ -100,17 +91,16 @@ public class UserController {
 		this.userService.saveUser(user);
 		return user;
 	}
-
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/user/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDTO delete(@PathVariable("id") User user) {
 		UserDTO userDTO = mapper.ConvertToDTO(user);
 		this.userService.delete(String.valueOf(user.getId()));
 		return userDTO;
-
 	}
-
-	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/admin/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<UserDTO> getAll() {
 		ModelMapper modelMapper = new ModelMapper();
@@ -121,11 +111,8 @@ public class UserController {
 			for (int i = 0; i < users.size(); i++) {
 				userDTOs.add(modelMapper.map(users.get(i), UserDTO.class));
 			}
-			
-			
 			return userDTOs;
 		}
-
 		return userDTOs;
 
 	}
