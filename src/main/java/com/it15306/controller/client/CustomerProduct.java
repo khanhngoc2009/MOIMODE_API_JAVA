@@ -47,120 +47,121 @@ public class CustomerProduct {
 	@Autowired
 	private ProductSkuValueServiceImpl productSkuValueServiceImpl;
 
-	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public List<ProductDTO> getListProducts() {
-		ModelMapper modelMapper = new ModelMapper();
-		List<Object> list = this.productServiceImpl.getAllProducts();
-		List<Double> minPrice = new ArrayList<Double>();
-		List<Double> maxPrice = new ArrayList<Double>();
-		List<Product> prs = new ArrayList<Product>();
-		for (int i=0; i<list.size(); i++){
-			   Object[] row = (Object[]) list.get(i);
-			   Product pr = (Product) row[0];
-			   minPrice.add((Double) row[1]);
-			   maxPrice.add((Double) row[2]);
-			   prs.add(pr);
-		}
-		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
-		if (prs.size() > 0) {
-			for (int i = 0; i < prs.size(); i++) {
-				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-				prDto.setMin_price(minPrice.get(i));
-				prDto.setMax_price(maxPrice.get(i));
-				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
-//				prDto.setWare_house_id(prs.get(i).getWarehouse())
-				productDTOs.add(prDto);
-			}
-			return productDTOs;
-		}
-		return productDTOs;
-	}
-	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public List<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
-		ModelMapper modelMapper = new ModelMapper();
-		Category category = new Category();
-		category.setCategory_id(category_id);
-		List<Object> list =  this.productServiceImpl.getProductByCategory(category);
-		List<Double> minPrice = new ArrayList<Double>();
-		List<Double> maxPrice = new ArrayList<Double>();
-		List<Product> prs = new ArrayList<Product>();
-		for (int i=0; i<list.size(); i++){
-			   Object[] row = (Object[]) list.get(i);
-			   Product pr = (Product) row[0];
-			   minPrice.add((Double) row[1]);
-			   maxPrice.add((Double) row[2]);
-			   prs.add(pr);
-		}
-		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
-		if (prs.size() > 0) {
-			for (int i = 0; i < prs.size(); i++) {
-				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-				prDto.setMin_price(minPrice.get(i));
-				prDto.setMax_price(maxPrice.get(i));
-				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
-				productDTOs.add(prDto);
-			}
-			return productDTOs;
-		}
-		return productDTOs;
-	}
-	
-	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
-		Object obj= this.productServiceImpl.getByIdProduct(product_id);
-		Object[] row = (Object[]) obj;
-		
-		Product product = (Product) row[0];
-	
-		ProductDetailDto pr = new ProductDetailDto();
-		ModelMapper modelMapper = new ModelMapper();
-		List<OptionClientDto> optionDTOs =new ArrayList<OptionClientDto>();
-		List<ProductSkuValueDto> productSkuDTOs = new ArrayList<ProductSkuValueDto>();
-		if (product.getOptions().size() > 0) {
-			for (int i = 0; i < product.getOptions().size(); i++) {
-				OptionProduct option = product.getOptions().get(i);				
-				List<OptionValueClientDto> optionValueDTOs =new ArrayList<OptionValueClientDto>();
-			
-				
-				for (int j = 0; j < option.getOption_values().size(); j++) {
-					optionValueDTOs.add(modelMapper.map(option.getOption_values().get(j), OptionValueClientDto.class));
-				}
-				OptionClientDto opV = modelMapper.map(product.getOptions().get(i), OptionClientDto.class);
-				opV.setListOptionValue(optionValueDTOs);
-				optionDTOs.add(opV);
-			}
-		}
-		if (product.getProduct_sku_values().size() > 0) {
-			for (int i = 0; i < product.getProduct_sku_values().size(); i++) {
-				ProductSkuValues productSku = product.getProduct_sku_values().get(i);			
-				productSkuDTOs.add(modelMapper.map(productSku,ProductSkuValueDto.class));
-			}
-		}
-		ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
-		productDTO.setMin_price((Double) row[1]);
-		productDTO.setMax_price((Double) row[2]);
-		pr.setListOption(optionDTOs);
-		pr.setProduct(productDTO);
-		pr.setListProductSku(productSkuDTOs);
-		return pr;
-	}
-	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{sku_value_id_1}/{sku_value_id_2}/{sku_value_id_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ProductSkuValueDto getProductSkuPrice(@PathVariable Integer product_id,@PathVariable Integer sku_value_id_1,@PathVariable Integer sku_value_id_2,@PathVariable Integer sku_value_id_3) {
-		ModelMapper modelMapper = new ModelMapper();
-		Product product = new Product();
-		product.setProduct_id(product_id);
-		ProductSkuValues productSku = productSkuValueServiceImpl.
-		findProductSkuValues(
-				sku_value_id_1,
-				sku_value_id_2,
-				sku_value_id_3,
-				product);
-		ProductSkuValueDto productSkuDto  = modelMapper.map(productSku, ProductSkuValueDto.class);
-		
-		return productSkuDto;
-	}
+//	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public List<ProductDTO> getListProducts() {
+//		ModelMapper modelMapper = new ModelMapper();
+//		List<Object> list = this.productServiceImpl.getAllProducts();
+//		List<Double> minPrice = new ArrayList<Double>();
+//		List<Double> maxPrice = new ArrayList<Double>();
+//		List<Product> prs = new ArrayList<Product>();
+//		for (int i=0; i<list.size(); i++){
+//			   Object[] row = (Object[]) list.get(i);
+//			   Product pr = (Product) row[0];
+//			   minPrice.add((Double) row[1]);
+//			   maxPrice.add((Double) row[2]);
+//			   prs.add(pr);
+//		}
+//		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+//		if (prs.size() > 0) {
+//			for (int i = 0; i < prs.size(); i++) {
+//				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+//				prDto.setMin_price(minPrice.get(i));
+//				prDto.setMax_price(maxPrice.get(i));
+//				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+////				prDto.setWare_house_id(prs.get(i).getWarehouse())
+//				productDTOs.add(prDto);
+//			}
+//			return productDTOs;
+//		}
+//		return productDTOs;
+//	}
+//	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public List<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
+//		ModelMapper modelMapper = new ModelMapper();
+//		Category category = new Category();
+//		category.setCategory_id(category_id);
+//		List<Object> list =  this.productServiceImpl.getProductByCategory(category);
+//		List<Double> minPrice = new ArrayList<Double>();
+//		List<Double> maxPrice = new ArrayList<Double>();
+//		List<Product> prs = new ArrayList<Product>();
+//		for (int i=0; i<list.size(); i++){
+//			   Object[] row = (Object[]) list.get(i);
+//			   Product pr = (Product) row[0];
+//			   minPrice.add((Double) row[1]);
+//			   maxPrice.add((Double) row[2]);
+//			   prs.add(pr);
+//		}
+//		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+//		if (prs.size() > 0) {
+//			for (int i = 0; i < prs.size(); i++) {
+//				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+//				prDto.setMin_price(minPrice.get(i));
+//				prDto.setMax_price(maxPrice.get(i));
+//				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+//				productDTOs.add(prDto);
+//			}
+//			return productDTOs;
+//		}
+//		return productDTOs;
+//	}
+//	
+//	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
+//		Object obj= this.productServiceImpl.getByIdProduct(product_id);
+//		Object[] row = (Object[]) obj;
+//		
+//		Product product = (Product) row[0];
+//	
+//		ProductDetailDto pr = new ProductDetailDto();
+//		ModelMapper modelMapper = new ModelMapper();
+//		List<OptionClientDto> optionDTOs =new ArrayList<OptionClientDto>();
+//		List<ProductSkuValueDto> productSkuDTOs = new ArrayList<ProductSkuValueDto>();
+//		if (product.getOptions().size() > 0) {
+//			for (int i = 0; i < product.getOptions().size(); i++) {
+//				OptionProduct option = product.getOptions().get(i);				
+//				List<OptionValueClientDto> optionValueDTOs =new ArrayList<OptionValueClientDto>();
+//			
+//				
+//				for (int j = 0; j < option.getOption_values().size(); j++) {
+//					optionValueDTOs.add(modelMapper.map(option.getOption_values().get(j), OptionValueClientDto.class));
+//				}
+//				OptionClientDto opV = modelMapper.map(product.getOptions().get(i), OptionClientDto.class);
+//				opV.setListOptionValue(optionValueDTOs);
+//				optionDTOs.add(opV);
+//			}
+//		}
+//		if (product.getProduct_sku_values().size() > 0) {
+//			for (int i = 0; i < product.getProduct_sku_values().size(); i++) {
+//				ProductSkuValues productSku = product.getProduct_sku_values().get(i);			
+//				productSkuDTOs.add(modelMapper.map(productSku,ProductSkuValueDto.class));
+//			}
+//		}
+//		ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
+//		productDTO.setMin_price((Double) row[1]);
+//		productDTO.setMax_price((Double) row[2]);
+//		pr.setListOption(optionDTOs);
+//		pr.setProduct(productDTO);
+//		pr.setListProductSku(productSkuDTOs);
+//		return pr;
+//	}
+//	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{sku_value_id_1}/{sku_value_id_2}/{sku_value_id_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ProductSkuValueDto getProductSkuPrice(@PathVariable Integer product_id,@PathVariable Integer sku_value_id_1,@PathVariable Integer sku_value_id_2,@PathVariable Integer sku_value_id_3) {
+//		ModelMapper modelMapper = new ModelMapper();
+//		Product product = new Product();
+//		product.setProduct_id(product_id);
+//		ProductSkuValues productSku = productSkuValueServiceImpl.
+//		findProductSkuValues(
+//				sku_value_id_1,
+//				sku_value_id_2,
+//				sku_value_id_3,
+//				product);
+//		ProductSkuValueDto productSkuDto  = modelMapper.map(productSku, ProductSkuValueDto.class);
+//		
+//		return productSkuDto;
+//	}
+//}
 }
