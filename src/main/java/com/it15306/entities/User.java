@@ -70,7 +70,7 @@ public class User {
 	private List<Cart> cart = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
-	private List<AddressOrder> address_order = new ArrayList<>();
+	private List<AddressOrder> addressorder = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
 	private List<Order> order = new ArrayList<>();
@@ -177,11 +177,11 @@ public class User {
 	}
 
 	public List<AddressOrder> getAddress_order() {
-		return address_order;
+		return addressorder;
 	}
 
 	public void setAddress_order(List<AddressOrder> address_order) {
-		this.address_order = address_order;
+		this.addressorder = address_order;
 	}
 
 	public List<Order> getOrder() {

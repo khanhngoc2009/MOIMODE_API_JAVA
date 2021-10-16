@@ -11,28 +11,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.AddressOrder;
 import com.it15306.entities.User;
 
 
 @Repository
-public interface AddressOrderRepository extends JpaRepository<User, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM User u";
-	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
-	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
-	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
-
+public interface AddressOrderRepository extends JpaRepository<AddressOrder, Integer>  {
+	final String SELECT_ALL = "SELECT u FROM AddressOrder u";
+	final String SELECT_AddressOrderByID = "SELECT u FROM AddressOrder u where user_id=:user_id";
+	final String SELECT_AddressOrderByAddressOrderId = "SELECT u FROM AddressOrder u where address_order_id=:address_order_id";
+	
 	@Query(SELECT_ALL)
-	List<User> findAllUser();
+	List<AddressOrder> findAllAddressOrder();
 	
-	@Query(SELECT_BY_EMAIL)
-	User findByEmail(@Param("email") String email);
+	@Query(SELECT_AddressOrderByID)
+	List<AddressOrder> findAddressOrderByUserID(@Param("user_id") String user_id);
 	
-	@Query(SELECT_BY_USERNAME)
-	User findByUsername2(String username);
+	@Query(SELECT_AddressOrderByAddressOrderId)
+	AddressOrder findAddressOrderByOrderAddressId(@Param("address_order_id") Integer address_order_id);
 	
-	@Query(SELECT_BY_ID)
-	User findById(@Param("id") String id);
 	
-	Optional<User> findByUsername(String userName);
+
 
 }
