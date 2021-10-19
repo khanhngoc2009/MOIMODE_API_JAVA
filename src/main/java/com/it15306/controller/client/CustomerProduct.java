@@ -28,13 +28,11 @@ import com.it15306.dto.product.DataBodyFindSkuDto;
 import com.it15306.dto.product.ProductDetailDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
-import com.it15306.entities.OptionProduct;
+import com.it15306.entities.Options;
 import com.it15306.entities.Product;
-import com.it15306.entities.ProductSkuValues;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.servicesImpl.ProductServiceImpl;
-import com.it15306.servicesImpl.ProductSkuValueServiceImpl;
 import com.it15306.servicesImpl.ProvinceServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -44,68 +42,65 @@ public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
 	
-	@Autowired
-	private ProductSkuValueServiceImpl productSkuValueServiceImpl;
 
-//	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public List<ProductDTO> getListProducts() {
-//		ModelMapper modelMapper = new ModelMapper();
-//		List<Object> list = this.productServiceImpl.getAllProducts();
-//		List<Double> minPrice = new ArrayList<Double>();
-//		List<Double> maxPrice = new ArrayList<Double>();
-//		List<Product> prs = new ArrayList<Product>();
-//		for (int i=0; i<list.size(); i++){
-//			   Object[] row = (Object[]) list.get(i);
-//			   Product pr = (Product) row[0];
-//			   minPrice.add((Double) row[1]);
-//			   maxPrice.add((Double) row[2]);
-//			   prs.add(pr);
-//		}
-//		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
-//		if (prs.size() > 0) {
-//			for (int i = 0; i < prs.size(); i++) {
-//				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-//				prDto.setMin_price(minPrice.get(i));
-//				prDto.setMax_price(maxPrice.get(i));
-//				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
-////				prDto.setWare_house_id(prs.get(i).getWarehouse())
-//				productDTOs.add(prDto);
-//			}
-//			return productDTOs;
-//		}
-//		return productDTOs;
-//	}
-//	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public List<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
-//		ModelMapper modelMapper = new ModelMapper();
-//		Category category = new Category();
-//		category.setCategory_id(category_id);
-//		List<Object> list =  this.productServiceImpl.getProductByCategory(category);
-//		List<Double> minPrice = new ArrayList<Double>();
-//		List<Double> maxPrice = new ArrayList<Double>();
-//		List<Product> prs = new ArrayList<Product>();
-//		for (int i=0; i<list.size(); i++){
-//			   Object[] row = (Object[]) list.get(i);
-//			   Product pr = (Product) row[0];
-//			   minPrice.add((Double) row[1]);
-//			   maxPrice.add((Double) row[2]);
-//			   prs.add(pr);
-//		}
-//		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
-//		if (prs.size() > 0) {
-//			for (int i = 0; i < prs.size(); i++) {
-//				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-//				prDto.setMin_price(minPrice.get(i));
-//				prDto.setMax_price(maxPrice.get(i));
-//				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
-//				productDTOs.add(prDto);
-//			}
-//			return productDTOs;
-//		}
-//		return productDTOs;
-//	}
+	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<ProductDTO> getListProducts() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<Object> list = this.productServiceImpl.getAllProducts();
+		List<Double> minPrice = new ArrayList<Double>();
+		List<Double> maxPrice = new ArrayList<Double>();
+		List<Product> prs = new ArrayList<Product>();
+		for (int i=0; i<list.size(); i++){
+			   Object[] row = (Object[]) list.get(i);
+			   Product pr = (Product) row[0];
+			   minPrice.add((Double) row[1]);
+			   maxPrice.add((Double) row[2]);
+			   prs.add(pr);
+		}
+		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+		if (prs.size() > 0) {
+			for (int i = 0; i < prs.size(); i++) {
+				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+				prDto.setMin_price(minPrice.get(i));
+				prDto.setMax_price(maxPrice.get(i));
+				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+				productDTOs.add(prDto);
+			}
+			return productDTOs;
+		}
+		return productDTOs;
+	}
+	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
+		ModelMapper modelMapper = new ModelMapper();
+		Category category = new Category();
+		category.setCategory_id(category_id);
+		List<Object> list =  this.productServiceImpl.getProductByCategory(category);
+		List<Double> minPrice = new ArrayList<Double>();
+		List<Double> maxPrice = new ArrayList<Double>();
+		List<Product> prs = new ArrayList<Product>();
+		for (int i=0; i<list.size(); i++){
+			   Object[] row = (Object[]) list.get(i);
+			   Product pr = (Product) row[0];
+			   minPrice.add((Double) row[1]);
+			   maxPrice.add((Double) row[2]);
+			   prs.add(pr);
+		}
+		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+		if (prs.size() > 0) {
+			for (int i = 0; i < prs.size(); i++) {
+				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+				prDto.setMin_price(minPrice.get(i));
+				prDto.setMax_price(maxPrice.get(i));
+				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+				productDTOs.add(prDto);
+			}
+			return productDTOs;
+		}
+		return productDTOs;
+	}
 //	
 //	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 //	@ResponseBody

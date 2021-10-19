@@ -1,61 +1,43 @@
 package com.it15306.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Option_Value")
+@Table(name = "options_products")
 @Getter
 @Setter
-@Component
-public class OptionValue {
+public class Option_Product {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "value_id")
-	private Integer value_id;
 	
-	
-	private String value_name;
+	@EmbeddedId
+	OptionProductKey id;
 	
 	@ManyToOne
+	@MapsId("option_id")
 	@JoinColumn(name = "option_id")
 	private Options option = new Options();
-
-	public Integer getValue_id() {
-		return value_id;
-	}
-
-	public void setValue_id(Integer value_id) {
-		this.value_id = value_id;
-	}
-
-	public String getValue_name() {
-		return value_name;
-	}
-
-	public void setValue_name(String value_name) {
-		this.value_name = value_name;
-	}
+	
+	@ManyToOne
+	@MapsId("product_id")
+	@JoinColumn(name = "product_id")
+	private Product product = new Product();
 
 	public Options getOption() {
 		return option;
@@ -64,6 +46,13 @@ public class OptionValue {
 	public void setOption(Options option) {
 		this.option = option;
 	}
-	
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
 	
 }

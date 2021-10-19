@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.it15306.dto.ProductDTO;
@@ -24,6 +25,13 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	public List<Object> getAllProducts() {
 		// TODO Auto-generated method stub
 		List<Object> list = productRepository.findAllProduct();
+		
+		return list;
+	}
+	
+	public List<Product> getAllProductsAdmin() {
+		// TODO Auto-generated method stub
+		List<Product> list = productRepository.findAllProductsAdmin();
 		
 		return list;
 	}
@@ -46,11 +54,12 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		productRepository.delete(product);
 //		return ;
 	}
-	public List<Product> Search(Date startDate, Date endDate,Integer status,String productname  ) {
-		return productRepository.searchProduct(startDate, endDate, status, productname);
-	}
+//	public List<Product> Search(Date startDate, Date endDate,Integer status,String productname  ) {
+//		return productRepository.searchProduct(startDate, endDate, status, productname);
+//	}
 	public List<Object> getProductByCategory(Category category){
 		return productRepository.findProductByCategory(category);
 	}
+
 	
 }

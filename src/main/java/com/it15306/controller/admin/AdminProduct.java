@@ -1,5 +1,6 @@
 package com.it15306.controller.admin;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import com.it15306.dto.OptionDTO;
 import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
 import com.it15306.dto.product.DataCreateProductDtos;
-import com.it15306.entities.OptionProduct;
+import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
 import com.it15306.servicesImpl.OptionProductServiceImpl;
@@ -42,5 +43,25 @@ public class AdminProduct {
 		
 		
 		return body.getOptions();
+	}
+	
+	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public List<ProductDTO> getAllProducts() {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		List<Product> prs = this.productServiceImpl.getAllProductsAdmin();
+		
+		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+		if (prs.size() > 0) {
+			for (int i = 0; i < prs.size(); i++) {
+				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+				productDTOs.add(prDto);
+			}
+			return productDTOs;
+		}
+		
+		return null;
 	}
 }

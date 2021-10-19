@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.it15306.entities.OptionProduct;
+import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
 //import com.it15306.entities.Category;
