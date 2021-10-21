@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.repository.CategoryRepository;
-import com.it15306.repository.ProductSkuValuesRepository;
 import com.it15306.services.CategoryService;
 
 

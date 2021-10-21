@@ -1,9 +1,20 @@
 package com.it15306.controller.auth;
 
+import com.it15306.dto.BodyForgotPasswordDto;
+import com.it15306.dto.UserDTO;
+import com.it15306.entities.District;
+import com.it15306.entities.Province;
+import com.it15306.entities.User;
+import com.it15306.entities.Ward;
+import com.it15306.jwt.JwtTokenProvider;
+import com.it15306.libs.HashUtil;
+import com.it15306.mapper.UserMapper;
+import com.it15306.payload.LoginResponse;
+import com.it15306.payload.RequestLogin;
+import com.it15306.services.UserService;
+import com.it15306.services.UserServiceImpl;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,19 +31,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.it15306.dto.BodyForgotPasswordDto;
-import com.it15306.dto.UserDTO;
-import com.it15306.entities.District;
-import com.it15306.entities.Province;
-import com.it15306.entities.User;
-import com.it15306.entities.Ward;
-import com.it15306.jwt.JwtTokenProvider;
-import com.it15306.libs.HashUtil;
-import com.it15306.mapper.UserMapper;
-import com.it15306.payload.LoginResponse;
-import com.it15306.payload.RequestLogin;
-import com.it15306.services.UserService;
-import com.it15306.services.UserServiceImpl;
+
+
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
@@ -58,8 +58,7 @@ public class Authen {
 
 	@PostMapping("/login")
     @ResponseBody
-	protected ResponseEntity<?> login(@RequestBody RequestLogin request,HttpServletRequest httpServletRequest) {
-		System.out.println("khansh");
+	protected ResponseEntity<?> login(@RequestBody RequestLogin request) {
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
@@ -90,11 +89,11 @@ public class Authen {
 		user.setPassword(hashPass);
 		user.setCreate_date(new Date());
 		Province pr = new Province();
-		pr.setProvince_id(4);
+		pr.setProvince_id(1);
 		District dt = new District();
-		dt.setDistrict_id(4);
+		dt.setDistrict_id(1);
 		Ward w = new Ward();
-		w.setWard_id(4);
+		w.setWard_id(1);
 		user.setProvince(pr);
 		user.setDistrict(dt);
 		user.setWard(w);

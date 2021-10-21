@@ -12,7 +12,6 @@ import com.it15306.entities.Product;
 import com.it15306.entities.Province;
 import com.it15306.repository.CategoryRepository;
 import com.it15306.repository.DistrictRepository;
-import com.it15306.repository.ProductSkuValuesRepository;
 import com.it15306.services.CategoryService;
 import com.it15306.services.DistrictService;
 

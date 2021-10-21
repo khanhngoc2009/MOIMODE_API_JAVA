@@ -53,6 +53,4 @@ public class Warehouse {
 	@JoinColumn(name = "ward_id")
 	private Ward ward = new Ward();
 	
-	@OneToMany(mappedBy = "warehouse")
-	private List<Product> products = new ArrayList<>();
 }

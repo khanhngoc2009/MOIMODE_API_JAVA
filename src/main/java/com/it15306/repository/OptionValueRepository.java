@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.entities.OptionProduct;
+import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.User;
 
@@ -20,5 +20,5 @@ import com.it15306.entities.User;
 public interface OptionValueRepository extends JpaRepository<OptionValue, Integer>  {
 	final String SELECT_ALL = "SELECT ov FROM OptionValue ov WHERE ov.option=:option";
 	@Query(SELECT_ALL)
-	List<OptionValue> findAllOptionValue(@Param("option") OptionProduct option);
+	List<OptionValue> findAllOptionValue(@Param("option") Options option);
 }

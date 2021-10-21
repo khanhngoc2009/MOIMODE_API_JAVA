@@ -47,17 +47,10 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category = new Category();
-	
-	@ManyToOne
-	@JoinColumn(name = "ware_house_id")
-	private Warehouse warehouse = new Warehouse();
-	
-	@OneToMany(mappedBy = "product")
-	private List<OptionProduct> options = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "product")
-	private List<ProductSkuValues> product_sku_values = new ArrayList<>();
 
+	@OneToMany(mappedBy = "product")
+	private List<Product_Sku> product_sku = new ArrayList<>();
+	
 	public Integer getProduct_id() {
 		return product_id;
 	}
@@ -113,32 +106,6 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
-	public Warehouse getWarehouse() {
-		return warehouse;
-	}
-
-	public void setWarehouse(Warehouse warehouse) {
-		this.warehouse = warehouse;
-	}
-
-	public List<OptionProduct> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<OptionProduct> options) {
-		this.options = options;
-	}
-
-	public List<ProductSkuValues> getProduct_sku_values() {
-		return product_sku_values;
-	}
-
-	public void setProduct_sku_values(List<ProductSkuValues> product_sku_values) {
-		this.product_sku_values = product_sku_values;
-	}
 	
-	
-	
-	
+		
 }

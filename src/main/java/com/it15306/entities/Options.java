@@ -23,11 +23,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "optionproduct")
+@Table(name = "options")
 @Getter
 @Setter
 @Component
-public class OptionProduct {
+public class Options {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,14 +43,9 @@ public class OptionProduct {
 	private String description;
 	private Integer status;
 	
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product = new Product();
-	
 	
 	@OneToMany(mappedBy = "option")
 	private List<OptionValue> option_values = new ArrayList<>();
-
 
 	public Integer getOption_id() {
 		return option_id;
@@ -102,15 +97,6 @@ public class OptionProduct {
 	}
 
 
-	public Product getProduct() {
-		return product;
-	}
-
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
 
 	public List<OptionValue> getOption_values() {
 		return option_values;
@@ -120,6 +106,8 @@ public class OptionProduct {
 	public void setOption_values(List<OptionValue> option_values) {
 		this.option_values = option_values;
 	}
+
+
 	
 	
 }
