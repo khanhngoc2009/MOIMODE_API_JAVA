@@ -68,13 +68,14 @@ public class Authen {
 	}
 
 	@RequestMapping(value = "/infor", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
+	@ResponseBody
 	public UserDTO getInfor(HttpServletRequest httpServletRequest) {
-		System.out.print("khoong laas dc ," +httpServletRequest.getHeader("Authorization"));
+		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
 		String username = tokenProvider.getUserNameFromJWT(token);
 		ModelMapper modelMapper = new ModelMapper();
 		User user = userservice.getByUsername(username);
+//		System.out.print(user.getEmail());
 		return modelMapper.map(user, UserDTO.class);
 	}
 	
