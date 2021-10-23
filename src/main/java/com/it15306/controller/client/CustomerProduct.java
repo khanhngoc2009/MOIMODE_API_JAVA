@@ -1,5 +1,6 @@
 package com.it15306.controller.client;
 
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,11 @@ import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.DistrictDTO;
 import com.it15306.dto.OptionClientDto;
 import com.it15306.dto.OptionDTO;
+import com.it15306.dto.OptionProductDto;
 import com.it15306.dto.OptionValueClientDto;
 import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
+import com.it15306.dto.ProductSkuDto;
 import com.it15306.dto.ProductSkuValueDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
@@ -28,6 +31,8 @@ import com.it15306.dto.product.DataBodyFindSkuDto;
 import com.it15306.dto.product.ProductDetailDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
+import com.it15306.entities.OptionValue;
+import com.it15306.entities.Option_Product;
 import com.it15306.entities.Options;
 import com.it15306.entities.Product;
 import com.it15306.entities.Province;
@@ -102,46 +107,42 @@ public class CustomerProduct {
 		return productDTOs;
 	}
 //	
-//	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
-//		Object obj= this.productServiceImpl.getByIdProduct(product_id);
-//		Object[] row = (Object[]) obj;
-//		
-//		Product product = (Product) row[0];
-//	
-//		ProductDetailDto pr = new ProductDetailDto();
-//		ModelMapper modelMapper = new ModelMapper();
-//		List<OptionClientDto> optionDTOs =new ArrayList<OptionClientDto>();
-//		List<ProductSkuValueDto> productSkuDTOs = new ArrayList<ProductSkuValueDto>();
-//		if (product.getOptions().size() > 0) {
-//			for (int i = 0; i < product.getOptions().size(); i++) {
-//				OptionProduct option = product.getOptions().get(i);				
-//				List<OptionValueClientDto> optionValueDTOs =new ArrayList<OptionValueClientDto>();
-//			
-//				
-//				for (int j = 0; j < option.getOption_values().size(); j++) {
-//					optionValueDTOs.add(modelMapper.map(option.getOption_values().get(j), OptionValueClientDto.class));
-//				}
-//				OptionClientDto opV = modelMapper.map(product.getOptions().get(i), OptionClientDto.class);
-//				opV.setListOptionValue(optionValueDTOs);
-//				optionDTOs.add(opV);
-//			}
-//		}
-//		if (product.getProduct_sku_values().size() > 0) {
-//			for (int i = 0; i < product.getProduct_sku_values().size(); i++) {
-//				ProductSkuValues productSku = product.getProduct_sku_values().get(i);			
-//				productSkuDTOs.add(modelMapper.map(productSku,ProductSkuValueDto.class));
-//			}
-//		}
-//		ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
-//		productDTO.setMin_price((Double) row[1]);
-//		productDTO.setMax_price((Double) row[2]);
-//		pr.setListOption(optionDTOs);
-//		pr.setProduct(productDTO);
-//		pr.setListProductSku(productSkuDTOs);
-//		return pr;
-//	}
+	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
+		Product product= this.productServiceImpl.getByIdProduct(product_id);
+		ProductDetailDto pr = new ProductDetailDto();
+		
+		ModelMapper modelMapper = new ModelMapper();
+		List<OptionProductDto> optionProductDTOs =new ArrayList<OptionProductDto>();
+		List<ProductSkuDto> productSkuDTOs = new ArrayList<ProductSkuDto>();
+		int size = product.getOptions_products().size();
+		System.out.print(size);
+		if(size > 0) {
+			
+			for(int i=0;i<size;i++) {
+				Option_Product ot_pr = product.getOptions_products().get(i);
+				OptionProductDto op = modelMapper.map(ot_pr, OptionProductDto.class);
+				int s = ot_pr.getOption().getOption_values().size();
+				OptionDTO oDto = modelMapper.map(ot_pr.getOption(), OptionDTO.class);
+				List<OptionValueClientDto> listOtvClient = new ArrayList<OptionValueClientDto>();
+				for(int j=0;j<s;j++) {	
+					OptionValue otvClient = ot_pr.getOption().getOption_values().get(j);
+					listOtvClient.add(modelMapper.map(otvClient, OptionValueClientDto.class));
+				}
+				oDto.setOption_values(listOtvClient);
+				op.setOption(oDto);
+				optionProductDTOs.add(op);
+			}
+		}
+		
+		ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
+		pr.setOptions_products(optionProductDTOs);
+		pr.setCategory(modelMapper.map(product.getCategory(), CategoryDTO.class));
+		pr.setProduct(productDTO);
+		pr.setProduct_sku(productSkuDTOs);
+		return pr;
+	}
 //	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{sku_value_id_1}/{sku_value_id_2}/{sku_value_id_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 //	@ResponseBody
 //	public ProductSkuValueDto getProductSkuPrice(@PathVariable Integer product_id,@PathVariable Integer sku_value_id_1,@PathVariable Integer sku_value_id_2,@PathVariable Integer sku_value_id_3) {

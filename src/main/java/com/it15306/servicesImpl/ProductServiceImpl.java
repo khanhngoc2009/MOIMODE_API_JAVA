@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.it15306.dto.ProductDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
+import com.it15306.repository.OptionProductsRespository;
 import com.it15306.repository.ProductRepository;
 
 @Service("ProductServiceImpl")
@@ -20,8 +21,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
-
-
+	@Autowired
+	private OptionProductsRespository optionProductsRespository;
+	
 	public List<Object> getAllProducts() {
 		// TODO Auto-generated method stub
 		List<Object> list = productRepository.findAllProduct();
@@ -36,11 +38,19 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		return list;
 	}
 
-	@Override
-	public Object getByIdProduct(Integer product_id) {
+//	@Override
+	public Product getByIdProduct(Integer product_id) {
 		// TODO Auto-generated method stub
-		return productRepository.findByIdProduct(product_id);
+		Product p=productRepository.findByIdProduct(product_id); 
+		System.out.print(p);
+		return p;
 	}
+	
+//	public Object getProductBuyId(Integer product_id) {
+//		// TODO Auto-generated method stub
+//		return productRepository.findByIdProduct(product_id);
+//	}
+	
 
 	@Override
 	public Product saveProduct(Product product) {

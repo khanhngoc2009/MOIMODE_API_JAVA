@@ -51,6 +51,26 @@ public class Product {
 	@OneToMany(mappedBy = "product")
 	private List<Product_Sku> product_sku = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "product")
+	private List<Option_Product> options_products = new ArrayList<>();
+
+	
+	public List<Product_Sku> getProduct_sku() {
+		return product_sku;
+	}
+
+	public void setProduct_sku(List<Product_Sku> product_sku) {
+		this.product_sku = product_sku;
+	}
+
+	public List<Option_Product> getOptions_products() {
+		return options_products;
+	}
+
+	public void setOptions_products(List<Option_Product> options_products) {
+		this.options_products = options_products;
+	}
+
 	public Integer getProduct_id() {
 		return product_id;
 	}

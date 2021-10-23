@@ -19,6 +19,10 @@ import javax.persistence.TemporalType;
 
 import org.springframework.stereotype.Component;
 
+import com.it15306.entities.Category;
+import com.it15306.entities.Option_Product;
+import com.it15306.entities.Product_Sku;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +37,11 @@ public class ProductDTO {
 	private Integer status;
 	private Integer type;
 	private Integer category_id;
-	private Integer ware_house_id;
+//	private Integer ware_house_id;
 	private Double min_price;
 	private Double max_price;
+
+	
 	public Integer getProduct_id() {
 		return product_id;
 	}
@@ -92,13 +98,6 @@ public class ProductDTO {
 		this.category_id = category_id;
 	}
 
-	public Integer getWare_house_id() {
-		return ware_house_id;
-	}
-
-	public void setWare_house_id(Integer ware_house_id) {
-		this.ware_house_id = ware_house_id;
-	}
 
 	public Double getMin_price() {
 		return min_price;
