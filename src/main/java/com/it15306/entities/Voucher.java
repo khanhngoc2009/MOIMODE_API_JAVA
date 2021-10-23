@@ -21,12 +21,13 @@ import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "Voucher")
 @Getter
 @Setter
-@Component
+@ToString
 public class Voucher {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -34,9 +35,9 @@ public class Voucher {
 	@Column(name = "voucher_id")
 	private Integer voucher_id;
 	@Basic
-	@Column(name = "create_date")
+	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date create_date;
+	private Date create_time;
 	
 	@Basic
 	@Column(name = "start_time")
@@ -44,9 +45,9 @@ public class Voucher {
 	private Date start_time;
 	
 	@Basic
-	@Column(name = "end_date")
+	@Column(name = "end_time")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date end_date;
+	private Date end_time;
 	
 	private String title;
 	private String description;

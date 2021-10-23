@@ -4,24 +4,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
+import com.it15306.dto.Voucherdto;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
-import com.it15306.entities.Voucher;
 
+@Service
 public interface VoucherService {
-	List<Voucher> getAllVouchers();
+	List<Voucherdto> getAllVouchers();
 	
-	Optional<Voucher> getByIdVoucher(Integer voucher_id);
+	Voucherdto getByIdVoucher(Integer voucher_id);
 	
-	Voucher getByTitleVoucher(String title);
+	Voucherdto getByTitleVoucher(String title);
 
-	List<Voucher> getByTypeDiscount(Integer type_discount);
+	List<Voucherdto> getByTypeDiscount(Integer type_discount);
 	
-	List<Voucher> getByStatus(Integer status);
+	List<Voucherdto> getByStatus(Integer status);
 	
-	List<Voucher> getByBetweenTime(Date start_time,Date end_date);
+	List<Voucherdto> getByBetweenTime(Date start_time,Date end_time);
 	
-	Voucher saveVoucher(Voucher voucher);
-
-	void delete(String voucher_id);
+	Voucherdto saveVoucher(Voucherdto voucher);
+	Voucherdto create(Voucherdto voucherdto);
+	Voucherdto update(Voucherdto voucherdto);
+	Integer delete(Integer voucher_id);
+	
 }
