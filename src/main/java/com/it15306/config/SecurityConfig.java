@@ -64,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //         Phân quyền
         http.authorizeRequests()
         
-             .antMatchers( "/miemode_api/v1/login", "/miemode_api/v1/user/register")
-             .permitAll() 
+//             .antMatchers( "/miemode_api/v1/login", "/miemode_api/v1/user/register")
+//             .permitAll() 
              
              .antMatchers(HttpMethod.GET, "/miemode_api/v1/admin/**")
              .hasAuthority("ADMIN")
