@@ -105,6 +105,7 @@ public class Authen {
 			user.setProvince(pr);
 			user.setDistrict(dt);
 			user.setWard(w);
+			user.setRoles("CUSTOMER");
 			this.userService.saveUser(user);
 			resgister.setCode(200);
 			resgister.setMessage("Success");
