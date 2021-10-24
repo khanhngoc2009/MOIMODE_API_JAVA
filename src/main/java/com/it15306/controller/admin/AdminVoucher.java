@@ -22,7 +22,7 @@ public class AdminVoucher {
 	@Autowired
 	VoucherService voucherService;
 	
-	@PostMapping("/admim/createvoucher")
+	@PostMapping("/admin/createvoucher")
 	@ResponseBody
 	public ResponseEntity<Voucherdto>  create(@RequestBody Voucherdto data) {
 		
@@ -33,7 +33,7 @@ public class AdminVoucher {
 		return ResponseEntity.ok(vo);
 	}
 	
-	@PutMapping("/admim/updatevoucher")
+	@PutMapping("/admin/updatevoucher")
 	@ResponseBody
 	public ResponseEntity<Voucherdto> update(@RequestBody Voucherdto data) {
 		
@@ -44,7 +44,7 @@ public class AdminVoucher {
 		return ResponseEntity.ok(vo);
 		
 	}
-	@DeleteMapping("/admim/deletevoucher/{id}")
+	@DeleteMapping("/admin/deletevoucher/{id}")
 	@ResponseBody
 	public ResponseEntity<Integer> update(@PathVariable("id") Integer id) {
 		
