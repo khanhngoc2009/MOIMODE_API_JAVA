@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class Authen {
@@ -88,7 +88,7 @@ public class Authen {
 		DataResponse<RegisterDto> resgister = new DataResponse<RegisterDto>();
 		try {
 			UserDTO uDto = new UserDTO();
-			uDto.setAdmin(0);
+			uDto.setAdmin(2);
 			uDto.setEmail(dto.getEmail());
 			uDto.setPassword(dto.getPassword());
 			uDto.setUsername(dto.getUsername());
