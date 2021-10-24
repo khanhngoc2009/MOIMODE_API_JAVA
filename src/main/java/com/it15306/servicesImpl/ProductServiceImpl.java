@@ -13,16 +13,21 @@ import org.springframework.stereotype.Service;
 import com.it15306.dto.ProductDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
+import com.it15306.entities.Product_Sku;
 import com.it15306.repository.OptionProductsRespository;
 import com.it15306.repository.ProductRepository;
+import com.it15306.repository.SkuRepository;
 
 @Service("ProductServiceImpl")
 public class ProductServiceImpl implements com.it15306.services.ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
 	@Autowired
 	private OptionProductsRespository optionProductsRespository;
+	@Autowired
+	private SkuRepository skuRepository;
 	
 	public List<Object> getAllProducts() {
 		// TODO Auto-generated method stub
@@ -39,17 +44,11 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	}
 
 //	@Override
-	public Product getByIdProduct(Integer product_id) {
+	public Object getByIdProduct(Integer product_id) {
 		// TODO Auto-generated method stub
-		Product p=productRepository.findByIdProduct(product_id); 
-		System.out.print(p);
+		Object p=productRepository.findByIdProduct(product_id); 
 		return p;
 	}
-	
-//	public Object getProductBuyId(Integer product_id) {
-//		// TODO Auto-generated method stub
-//		return productRepository.findByIdProduct(product_id);
-//	}
 	
 
 	@Override
@@ -70,6 +69,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	public List<Object> getProductByCategory(Category category){
 		return productRepository.findProductByCategory(category);
 	}
-
+	
+	public Object findBySku(Integer product_is, Integer option_1,Integer option_2,Integer option_3 ) {
+	return skuRepository.findByOptionValue(product_is, option_1, option_2, option_3);
+}
 	
 }

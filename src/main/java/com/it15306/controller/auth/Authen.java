@@ -1,6 +1,8 @@
 package com.it15306.controller.auth;
 
+import com.it15306.config.DataResponse;
 import com.it15306.dto.BodyForgotPasswordDto;
+import com.it15306.dto.RegisterDto;
 import com.it15306.dto.UserDTO;
 import com.it15306.entities.District;
 import com.it15306.entities.Province;
@@ -82,25 +84,36 @@ public class Authen {
 	
 	@RequestMapping(value = "/user/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public User register(@RequestBody UserDTO dto) {
-		System.out.println(dto);
-		dto.setAdmin(2);
-		User user = mapper.ConvertToEntity(dto);
-		String hashPass = HashUtil.hash(user.getPassword());
-		user.setPassword(hashPass);
-		user.setCreate_date(new Date());
-		Province pr = new Province();
-		pr.setProvince_id(1);
-		District dt = new District();
-		dt.setDistrict_id(1);
-		Ward w = new Ward();
-		w.setWard_id(1);
-		user.setProvince(pr);
-		user.setDistrict(dt);
-		user.setWard(w);
-
-		this.userService.saveUser(user);		
-		return user;
+	public DataResponse<RegisterDto> register(@RequestBody RegisterDto dto) {
+		DataResponse<RegisterDto> resgister = new DataResponse<RegisterDto>();
+		try {
+			UserDTO uDto = new UserDTO();
+			uDto.setAdmin(0);
+			uDto.setEmail(dto.getEmail());
+			uDto.setPassword(dto.getPassword());
+			uDto.setUsername(dto.getUsername());
+			User user = mapper.ConvertToEntity(uDto);
+			String hashPass = HashUtil.hash(user.getPassword());
+			user.setPassword(hashPass);
+			user.setCreate_date(new Date());
+			Province pr = new Province();
+			pr.setProvince_id(1);
+			District dt = new District();
+			dt.setDistrict_id(1);
+			Ward w = new Ward();
+			w.setWard_id(1);
+			user.setProvince(pr);
+			user.setDistrict(dt);
+			user.setWard(w);
+			this.userService.saveUser(user);
+			resgister.setCode(200);
+			resgister.setMessage("Success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			resgister.setCode(500);
+			resgister.setMessage("APi Fail");
+		}	
+		return resgister;
 	}
 	@RequestMapping(value = "/user/forgotPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
