@@ -106,7 +106,10 @@ public class Authen {
 			user.setDistrict(dt);
 			user.setWard(w);
 			user.setRoles("CUSTOMER");
+			user.setActivated(1);
+			user.setPhoto("http://localhost:9090/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
 			this.userService.saveUser(user);
+			
 			resgister.setCode(200);
 			resgister.setMessage("Success");
 		} catch (Exception e) {
