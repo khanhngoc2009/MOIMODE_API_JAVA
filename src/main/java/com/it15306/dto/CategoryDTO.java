@@ -1,26 +1,7 @@
 package com.it15306.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import com.it15306.entities.Product;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.stereotype.Component;
-
-import lombok.Getter;
-import lombok.Setter;
 
 
 public class CategoryDTO {
@@ -35,7 +16,7 @@ public class CategoryDTO {
 	private Integer type;
 	private String category_name;
 	private String description;
-	private String ur_image;
+	private String url_image;
 	
 
 	public Integer getCategory_id() {
@@ -95,11 +76,11 @@ public class CategoryDTO {
 	}
 
 	public String getUr_image() {
-		return ur_image;
+		return url_image;
 	}
 
-	public void setUr_image(String ur_image) {
-		this.ur_image = ur_image;
+	public void setUr_image(String url_image) {
+		this.url_image = url_image;
 	}
 
 

@@ -1,13 +1,19 @@
 package com.it15306.servicesImpl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.CategoryDTO;
+import com.it15306.dto.WarehouseDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
+import com.it15306.entities.Warehouse;
 import com.it15306.repository.CategoryRepository;
 import com.it15306.services.CategoryService;
 
@@ -16,6 +22,10 @@ import com.it15306.services.CategoryService;
 public class CategoryProductServiceImpl implements CategoryService{
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	ModelMapper modelMapper;
+	
 	@Override
 	public List<Category> getAllCategoryByType(int type) {
 		// TODO Auto-generated method stub
@@ -59,4 +69,55 @@ public class CategoryProductServiceImpl implements CategoryService{
 		
 	}
 
+	@Override
+	public List<CategoryDTO> getAllCategoryParent() {
+		
+		return null;
+	}
+
+	@Override
+	public List<CategoryDTO> getAllCategoryChildent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CategoryDTO CreateCategory(CategoryDTO data) {
+		Category enti = modelMapper.map(data, Category.class);
+		categoryRepository.save(enti);
+		data.setCategory_id(enti.getCategory_id());
+		return data;
+	}
+
+	@Override
+	public CategoryDTO updateCategory(CategoryDTO data) {
+		Optional<Category> optional= categoryRepository.findById(data.getCategory_id());
+		try {
+			if(optional.isPresent()) {
+				Category enti=optional.get();
+				Category ct=mapToEnyities(data, enti);
+				categoryRepository.save(ct);
+			}
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public CategoryDTO mapToModel(Category enti, CategoryDTO model)
+			throws IllegalAccessException, InvocationTargetException {
+		if (model == null)
+			model = new CategoryDTO();
+		model = modelMapper.map(enti, CategoryDTO.class);
+		return model;
+	}
+
+	public Category mapToEnyities(CategoryDTO model, Category enti)
+			throws IllegalAccessException, InvocationTargetException {
+		if (enti == null)
+			enti = new Category();
+		enti = modelMapper.map(model, Category.class);
+		return enti;
+	}
 }
