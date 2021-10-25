@@ -2,8 +2,11 @@ package com.it15306.config;
 
 public class DataResponse <T>{
 	private Integer code;
+	
 	private String message;
+	
 	private T data;
+	
 	public Integer getCode() {
 		return code;
 	}

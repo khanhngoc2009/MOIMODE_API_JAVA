@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
+import com.it15306.config.DataResponseList;
 import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.DistrictDTO;
 import com.it15306.dto.OptionClientDto;
@@ -85,9 +86,11 @@ public class CustomerProduct {
 	}
 	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
+	public DataResponseList<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
+		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
+			
 			Category category = new Category();
 			category.setCategory_id(category_id);
 			List<Object> list =  this.productServiceImpl.getProductByCategory(category);
@@ -110,13 +113,19 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
 					productDTOs.add(prDto);
 				}
-				return productDTOs;
 			}
-			return productDTOs;
+			l.setCode(200);
+			l.setCount(prs.size());
+			l.setListData(productDTOs);
+			l.setMessage("Success");	
+			return l;
+			
 		} catch (Exception e) {
+			l.setMessage("Fail");
+			l.setCode(500);
 			// TODO: handle exception
 		}
-		return null;
+		return l;
 	}
 //	
 	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -176,10 +185,6 @@ public class CustomerProduct {
 			ProductSkuDto p = new ProductSkuDto();
 			Integer sku_id = ((BigInteger) sku_obj[0]).intValue();
 			p.setProduct_sku_id(sku_id);
-//			ProductDTO pDto = new ProductDTO();
-//			Integer pd_id = ((BigInteger) sku_obj[1]).intValue();
-//			pDto.setProduct_id(pd_id);
-//			p.setProduct(pDto);
 			p.setValue_sku((String) sku_obj[2]);
 			p.setPrice((Double) sku_obj[3]);
 			p.setQuantity_remain((Integer) sku_obj[4]);

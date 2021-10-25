@@ -16,18 +16,7 @@ import com.it15306.entities.Sku;
 
 @Repository
 public interface SkuRepository extends PagingAndSortingRepository<Sku, Integer>  {
-	final String SELECT_BY_OPTION_VALUE=
-			" select p_sku from Sku sk"
-			+ " join sk.product_sku p_sku"
-			+ " where p_sku.product =:product "
-			+ "AND"
-			+ " p_sku.status = 1 AND "
-			+ " sk.option_sku =:option_1 OR "
-			+ " sk.option_sku =:option_2 OR"
-			+ " sk.option_sku =:option_3 "
-			+ " group by sk.product_sku "
-			+ " order by count(sk) desc";
-	final String SELECT_BY_OPTION_VALUES=
+//	final String SELECT_BY_OPTION_VALUE=
 //			" select p_sku from Sku sk"
 //			+ " join sk.product_sku p_sku"
 //			+ " where p_sku.product =:product "
@@ -37,7 +26,8 @@ public interface SkuRepository extends PagingAndSortingRepository<Sku, Integer> 
 //			+ " sk.option_sku =:option_2 OR"
 //			+ " sk.option_sku =:option_3 "
 //			+ " group by sk.product_sku "
-//			+ " order by count(sk) desc limit 1";
+//			+ " order by count(sk) desc";
+	final String SELECT_BY_OPTION_VALUES=
 			"select sku.product_sku_id,product_id,value_sku,price,quantity_remain,quantiy_rest,quantity_total,status,url_media from sku \r\n"
 			+ "join product_sku on product_sku.product_sku_id = sku.product_sku_id\r\n"
 			+ "where product_id = :product_id and option_sku_id = :option_1 or option_sku_id = :option_2 or option_sku_id = :option_3   group by sku.product_sku_id\r\n"
