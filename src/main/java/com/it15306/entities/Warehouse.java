@@ -52,5 +52,77 @@ public class Warehouse {
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	private Ward ward = new Ward();
+
+	public Integer getWare_house_id() {
+		return ware_house_id;
+	}
+
+	public void setWare_house_id(Integer ware_house_id) {
+		this.ware_house_id = ware_house_id;
+	}
+
+	public String getAddress_detail() {
+		return address_detail;
+	}
+
+	public void setAddress_detail(String address_detail) {
+		this.address_detail = address_detail;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getHotline() {
+		return hotline;
+	}
+
+	public void setHotline(String hotline) {
+		this.hotline = hotline;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	public String getFacebook_url() {
+		return facebook_url;
+	}
+
+	public void setFacebook_url(String facebook_url) {
+		this.facebook_url = facebook_url;
+	}
+
+	public Province getProvince() {
+		return province;
+	}
+
+	public void setProvince(Province province) {
+		this.province = province;
+	}
+
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	public Ward getWard() {
+		return ward;
+	}
+
+	public void setWard(Ward ward) {
+		this.ward = ward;
+	}
 	
 }

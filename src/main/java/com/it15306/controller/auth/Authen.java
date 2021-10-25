@@ -2,6 +2,8 @@ package com.it15306.controller.auth;
 
 import com.it15306.config.DataResponse;
 import com.it15306.dto.BodyForgotPasswordDto;
+import com.it15306.dto.Email;
+import com.it15306.dto.EmailDto;
 import com.it15306.dto.RegisterDto;
 import com.it15306.dto.UserDTO;
 import com.it15306.entities.District;
@@ -15,17 +17,23 @@ import com.it15306.payload.LoginResponse;
 import com.it15306.payload.RequestLogin;
 import com.it15306.services.UserService;
 import com.it15306.services.UserServiceImpl;
+import com.it15306.servicesImpl.MailServiceImpl;
+
 import java.util.Date;
+
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +65,8 @@ public class Authen {
 
 	@Autowired
 	private UserServiceImpl userDetailsService;
+	
+	@Autowired private MailServiceImpl mailServiceImpl;
 
 	@PostMapping("/login")
     @ResponseBody
@@ -65,7 +75,6 @@ public class Authen {
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 		final String jwt = tokenProvider.generateToken(userDetails);
-//		httpServletRequest.addHeader("Authorization",jwt);
 		return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
 	}
 
@@ -77,7 +86,6 @@ public class Authen {
 		String username = tokenProvider.getUserNameFromJWT(token);
 		ModelMapper modelMapper = new ModelMapper();
 		User user = userservice.getByUsername(username);
-//		System.out.print(user.getEmail());
 		return modelMapper.map(user, UserDTO.class);
 	}
 	
@@ -107,14 +115,13 @@ public class Authen {
 			user.setWard(w);
 			user.setRoles("CUSTOMER");
 			user.setActivated(1);
-			user.setPhoto("http://localhost:9090/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
+			user.setPhoto("http://http://34.87.157.20:8089/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
 			this.userService.saveUser(user);
-			
 			resgister.setCode(200);
 			resgister.setMessage("Success");
 		} catch (Exception e) {
 			// TODO: handle exception
-			resgister.setCode(500);
+			resgister.setCode(HttpStatus.FOUND.value());
 			resgister.setMessage("APi Fail");
 		}	
 		return resgister;
@@ -135,6 +142,34 @@ public class Authen {
 		}else {
 			return "Fail";
 		}
-		
 	}
+	
+	@RequestMapping(value = "/send_mail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	   public EmailDto toSendEmail(@RequestBody Email email){
+			EmailDto eBody= new EmailDto();
+			User user = userService.getByEmail(email.getEmail());
+			eBody.setEmail(email.getEmail());
+			if(user!= null) {
+				try {
+					int code = mailServiceImpl.SendEmailToCustomer(email.getEmail());
+					eBody.setMessage("Đã gửi mã đến email " + email);
+					eBody.setCode(code);
+					return eBody;
+				} catch (MailException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					eBody.setMessage("Fail");
+					return eBody;
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					eBody.setMessage("Fail");
+					return eBody;
+				}
+			}else {
+				eBody.setMessage("Email không tồn tại, vui lòng kiểm tra ");
+				return eBody;
+			}
+	   }
 }

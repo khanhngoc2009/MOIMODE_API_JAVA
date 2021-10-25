@@ -23,7 +23,7 @@ private Integer product_sku_id;
 	private int quantity_total;
 	private String url_media;
 	private int status;
-	private ProductDTO product = new ProductDTO();
+//	private ProductDTO product = new ProductDTO();
 	
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
@@ -74,12 +74,12 @@ private Integer product_sku_id;
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public ProductDTO getProduct() {
-		return product;
-	}
-	public void setProduct(ProductDTO product) {
-		this.product = product;
-	}
+//	public ProductDTO getProduct() {
+//		return product;
+//	}
+//	public void setProduct(ProductDTO product) {
+//		this.product = product;
+//	}
 	public int getQuantiy_rest() {
 		return quantiy_rest;
 	}

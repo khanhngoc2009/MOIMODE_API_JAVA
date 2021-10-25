@@ -35,39 +35,39 @@ import com.it15306.servicesImpl.MailServiceImpl;
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class SendMail {
-	@Autowired MailServiceImpl mailServiceImpl;
-	@Autowired UserServiceImpl userServiceImpl;
+//	@Autowired MailServiceImpl mailServiceImpl;
+//	@Autowired UserServiceImpl userServiceImpl;
 	
-	@RequestMapping(value = "/send_mail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	   public EmailDto toSendEmail(@PathVariable String email){
-			EmailDto eBody= new EmailDto();
-			User user = userServiceImpl.getByEmail(email);
-			eBody.setEmail(email);
-			if(user!= null) {
-				try {
-					int code = mailServiceImpl.SendEmailToCustomer(email);
-					eBody.setMessage("Đã gửi mã đến email " + email);
-					eBody.setCode(code);
-					return eBody;
-				} catch (MailException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					eBody.setMessage("Fail");
-					return eBody;
-				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					eBody.setMessage("Fail");
-					return eBody;
-				}
-			}else {
-				eBody.setMessage("Email không tồn tại, vui lòng kiểm tra ");
-				return eBody;
-			}
-			
-//			return "Email sent successfully";
-	   }
+//	@RequestMapping(value = "/send_mail/{email}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	   public EmailDto toSendEmail(@PathVariable String email){
+//			EmailDto eBody= new EmailDto();
+//			User user = userServiceImpl.getByEmail(email);
+//			eBody.setEmail(email);
+//			if(user!= null) {
+//				try {
+//					int code = mailServiceImpl.SendEmailToCustomer(email);
+//					eBody.setMessage("Đã gửi mã đến email " + email);
+//					eBody.setCode(code);
+//					return eBody;
+//				} catch (MailException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					eBody.setMessage("Fail");
+//					return eBody;
+//				} catch (MessagingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					eBody.setMessage("Fail");
+//					return eBody;
+//				}
+//			}else {
+//				eBody.setMessage("Email không tồn tại, vui lòng kiểm tra ");
+//				return eBody;
+//			}
+//			
+////			return "Email sent successfully";
+//	   }
 
 	
 	

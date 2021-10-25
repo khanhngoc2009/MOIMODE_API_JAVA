@@ -8,12 +8,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.DataResponseList;
+import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.OptionDTO;
 import com.it15306.dto.OptionValueDTO;
 import com.it15306.dto.ProductDTO;
@@ -45,23 +48,30 @@ public class AdminProduct {
 		return body.getOptions();
 	}
 	
-	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/getAllProducts/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<ProductDTO> getAllProducts() {
+	public DataResponseList<ProductDTO> getAllProducts(@PathVariable int page,@PathVariable int take) {
 		ModelMapper modelMapper = new ModelMapper();
-		
-		List<Product> prs = this.productServiceImpl.getAllProductsAdmin();
-		
-		List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
-		if (prs.size() > 0) {
-			for (int i = 0; i < prs.size(); i++) {
-				ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-				prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
-				productDTOs.add(prDto);
+		DataResponseList<ProductDTO> data = new DataResponseList<ProductDTO>();
+		try {
+			List<Product> prs = this.productServiceImpl.getAllProductsAdmin(page, take);
+			
+			List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+			if (prs.size() > 0) {
+				for (int i = 0; i < prs.size(); i++) {
+					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					productDTOs.add(prDto);
+				}
 			}
-			return productDTOs;
+			data.setCode(200);
+			data.setCount(prs.size());
+			data.setListData(productDTOs);
+			data.setMessage("Success");
+		} catch (Exception e) {
+			data.setCode(500);
+			data.setMessage("Fail");
 		}
-		
-		return null;
+		return data;
 	}
 }
