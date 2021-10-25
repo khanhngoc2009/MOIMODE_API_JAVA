@@ -21,6 +21,19 @@ public class CategoryDTO {
 
 	
 
+	public CategoryDTO() {
+		super();
+	}
+
+	public CategoryDTO(Integer id, Date create_date, Integer status, String category_name, String image) {
+		super();
+		this.id = id;
+		this.create_date = create_date;
+		this.status = status;
+		this.category_name = category_name;
+		this.image = image;
+	}
+
 	public Integer getId() {
 		return id;
 	}

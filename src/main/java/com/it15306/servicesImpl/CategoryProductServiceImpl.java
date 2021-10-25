@@ -32,6 +32,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 	@Autowired
 	ModelMapper modelMapper;
 	
+	
 	@Override
 	public List<Category> getAllCategoryByType(int type,int page,int take) {
 		Pageable paging =  PageRequest.of(page, take);
@@ -73,12 +74,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 		return categoryRepository.save(category);
 	}
 
-	@Override
-	public void delete(Category category) {
-		// TODO Auto-generated method stub
-		categoryRepository.delete(category);
-		
-	}
+	
 
 	@Override
 	public List<Category> getAllCategoryByCreateDate(Date ngay_bat_dau, Date ngay_ket_thuc) {
@@ -93,27 +89,48 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public List<CategoryDTO> getAllCategoryParent() {
-		
-		return null;
+		List<Category> enti= categoryRepository.selectAllCategoryParent();
+		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
+		if(enti.size() > 0) {
+			enti.forEach(d -> {
+				CategoryDTO n=mapToModel(d, null);				
+				listdto.add(n);
+			});
+		}
+		return listdto;
 	}
 
 	@Override
 	public List<CategoryDTO> getAllCategoryChildent() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Category> enti= categoryRepository.findByType(2);
+		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
+		if(enti.size() > 0) {
+			enti.forEach(d -> {
+				CategoryDTO n=mapToModel(d, null);				
+				listdto.add(n);
+			});
+		}
+		return listdto;
 	}
 
 	@Override
 	public CategoryDTO CreateCategory(CategoryDTO data) {
-		Category enti = modelMapper.map(data, Category.class);
-		categoryRepository.save(enti);
-		data.setCategory_id(enti.getCategory_id());
-		return data;
+		System.out.println("-----------CreateCategory2----------");
+		try {
+			Category enti = modelMapper.map(data, Category.class);
+			categoryRepository.save(enti);
+			data.setId(enti.getId());
+			return data;
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 
 	@Override
 	public CategoryDTO updateCategory(CategoryDTO data) {
-		Optional<Category> optional= categoryRepository.findById(data.getCategory_id());
+		System.out.println("-----------updateCategory2----------");
+		Optional<Category> optional= categoryRepository.findById(data.getId());
 		try {
 			if(optional.isPresent()) {
 				Category enti=optional.get();
@@ -127,19 +144,28 @@ public class CategoryProductServiceImpl implements CategoryService{
 		return null;
 	}
 	
-	public CategoryDTO mapToModel(Category enti, CategoryDTO model)
-			throws IllegalAccessException, InvocationTargetException {
+	public CategoryDTO mapToModel(Category enti, CategoryDTO model){
 		if (model == null)
 			model = new CategoryDTO();
 		model = modelMapper.map(enti, CategoryDTO.class);
 		return model;
 	}
 
-	public Category mapToEnyities(CategoryDTO model, Category enti)
-			throws IllegalAccessException, InvocationTargetException {
+	public Category mapToEnyities(CategoryDTO model, Category enti){
 		if (enti == null)
 			enti = new Category();
 		enti = modelMapper.map(model, Category.class);
 		return enti;
+	}
+
+	@Override
+	public Integer delete(Integer id) {
+		Optional<Category> optional= categoryRepository.findById(id);
+		if(optional.isPresent()) {
+			Category category=optional.get();
+			categoryRepository.delete(category);
+			return category.getId();
+		}
+		return null;
 	}
 }

@@ -13,7 +13,8 @@ public interface CategoryService {
 	List<Category> getAllCategoryByCreateDate(Date ngay_bat_dau,Date ngay_ket_thuc);
 	List<Product> getListProductByCategory(String category_id, int type);
 	Category saveCategory(Category category);
-	void delete(Category category);
+	
+	Integer delete(Integer id);
 	
 	List<CategoryDTO> getAllCategoryParent();
 	List<CategoryDTO> getAllCategoryChildent();

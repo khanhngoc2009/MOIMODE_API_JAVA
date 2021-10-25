@@ -24,7 +24,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String SELECT_BY_TYPE = "SELECT c FROM Category c WHERE c.type =:type";
 	final String SELECT_BETWEEN_CREATE_DATE = "SELECT c FROM Category c WHERE c.create_date BETWEEN :ngay_bat_dau AND :ngay_ket_thuc";
 	final String SELECT_BY_STATUS = "SELECT c FROM Category c WHERE c.status =:status";
-
+	final String SELECT_ALL_CATEGORY_PARENT ="select C.category_id , C.category_name, C.type ,C.category_parent_id,C.description, C.url_image, C.status, C.create_date from category C where C.type ='1'";
 	@Query(SELECT_ALL)
 	List<Category> findAllCategory();
 	
@@ -45,4 +45,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	
 	@Query(SELECT_BY_STATUS)
 	List<Category> findByStatus(@Param("status") Integer status);
+	
+	@Query(value = SELECT_ALL_CATEGORY_PARENT, nativeQuery=true)
+	List<Category> selectAllCategoryParent();
 }

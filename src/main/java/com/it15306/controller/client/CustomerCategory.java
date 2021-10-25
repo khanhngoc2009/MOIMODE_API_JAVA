@@ -45,8 +45,8 @@ public class CustomerCategory {
 				
 				for (int i = 0; i < Category.size(); i++) {
 					CategoryDTO caDto= modelMapper.map(Category.get(i), CategoryDTO.class);
-					caDto.setId(Category.get(i).getCategory_id());
-					caDto.setImage(Category.get(i).getUrl_image());
+					caDto.setId(Category.get(i).getId());
+					caDto.setImage(Category.get(i).getImage());
 					categoryDTOs.add(caDto);
 				}
 			}
@@ -73,8 +73,8 @@ public class CustomerCategory {
 			if (Category.size() > 0) {
 				for (int i = 0; i < Category.size(); i++) {
 					CategoryDTO caDto= modelMapper.map(Category.get(i), CategoryDTO.class);
-					caDto.setId(Category.get(i).getCategory_id());
-					caDto.setImage(Category.get(i).getUrl_image());
+					caDto.setId(Category.get(i).getId());
+					caDto.setImage(Category.get(i).getImage());
 					categoryDTOs.add(caDto);
 				}
 			}

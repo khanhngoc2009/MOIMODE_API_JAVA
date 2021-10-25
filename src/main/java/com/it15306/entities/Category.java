@@ -24,15 +24,13 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Category")
-@Getter
-@Setter
-@Component
+
 public class Category {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "category_id")
-	private Integer category_id;
+	private Integer id;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -45,17 +43,18 @@ public class Category {
 	private Integer type;
 	private String category_name;
 	private String description;
-	private String url_image;
+	@Column(name = "url_image")
+	private String image;
 	
 	@OneToMany(mappedBy = "category")
 	private List<Product> products = new ArrayList<>();
 
-	public Integer getCategory_id() {
-		return category_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCategory_id(Integer category_id) {
-		this.category_id = category_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getCreate_date() {
@@ -106,7 +105,13 @@ public class Category {
 		this.description = description;
 	}
 
+	public String getImage() {
+		return image;
+	}
 
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public List<Product> getProducts() {
 		return products;
@@ -116,13 +121,11 @@ public class Category {
 		this.products = products;
 	}
 
-	public String getUrl_image() {
-		return url_image;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setUrl_image(String url_image) {
-		this.url_image = url_image;
-	}
+
 	
 	
 }
