@@ -66,20 +66,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         
 //             .antMatchers( "/miemode_api/v1/login", "/miemode_api/v1/user/register")
 //             .permitAll() 
-// //            
-// //            .antMatchers(HttpMethod.GET, "/api/v1/products/**", "/api/v1/categories/**","/api/v1/product/**","/api/v1/category/*","/storages/**")
-// //            .permitAll() 
+             
              .antMatchers(HttpMethod.GET, "/miemode_api/v1/admin/**")
              .hasAuthority("ADMIN")
              .antMatchers(HttpMethod.POST, "/miemode_api/v1/admin/**")
              .hasAuthority("ADMIN")
              .antMatchers(HttpMethod.PUT, "/miemode_api/v1/admin/**")
              .hasAuthority("ADMIN")
-            
+             .antMatchers( "/miemode_api/v1/infor").authenticated()
+             
 //            .anyRequest().authenticated()
-//            .antMatchers(HttpMethod.GET, "/miemode_api/v1/ward/*")
-//            .hasAuthority("CUSTOMER")
-            // Tất cả các request khác đều cần phải xác thực mới được truy cập
+
         .and().
       exceptionHandling().and().sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

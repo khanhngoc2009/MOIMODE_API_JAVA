@@ -38,11 +38,11 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 			+ " from Product p join p.product_sku sku "
 			+ " where p.status = 1 AND p.category =:category"
 			+ " group by sku.product";
-	final String SELECT_BY_ID ="select p"
-			+ " from Product p"
-			+ " where p.product_id =:product_id ";
-//	\
+	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
+			+ " from Product p join p.product_sku sku"
+			+ " where p.product_id =:product_id AND p.status = 1  group by sku.product ";
 	
+//	\	
 	@Query(SELECT_ALL)
 	List<Product> findAllProductsAdmin();
 	@Query(SELECT_PRODUCTS)
@@ -60,6 +60,6 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	List<Object> findProductByCategory(@Param("category") Category category);
 //	
 	@Query(SELECT_BY_ID)
-	Product findByIdProduct(@Param("product_id") Integer product_id);
+	Object findByIdProduct(@Param("product_id") Integer product_id);
 
 }

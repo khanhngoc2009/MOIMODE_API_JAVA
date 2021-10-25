@@ -1,6 +1,8 @@
 package com.it15306.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,9 +50,21 @@ public class Product_Sku {
 	@JoinColumn(name = "product_id")
 	private Product product = new Product();
 
+	@OneToMany(mappedBy = "product_sku")
+	private List<Sku> sku = new ArrayList<>();
 
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
+	}
+
+
+	public List<Sku> getSku() {
+		return sku;
+	}
+
+
+	public void setSku(List<Sku> sku) {
+		this.sku = sku;
 	}
 
 
