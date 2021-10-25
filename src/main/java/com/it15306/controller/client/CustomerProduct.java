@@ -51,13 +51,13 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	@RequestMapping(value = "/getListProducts/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProducts(@PathVariable Integer page,@PathVariable Integer take) {
+	public DataResponseList<ProductDTO> getListProducts() {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			List<Object> list = this.productServiceImpl.getAllProducts(page,take);
+			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -131,13 +131,13 @@ public class CustomerProduct {
 		return data;
 	}
 	
-	@RequestMapping(value = "/getListProductSelling/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProductSelling", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProductSelling(@PathVariable Integer page,@PathVariable Integer take) {
+	public DataResponseList<ProductDTO> getListProductSelling() {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			List<Object> list =  this.productServiceImpl.getSellingProducts(page,take);
+			List<Object> list =  this.productServiceImpl.getSellingProducts(0,10);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();

@@ -25,7 +25,7 @@ import lombok.Setter;
 
 public class CategoryDTO {
 
-	private Integer category_id;
+	private Integer id;
 	
 	private Date create_date;
 	
@@ -35,15 +35,17 @@ public class CategoryDTO {
 	private Integer type;
 	private String category_name;
 	private String description;
-	private String ur_image;
+	private String image;
 	
 
-	public Integer getCategory_id() {
-		return category_id;
+	
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCategory_id(Integer category_id) {
-		this.category_id = category_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getCreate_date() {
@@ -94,13 +96,15 @@ public class CategoryDTO {
 		this.description = description;
 	}
 
-	public String getUr_image() {
-		return ur_image;
+	public String getImage() {
+		return image;
 	}
 
-	public void setUr_image(String ur_image) {
-		this.ur_image = ur_image;
+	public void setImage(String image) {
+		this.image = image;
 	}
+
+	
 
 
 

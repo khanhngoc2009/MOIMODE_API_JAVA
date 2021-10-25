@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.CategoryDTO;
+import com.it15306.dto.PageDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.category.PageCategoryParent;
 import com.it15306.entities.Category;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
@@ -30,18 +33,21 @@ public class CustomerCategory {
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
-	@RequestMapping(value = "/getListCategoryParent/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryParent(@PathVariable Integer page,@PathVariable Integer take ) {
+	public DataResponseList<CategoryDTO> getListCategoryParent(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
-			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByType(1,page,take);
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByType(1,dto.getPage(),dto.getTake());
 			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
 			if (Category.size() > 0) {
 				
 				for (int i = 0; i < Category.size(); i++) {
-					categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+					CategoryDTO caDto= modelMapper.map(Category.get(i), CategoryDTO.class);
+					caDto.setId(Category.get(i).getCategory_id());
+					caDto.setImage(Category.get(i).getUrl_image());
+					categoryDTOs.add(caDto);
 				}
 			}
 			data.setCode(200);
@@ -56,18 +62,20 @@ public class CustomerCategory {
 		return data;
 	}
 	
-	@RequestMapping(value = "/getListCategoryChildren/{category_parent_id}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListCategoryChildren", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryChildren(@PathVariable Integer category_parent_id,@PathVariable Integer page,@PathVariable Integer take) {
+	public DataResponseList<CategoryDTO> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
-			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(category_parent_id,2,page,take);
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(dto.getCategory_id(),2,dto.getPage(),dto.getTake());
 			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
 			if (Category.size() > 0) {
-				
 				for (int i = 0; i < Category.size(); i++) {
-					categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+					CategoryDTO caDto= modelMapper.map(Category.get(i), CategoryDTO.class);
+					caDto.setId(Category.get(i).getCategory_id());
+					caDto.setImage(Category.get(i).getUrl_image());
+					categoryDTOs.add(caDto);
 				}
 			}
 			data.setCode(200);
@@ -75,7 +83,6 @@ public class CustomerCategory {
 			data.setListData(categoryDTOs);
 			data.setMessage("Success");
 		} catch (Exception e) {
-			// TODO: handle exception
 			data.setCode(500);
 			data.setMessage("Fail");
 		}
