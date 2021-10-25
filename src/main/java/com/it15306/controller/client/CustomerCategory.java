@@ -56,13 +56,13 @@ public class CustomerCategory {
 		return data;
 	}
 	
-	@RequestMapping(value = "/getListCategoryChildren/{category_parent}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListCategoryChildren/{category_parent_id}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryChildren(@PathVariable Integer category_parent,@PathVariable Integer page,@PathVariable Integer take) {
+	public DataResponseList<CategoryDTO> getListCategoryChildren(@PathVariable Integer category_parent_id,@PathVariable Integer page,@PathVariable Integer take) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
-			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(category_parent,1,page,take);
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(category_parent_id,2,page,take);
 			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
 			if (Category.size() > 0) {
 				
