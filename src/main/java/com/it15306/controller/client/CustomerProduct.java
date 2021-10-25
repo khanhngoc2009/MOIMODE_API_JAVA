@@ -53,7 +53,8 @@ public class CustomerProduct {
 	private ProductServiceImpl productServiceImpl;
 	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<ProductDTO> getListProducts() {
+	public DataResponseList<ProductDTO> getListProducts() {
+		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			List<Object> list = this.productServiceImpl.getAllProducts();
@@ -76,13 +77,18 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
 					productDTOs.add(prDto);
 				}
-				return productDTOs;
+				
 			}
-			return productDTOs;
+			l.setCode(200);
+			l.setCount(prs.size());
+			l.setListData(productDTOs);
+			l.setMessage("Success");
 		} catch (Exception e) {
 			// TODO: handle exception
+			l.setMessage("Fail");
+			l.setCode(500);
 		}
-		return null;
+		return l;
 	}
 	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -118,19 +124,18 @@ public class CustomerProduct {
 			l.setCount(prs.size());
 			l.setListData(productDTOs);
 			l.setMessage("Success");	
-			return l;
-			
+
 		} catch (Exception e) {
 			l.setMessage("Fail");
 			l.setCode(500);
-			// TODO: handle exception
 		}
 		return l;
 	}
 //	
 	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ProductDetailDto getProductDetail(@PathVariable Integer product_id) {
+	public DataResponse<ProductDetailDto> getProductDetail(@PathVariable Integer product_id) {
+		DataResponse<ProductDetailDto> response = new DataResponse<ProductDetailDto>();
 		try {
 			Object[] obj = (Object[]) this.productServiceImpl.getByIdProduct(product_id);
 			Product product=(Product) obj[0];
@@ -165,11 +170,15 @@ public class CustomerProduct {
 			pr.setCategory(modelMapper.map(product.getCategory(), CategoryDTO.class));
 			pr.setProduct(productDTO);
 			pr.setProduct_sku(productSkuDTOs);
-			return pr;
+			response.setCode(200);
+			response.setMessage("Success");
+			response.setData(pr);
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			response.setCode(500);
+			response.setMessage("Fail");
 		}
-		return null;
+		return response;
 	}
 	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{option_1}/{option_2}/{option_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

@@ -6,6 +6,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.DataResponseList;
 import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
@@ -28,35 +30,55 @@ public class CustomerCategory {
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
-	@RequestMapping(value = "/getListCategoryParent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListCategoryParent/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<CategoryDTO> getListCategoryParent() {
+	public DataResponseList<CategoryDTO> getListCategoryParent(@PathVariable Integer page,@PathVariable Integer take ) {
 		ModelMapper modelMapper = new ModelMapper();
-		List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByType(1);
-		List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
-		if (Category.size() > 0) {
-			
-			for (int i = 0; i < Category.size(); i++) {
-				categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
+		try {
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByType(1,page,take);
+			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
+			if (Category.size() > 0) {
+				
+				for (int i = 0; i < Category.size(); i++) {
+					categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+				}
 			}
-			return categoryDTOs;
+			data.setCode(200);
+			data.setCount(Category.size());
+			data.setListData(categoryDTOs);
+			data.setMessage("Success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			data.setCode(500);
+			data.setMessage("Fail");
 		}
-		return categoryDTOs;
+		return data;
 	}
 	
-	@RequestMapping(value = "/getListCategoryChildren/{category_parent}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListCategoryChildren/{category_parent}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<CategoryDTO> getListCategoryChildren(@PathVariable Integer category_parent) {
+	public DataResponseList<CategoryDTO> getListCategoryChildren(@PathVariable Integer category_parent,@PathVariable Integer page,@PathVariable Integer take) {
 		ModelMapper modelMapper = new ModelMapper();
-		List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(category_parent,1);
-		List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
-		if (Category.size() > 0) {
-			
-			for (int i = 0; i < Category.size(); i++) {
-				categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
+		try {
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(category_parent,1,page,take);
+			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
+			if (Category.size() > 0) {
+				
+				for (int i = 0; i < Category.size(); i++) {
+					categoryDTOs.add(modelMapper.map(Category.get(i), CategoryDTO.class));
+				}
 			}
-			return categoryDTOs;
+			data.setCode(200);
+			data.setCount(Category.size());
+			data.setListData(categoryDTOs);
+			data.setMessage("Success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			data.setCode(500);
+			data.setMessage("Fail");
 		}
-		return categoryDTOs;
+		return data;
 	}
 }
