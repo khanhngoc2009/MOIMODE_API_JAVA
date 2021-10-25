@@ -51,13 +51,13 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProducts/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProducts() {
+	public DataResponseList<ProductDTO> getListProducts(@PathVariable Integer page,@PathVariable Integer take) {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			List<Object> list = this.productServiceImpl.getAllProducts();
+			List<Object> list = this.productServiceImpl.getAllProducts(page,take);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -90,16 +90,16 @@ public class CustomerProduct {
 		}
 		return l;
 	}
-	@RequestMapping(value = "/getListProductByCategory/{category_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProductByCategory/{category_id}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProductByCategory(@PathVariable Integer category_id) {
-		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
+	public DataResponseList<ProductDTO> getListProductByCategory(@PathVariable Integer category_id,@PathVariable Integer page,@PathVariable Integer take) {
+		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			
 			Category category = new Category();
 			category.setCategory_id(category_id);
-			List<Object> list =  this.productServiceImpl.getProductByCategory(category);
+			List<Object> list =  this.productServiceImpl.getProductByCategory(category,page,take);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -120,18 +120,55 @@ public class CustomerProduct {
 					productDTOs.add(prDto);
 				}
 			}
-			l.setCode(200);
-			l.setCount(prs.size());
-			l.setListData(productDTOs);
-			l.setMessage("Success");	
-
+			data.setCode(200);
+			data.setCount(prs.size());
+			data.setListData(productDTOs);
+			data.setMessage("Success");	
 		} catch (Exception e) {
-			l.setMessage("Fail");
-			l.setCode(500);
+			data.setMessage("Fail");
+			data.setCode(500);
 		}
-		return l;
+		return data;
 	}
-//	
+	
+	@RequestMapping(value = "/getListProductSelling/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public DataResponseList<ProductDTO> getListProductSelling(@PathVariable Integer page,@PathVariable Integer take) {
+		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			List<Object> list =  this.productServiceImpl.getSellingProducts(page,take);
+			List<Double> minPrice = new ArrayList<Double>();
+			List<Double> maxPrice = new ArrayList<Double>();
+			List<Product> prs = new ArrayList<Product>();
+			for (int i=0; i<list.size(); i++){
+				   Object[] row = (Object[]) list.get(i);
+				   Product pr = (Product) row[0];
+				   minPrice.add((Double) row[1]);
+				   maxPrice.add((Double) row[2]);
+				   prs.add(pr);
+			}
+			List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
+			if (prs.size() > 0) {
+				for (int i = 0; i < prs.size(); i++) {
+					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
+					prDto.setMin_price(minPrice.get(i));
+					prDto.setMax_price(maxPrice.get(i));
+					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					productDTOs.add(prDto);
+				}
+			}
+			data.setCode(200);
+			data.setCount(prs.size());
+			data.setListData(productDTOs);
+			data.setMessage("Success");	
+		} catch (Exception e) {
+			data.setMessage("Fail");
+			data.setCode(500);
+		}
+		return data;
+	}
+
 	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public DataResponse<ProductDetailDto> getProductDetail(@PathVariable Integer product_id) {
@@ -146,7 +183,6 @@ public class CustomerProduct {
 			int size = product.getOptions_products().size();
 			System.out.print(obj[0]);
 			if(size > 0) {
-				
 				for(int i=0;i<size;i++) {
 					Option_Product ot_pr = product.getOptions_products().get(i);
 					OptionProductDto op = modelMapper.map(ot_pr, OptionProductDto.class);
@@ -189,7 +225,6 @@ public class CustomerProduct {
 			@PathVariable Integer option_3) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();
 		try {
-			ModelMapper modelMapper = new ModelMapper();
 			Object[] sku_obj = (Object[]) productServiceImpl.findBySku(product_id, option_1, option_2, option_3);
 			ProductSkuDto p = new ProductSkuDto();
 			Integer sku_id = ((BigInteger) sku_obj[0]).intValue();
@@ -201,8 +236,6 @@ public class CustomerProduct {
 			p.setQuantiy_rest((Integer) sku_obj[5]);
 			p.setStatus((Integer) sku_obj[7]);
 			p.setUrl_media((String) sku_obj[8]);
-			
-			
 			response.setCode(200);
 			response.setMessage("Success");
 			response.setData(p);
