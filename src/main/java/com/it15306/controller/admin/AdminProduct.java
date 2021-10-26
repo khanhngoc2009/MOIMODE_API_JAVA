@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
-import com.it15306.dto.CategoryDTO;
-import com.it15306.dto.OptionDTO;
-import com.it15306.dto.OptionValueDTO;
-import com.it15306.dto.ProductDTO;
+import com.it15306.dto.PageDto;
+import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.dto.product.DataCreateProductDtos;
+import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
@@ -35,10 +36,7 @@ public class AdminProduct {
 
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-//	@Autowired
-//	private OptionProductServiceImpl optionProductServiceImpl;
-//	@Autowired
-//	private OptionValueServiceImpl optionValueServiceImpl;
+
 	
 	@RequestMapping(value = "/admin/createProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -48,13 +46,14 @@ public class AdminProduct {
 		return body.getOptions();
 	}
 	
-	@RequestMapping(value = "/admin/getAllProducts/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getAllProducts(@PathVariable int page,@PathVariable int take) {
+	public DataResponseList<ProductDTO> getAllProducts(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductDTO> data = new DataResponseList<ProductDTO>();
+		long count = (long) this.productServiceImpl.getCountClient();
 		try {
-			List<Product> prs = this.productServiceImpl.getAllProductsAdmin(page, take);
+			List<Product> prs = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake());
 			
 			List<ProductDTO> productDTOs =new ArrayList<ProductDTO>();
 			if (prs.size() > 0) {
@@ -65,7 +64,7 @@ public class AdminProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(prs.size());
+			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");
 		} catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.it15306.dto;
+package com.it15306.dto.product;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +28,7 @@ import lombok.Setter;
 
 public class ProductDTO {
 
-	private Integer product_id;
+	private Integer id;
 
 	private Date create_date;
 	
@@ -40,14 +40,12 @@ public class ProductDTO {
 //	private Integer ware_house_id;
 	private Double min_price;
 	private Double max_price;
-
-	
-	public Integer getProduct_id() {
-		return product_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getCreate_date() {

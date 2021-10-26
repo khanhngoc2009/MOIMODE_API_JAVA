@@ -19,20 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
-import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.DistrictDTO;
-import com.it15306.dto.OptionClientDto;
-import com.it15306.dto.OptionDTO;
-import com.it15306.dto.OptionProductDto;
-import com.it15306.dto.OptionValueClientDto;
-import com.it15306.dto.OptionValueDTO;
-import com.it15306.dto.ProductDTO;
-import com.it15306.dto.ProductSkuDto;
-import com.it15306.dto.ProductSkuValueDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.option.OptionClientDto;
+import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.option.OptionProductDto;
+import com.it15306.dto.option.OptionValueClientDto;
+import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.dto.product.DataBodyFindSkuDto;
+import com.it15306.dto.product.ProductByCategoryBodyDto;
+import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductDetailDto;
+import com.it15306.dto.product.ProductSkuDto;
+import com.it15306.dto.product.ProductSkuPriceDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.District;
 import com.it15306.entities.OptionValue;
@@ -58,6 +59,7 @@ public class CustomerProduct {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
+			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -80,7 +82,7 @@ public class CustomerProduct {
 				
 			}
 			l.setCode(200);
-			l.setCount(prs.size());
+			l.setCount(Integer.parseInt(String.valueOf(count)));
 			l.setListData(productDTOs);
 			l.setMessage("Success");
 		} catch (Exception e) {
@@ -90,16 +92,17 @@ public class CustomerProduct {
 		}
 		return l;
 	}
-	@RequestMapping(value = "/getListProductByCategory/{category_id}/{page}/{take}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProductByCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProductByCategory(@PathVariable Integer category_id,@PathVariable Integer page,@PathVariable Integer take) {
+	public DataResponseList<ProductDTO> getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto) {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			
 			Category category = new Category();
-			category.setId(category_id);
-			List<Object> list =  this.productServiceImpl.getProductByCategory(category,page,take);
+			category.setId(dto.getCategory_id());
+			List<Object> list =  this.productServiceImpl.getProductByCategory(category,dto.getPage(),dto.getTake());
+			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -121,7 +124,7 @@ public class CustomerProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(prs.size());
+			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");	
 		} catch (Exception e) {
@@ -138,6 +141,7 @@ public class CustomerProduct {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			List<Object> list =  this.productServiceImpl.getSellingProducts(0,10);
+			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -159,7 +163,7 @@ public class CustomerProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(prs.size());
+			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");	
 		} catch (Exception e) {
@@ -216,16 +220,12 @@ public class CustomerProduct {
 		}
 		return response;
 	}
-	@RequestMapping(value = "/getProductSkuPrice/{product_id}/{option_1}/{option_2}/{option_3}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getProductSkuPrice", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponse<ProductSkuDto> getProductSkuPrice(
-			@PathVariable Integer product_id,
-			@PathVariable Integer option_1,
-			@PathVariable Integer option_2,
-			@PathVariable Integer option_3) {
+	public DataResponse<ProductSkuDto> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();
 		try {
-			Object[] sku_obj = (Object[]) productServiceImpl.findBySku(product_id, option_1, option_2, option_3);
+			Object[] sku_obj = (Object[]) productServiceImpl.findBySku(dto.getProduct_id(), dto.getOption_value_1(), dto.getOption_value_2(), dto.getOption_value_3());
 			ProductSkuDto p = new ProductSkuDto();
 			Integer sku_id = ((BigInteger) sku_obj[0]).intValue();
 			p.setProduct_sku_id(sku_id);

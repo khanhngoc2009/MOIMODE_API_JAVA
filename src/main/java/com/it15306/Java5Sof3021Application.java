@@ -9,3 +9,4 @@ public class Java5Sof3021Application {
 		SpringApplication.run(Java5Sof3021Application.class, args);
 	}
 }
+

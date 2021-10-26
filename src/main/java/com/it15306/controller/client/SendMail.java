@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.it15306.dto.EmailDto;
+import com.it15306.dto.auth.EmailDto;
 import com.it15306.entities.User;
 import com.it15306.services.UserServiceImpl;
 import com.it15306.servicesImpl.MailServiceImpl;

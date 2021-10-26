@@ -57,11 +57,16 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		}
 	}
 	
-	
-
 	public Object getByIdProduct(Integer product_id) {
-		Object p=productRepository.findByIdProduct(product_id); 
-		return p;
+		return productRepository.findByIdProduct(product_id); 
+	}
+	
+	public long getCountClient() {
+		return productRepository.countProductClient();
+	}
+	
+	public long getCountAdmin() {
+		return productRepository.countProductAdmin(); 
 	}
 	
 
@@ -85,6 +90,8 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
         	return new ArrayList<Object>();
 		}
 	}
+	
+	
 	
 	public Object findBySku(Integer product_is, Integer option_1,Integer option_2,Integer option_3 ) {
 	return skuRepository.findByOptionValue(product_is, option_1, option_2, option_3);
