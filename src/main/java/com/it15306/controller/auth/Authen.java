@@ -199,8 +199,10 @@ public class Authen {
 					Date date = new Date();
 					Date create_Date = code.getCreate_time();
 					long longTime=  date.getTime() - create_Date.getTime();
+					System.out.print(longTime);
 					long thirtyMinutes = 30*60;
-					if(thirtyMinutes>longTime) {
+					System.out.print(thirtyMinutes);
+					if(thirtyMinutes>longTime/1000) {
 						data.setCode(200);
 						data.setMessage("Chính xác");
 						mailServiceImpl.delete(code);
