@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
-import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.category.PageCategoryParent;
 import com.it15306.entities.Category;
 import com.it15306.entities.Province;

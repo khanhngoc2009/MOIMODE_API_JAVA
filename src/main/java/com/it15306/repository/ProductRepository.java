@@ -16,7 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.dto.ProductDTO;
+import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.User;
@@ -25,6 +25,13 @@ import com.it15306.entities.User;
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>  {
 	final String SELECT_ALL = "SELECT p FROM Product p order by p.create_date desc";
+	
+	final String SELECT_COUNT_ADMIN = "SELECT count(p) FROM Product p ";
+	
+	final String SELECT_COUNT_CLIENT = 
+			"SELECT count(p) FROM Product p "
+			+ " where p.status = 1 and p.type= 2";
+
 	
 	final String SELECT_PRODUCTS ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku "
@@ -45,10 +52,15 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
-			+ " where p.product_id =:product_id AND p.status = 1  group by sku.product ";
-
+			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
+	
+	
+	
 	@Query(SELECT_ALL)
 	Page<Product> findAllProductsAdmin(Pageable page );
+	
+	@Query(SELECT_COUNT_ADMIN)
+	long countProductAdmin();
 	
 	@Query(SELECT_PRODUCT_SELLING)
 	Page<Object> findProductSelling(Pageable page);
@@ -62,4 +74,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	@Query(SELECT_BY_ID)
 	Object findByIdProduct(@Param("product_id") Integer product_id);
 
+	@Query(SELECT_COUNT_CLIENT)
+	long countProductClient();
+
+	
 }

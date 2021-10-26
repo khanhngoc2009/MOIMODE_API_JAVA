@@ -1,4 +1,4 @@
-package com.it15306.dto;
+package com.it15306.dto.option;
 
 import java.util.ArrayList;
 import java.util.Date;

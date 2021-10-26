@@ -1,9 +1,10 @@
-package com.it15306.dto;
+package com.it15306.dto.option;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.Options;
 import com.it15306.entities.Product;
 

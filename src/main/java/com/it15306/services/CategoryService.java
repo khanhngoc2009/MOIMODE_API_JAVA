@@ -3,7 +3,7 @@ package com.it15306.services;
 import java.util.Date;
 import java.util.List;
 
-import com.it15306.dto.CategoryDTO;
+import com.it15306.dto.category.CategoryDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 
