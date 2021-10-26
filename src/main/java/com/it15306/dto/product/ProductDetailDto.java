@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.persistence.OneToMany;
 
-import com.it15306.dto.CategoryDTO;
-import com.it15306.dto.OptionClientDto;
-import com.it15306.dto.OptionDTO;
-import com.it15306.dto.OptionProductDto;
-import com.it15306.dto.OptionValueDTO;
-import com.it15306.dto.ProductDTO;
-import com.it15306.dto.ProductSkuDto;
-import com.it15306.dto.ProductSkuValueDto;
+import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.option.OptionClientDto;
+import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.option.OptionProductDto;
+import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Option_Product;
 import com.it15306.entities.Product_Sku;

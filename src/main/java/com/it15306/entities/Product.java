@@ -32,7 +32,7 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id")
-	private Integer product_id;
+	private Integer id;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -70,13 +70,14 @@ public class Product {
 	public void setOptions_products(List<Option_Product> options_products) {
 		this.options_products = options_products;
 	}
+	
 
-	public Integer getProduct_id() {
-		return product_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getCreate_date() {

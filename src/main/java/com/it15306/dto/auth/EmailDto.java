@@ -1,9 +1,9 @@
-package com.it15306.dto;
+package com.it15306.dto.auth;
 
 public class EmailDto {
 
 	private String message;
-	private Integer code;
+//	private Integer code;
 	private String email;
 	public String getMessage() {
 		return message;
@@ -11,12 +11,12 @@ public class EmailDto {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Integer getCode() {
-		return code;
-	}
-	public void setCode(Integer code) {
-		this.code = code;
-	}
+//	public Integer getCode() {
+//		return code;
+//	}
+//	public void setCode(Integer code) {
+//		this.code = code;
+//	}
 	public String getEmail() {
 		return email;
 	}

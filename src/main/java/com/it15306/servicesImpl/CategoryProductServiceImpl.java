@@ -14,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.it15306.dto.CategoryDTO;
 import com.it15306.dto.WarehouseDTO;
+import com.it15306.dto.category.CategoryDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Warehouse;

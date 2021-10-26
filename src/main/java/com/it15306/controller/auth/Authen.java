@@ -1,11 +1,13 @@
 package com.it15306.controller.auth;
 
 import com.it15306.config.DataResponse;
-import com.it15306.dto.BodyForgotPasswordDto;
-import com.it15306.dto.Email;
-import com.it15306.dto.EmailDto;
-import com.it15306.dto.RegisterDto;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.auth.BodyForgotPasswordDto;
+import com.it15306.dto.auth.CheckCodeDto;
+import com.it15306.dto.auth.Email;
+import com.it15306.dto.auth.EmailDto;
+import com.it15306.dto.auth.RegisterDto;
+import com.it15306.entities.Code_Forgot_Password;
 import com.it15306.entities.District;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
@@ -94,36 +96,48 @@ public class Authen {
 	@ResponseBody
 	public DataResponse<RegisterDto> register(@RequestBody RegisterDto dto) {
 		DataResponse<RegisterDto> resgister = new DataResponse<RegisterDto>();
-		try {
-			UserDTO uDto = new UserDTO();
-			uDto.setAdmin(2);
-			uDto.setEmail(dto.getEmail());
-			uDto.setPassword(dto.getPassword());
-			uDto.setUsername(dto.getUsername());
-			User user = mapper.ConvertToEntity(uDto);
-			String hashPass = HashUtil.hash(user.getPassword());
-			user.setPassword(hashPass);
-			user.setCreate_date(new Date());
-			Province pr = new Province();
-			pr.setProvince_id(1);
-			District dt = new District();
-			dt.setDistrict_id(1);
-			Ward w = new Ward();
-			w.setWard_id(1);
-			user.setProvince(pr);
-			user.setDistrict(dt);
-			user.setWard(w);
-			user.setRoles("CUSTOMER");
-			user.setActivated(1);
-			user.setPhoto("http://http://34.87.157.20:8089/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
-			this.userService.saveUser(user);
-			resgister.setCode(200);
-			resgister.setMessage("Success");
-		} catch (Exception e) {
-			// TODO: handle exception
-			resgister.setCode(HttpStatus.FOUND.value());
-			resgister.setMessage("APi Fail");
-		}	
+		User emailExist = userService.getByEmail(dto.getEmail());
+		User userExist = userService.getByUsername(dto.getUsername());
+		if(emailExist !=null ) {
+			resgister.setCode(205);
+			resgister.setMessage("Email đã tồn tại!");
+		}else if(userExist!=null) {
+			resgister.setCode(205);
+			resgister.setMessage("Tên đăng nhập đã tồn tại!");
+		}
+		else {
+			try {
+				UserDTO uDto = new UserDTO();
+				uDto.setAdmin(2);
+				uDto.setEmail(dto.getEmail());
+				uDto.setPassword(dto.getPassword());
+				uDto.setUsername(dto.getUsername());
+				User user = mapper.ConvertToEntity(uDto);
+				String hashPass = HashUtil.hash(user.getPassword());
+				user.setPassword(hashPass);
+				user.setCreate_date(new Date());
+				Province pr = new Province();
+				pr.setProvince_id(1);
+				District dt = new District();
+				dt.setDistrict_id(1);
+				Ward w = new Ward();
+				w.setWard_id(1);
+				user.setProvince(pr);
+				user.setDistrict(dt);
+				user.setWard(w);
+				user.setRoles("CUSTOMER");
+				user.setActivated(1);
+				user.setPhoto("http://http://34.87.157.20:8089/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
+				this.userService.saveUser(user);
+				resgister.setCode(200);
+				resgister.setMessage("Đăng kí thành công!");
+			} catch (Exception e) {
+				// TODO: handle exception
+				resgister.setCode(HttpStatus.FOUND.value());
+				resgister.setMessage("Thất bại");
+			}	
+		}
+		
 		return resgister;
 	}
 	@RequestMapping(value = "/user/forgotPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -137,10 +151,10 @@ public class Authen {
 				this.userService.saveUser(user);
 				return "Bạn đã đổi mật khẩu hành công";
 			} catch (Exception e) {
-				return "Fail";
+				return "Thất bại";
 			}
 		}else {
-			return "Fail";
+			return "Thất bại";
 		}
 	}
 	
@@ -153,23 +167,57 @@ public class Authen {
 			if(user!= null) {
 				try {
 					int code = mailServiceImpl.SendEmailToCustomer(email.getEmail());
-					eBody.setMessage("Đã gửi mã đến email " + email);
-					eBody.setCode(code);
+					eBody.setMessage("Đã gửi mã đến email " + email.getEmail());
+					Code_Forgot_Password c = new Code_Forgot_Password();
+					c.setCode(code);
+					c.setEmail(email.getEmail());
+					mailServiceImpl.saveCode(c);
 					return eBody;
 				} catch (MailException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					eBody.setMessage("Fail");
+					eBody.setMessage("Thất bại");
 					return eBody;
 				} catch (MessagingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					eBody.setMessage("Fail");
+					eBody.setMessage("Thất bại");
 					return eBody;
 				}
 			}else {
 				eBody.setMessage("Email không tồn tại, vui lòng kiểm tra ");
 				return eBody;
 			}
+	   }
+	@RequestMapping(value = "/checkCodeEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	   public DataResponse<String> toCheckCode(@RequestBody CheckCodeDto dto){
+			DataResponse<String> data = new DataResponse<String>();
+			try {
+				Code_Forgot_Password code =  mailServiceImpl.findByEmail(dto.getEmail(),dto.getCode());
+				if(code!=null) {
+					Date date = new Date();
+					Date create_Date = code.getCreate_time();
+					long longTime=  date.getTime() - create_Date.getTime();
+					long thirtyMinutes = 30*60;
+					if(thirtyMinutes>longTime) {
+						data.setCode(200);
+						data.setMessage("Chính xác");
+					}else {
+						data.setCode(201);
+						data.setMessage("Mã code không còn hiệu lực sau 30 phút, vui lòng thử lại!");
+					}
+				}else {
+					data.setMessage("Vui lòng kiểm tra lại!");
+					data.setCode(201);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				data.setCode(201);
+				data.setMessage("Thất bại");
+			}
+			
+			
+			return data;
 	   }
 }

@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
-import com.it15306.dto.CategoryDTO;
-import com.it15306.dto.OptionDTO;
-import com.it15306.dto.OptionValueDTO;
-import com.it15306.dto.ProductDTO;
+import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.dto.product.DataCreateProductDtos;
+import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;

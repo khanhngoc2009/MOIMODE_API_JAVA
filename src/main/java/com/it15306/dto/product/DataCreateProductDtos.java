@@ -2,9 +2,8 @@ package com.it15306.dto.product;
 
 import java.util.List;
 
-import com.it15306.dto.OptionDTO;
-import com.it15306.dto.OptionValueDTO;
-import com.it15306.dto.ProductDTO;
+import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.option.OptionValueDTO;
 
 public class DataCreateProductDtos {
 	private DataProductBodyDtos product;

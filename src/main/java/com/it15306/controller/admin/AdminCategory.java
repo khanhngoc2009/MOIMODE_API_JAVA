@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
-import com.it15306.dto.CategoryDTO;
+import com.it15306.dto.category.CategoryDTO;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })

@@ -1,4 +1,4 @@
-package com.it15306.dto;
+package com.it15306.dto.product;
 
 import java.util.Date;
 
