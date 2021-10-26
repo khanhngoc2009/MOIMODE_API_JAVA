@@ -97,6 +97,7 @@ public class AdminCategory {
 		try {
 			if(lis.size() > 0) {
 				data.setCode(200);
+				data.setCount(categoryService.countCategoryParent());
 				data.setMessage("Success");
 				data.setListData(lis);
 				}else {
@@ -121,6 +122,7 @@ public class AdminCategory {
 		try {
 			if(lis.size() > 0) {
 				data.setCode(200);
+				data.setCount(categoryService.countCategoryChildent());
 				data.setMessage("Success");
 				data.setListData(lis);
 				}else {
@@ -136,4 +138,6 @@ public class AdminCategory {
 			return data;
 		}
 	}
+	
+	
 }
