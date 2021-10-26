@@ -68,4 +68,8 @@ public class MailServiceImpl {
 	public Code_Forgot_Password saveCode(Code_Forgot_Password code) {
 		return forgotCodeRepository.save(code);
 	}
+	
+	public void delete(Code_Forgot_Password code) {
+		 forgotCodeRepository.delete(code);
+	}
 }

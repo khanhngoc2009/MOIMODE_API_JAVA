@@ -203,8 +203,10 @@ public class Authen {
 					if(thirtyMinutes>longTime) {
 						data.setCode(200);
 						data.setMessage("Chính xác");
+						mailServiceImpl.delete(code);
 					}else {
 						data.setCode(201);
+						mailServiceImpl.delete(code);
 						data.setMessage("Mã code không còn hiệu lực sau 30 phút, vui lòng thử lại!");
 					}
 				}else {
