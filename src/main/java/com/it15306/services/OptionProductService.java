@@ -9,7 +9,7 @@ import com.it15306.entities.Product;
 import com.it15306.entities.User;
 
 public interface OptionProductService {
-	List<Options> getAllOptionProductByProduct(Product product);
+	List<Options> getOptions(Integer page,Integer take);
 	Options getById(Integer option_id);
 	Options saveOptionProduct(Options option);
 	void delete(Options option);

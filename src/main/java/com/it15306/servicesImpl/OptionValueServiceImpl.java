@@ -10,7 +10,7 @@ import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
-import com.it15306.repository.OptionProductRepository;
+import com.it15306.repository.OptionsRepository;
 import com.it15306.repository.ProductRepository;
 import com.it15306.services.OptionProductService;
 import com.it15306.services.OptionValueService;

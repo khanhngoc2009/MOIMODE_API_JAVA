@@ -25,7 +25,7 @@ import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
-import com.it15306.servicesImpl.OptionProductServiceImpl;
+import com.it15306.servicesImpl.OptionsServiceImpl;
 import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 
@@ -41,7 +41,6 @@ public class AdminProduct {
 	@RequestMapping(value = "/admin/createProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<OptionDTO> createProduct(@RequestBody DataCreateProductDtos body) {
-		
 		
 		return body.getOptions();
 	}
@@ -73,4 +72,6 @@ public class AdminProduct {
 		}
 		return data;
 	}
+	
+	
 }

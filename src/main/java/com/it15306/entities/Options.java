@@ -32,7 +32,7 @@ public class Options {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "option_id")
-	private Integer option_id;
+	private Integer id;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -63,16 +63,6 @@ public class Options {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-
-	public Integer getOption_id() {
-		return option_id;
-	}
-
-
-	public void setOption_id(Integer option_id) {
-		this.option_id = option_id;
 	}
 
 
@@ -124,6 +114,16 @@ public class Options {
 
 	public void setOption_values(List<OptionValue> option_values) {
 		this.option_values = option_values;
+	}
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 
