@@ -168,4 +168,15 @@ public class CategoryProductServiceImpl implements CategoryService{
 		}
 		return null;
 	}
+
+	@Override
+	public Integer countCategoryParent() {
+		
+		return categoryRepository.countByTypes(1);
+	}
+
+	@Override
+	public Integer countCategoryChildent() {
+		return categoryRepository.countByTypes(2);
+	}
 }

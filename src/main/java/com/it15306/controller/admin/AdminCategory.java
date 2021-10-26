@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.CategoryDTO;
+import com.it15306.dto.category.PageCategoryParent;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -97,6 +98,7 @@ public class AdminCategory {
 		try {
 			if(lis.size() > 0) {
 				data.setCode(200);
+				data.setCount(categoryService.countCategoryParent());
 				data.setMessage("Success");
 				data.setListData(lis);
 				}else {
@@ -121,6 +123,7 @@ public class AdminCategory {
 		try {
 			if(lis.size() > 0) {
 				data.setCode(200);
+				data.setCount(categoryService.countCategoryChildent());
 				data.setMessage("Success");
 				data.setListData(lis);
 				}else {
@@ -136,4 +139,6 @@ public class AdminCategory {
 			return data;
 		}
 	}
+	
+	
 }

@@ -15,7 +15,8 @@ public interface CategoryService {
 	Category saveCategory(Category category);
 	
 	Integer delete(Integer id);
-	
+	Integer countCategoryParent();
+	Integer countCategoryChildent();
 	List<CategoryDTO> getAllCategoryParent();
 	List<CategoryDTO> getAllCategoryChildent();
 	CategoryDTO CreateCategory(CategoryDTO data);
