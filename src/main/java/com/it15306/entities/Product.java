@@ -43,6 +43,8 @@ public class Product {
 	private String description;
 	private Integer status;
 	private Integer type;
+	@Column(name = "media_url")
+	private String image;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -98,6 +100,18 @@ public class Product {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setDescription(String description) {
