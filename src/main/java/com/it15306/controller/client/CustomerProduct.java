@@ -74,7 +74,7 @@ public class CustomerProduct {
 					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
-					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					productDTOs.add(prDto);
 				}
 				
@@ -98,7 +98,7 @@ public class CustomerProduct {
 			ModelMapper modelMapper = new ModelMapper();
 			
 			Category category = new Category();
-			category.setCategory_id(category_id);
+			category.setId(category_id);
 			List<Object> list =  this.productServiceImpl.getProductByCategory(category,page,take);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
@@ -116,7 +116,7 @@ public class CustomerProduct {
 					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
-					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					productDTOs.add(prDto);
 				}
 			}
@@ -154,7 +154,7 @@ public class CustomerProduct {
 					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
-					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					productDTOs.add(prDto);
 				}
 			}

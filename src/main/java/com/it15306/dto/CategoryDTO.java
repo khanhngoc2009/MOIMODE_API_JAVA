@@ -1,26 +1,7 @@
 package com.it15306.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import com.it15306.entities.Product;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.stereotype.Component;
-
-import lombok.Getter;
-import lombok.Setter;
 
 
 public class CategoryDTO {
@@ -39,6 +20,19 @@ public class CategoryDTO {
 	
 
 	
+
+	public CategoryDTO() {
+		super();
+	}
+
+	public CategoryDTO(Integer id, Date create_date, Integer status, String category_name, String image) {
+		super();
+		this.id = id;
+		this.create_date = create_date;
+		this.status = status;
+		this.category_name = category_name;
+		this.image = image;
+	}
 
 	public Integer getId() {
 		return id;

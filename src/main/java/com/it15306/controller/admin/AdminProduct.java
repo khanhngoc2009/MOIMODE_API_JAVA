@@ -60,7 +60,7 @@ public class AdminProduct {
 			if (prs.size() > 0) {
 				for (int i = 0; i < prs.size(); i++) {
 					ProductDTO prDto = (modelMapper.map(prs.get(i), ProductDTO.class));
-					prDto.setCategory_id(prs.get(i).getCategory().getCategory_id());
+					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					productDTOs.add(prDto);
 				}
 			}
