@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.category.PageCategoryDTO;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -89,9 +90,9 @@ public class AdminCategory {
 	}
 	
 	
-	@RequestMapping(value = "/admin/ListCategoryParent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/ListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryParent() {
+	public DataResponseList<CategoryDTO> getListCategoryParent(@RequestBody PageCategoryDTO pagedata) {
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		List<CategoryDTO> lis=categoryService.getAllCategoryParent();
 		try {
@@ -113,9 +114,9 @@ public class AdminCategory {
 		}
 	}
 	
-	@RequestMapping(value = "/admin/ListCategoryChildent", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/ListCategoryChildent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> ListCategoryChildent() {
+	public DataResponseList<CategoryDTO> ListCategoryChildent(@RequestBody PageCategoryDTO pagedata) {
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		List<CategoryDTO> lis=categoryService.getAllCategoryChildent();
 		try {
