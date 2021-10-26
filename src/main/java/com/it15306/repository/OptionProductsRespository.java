@@ -22,13 +22,13 @@ public interface OptionProductsRespository extends PagingAndSortingRepository<Op
 	
 	
 	final String SELECT_BY_OPTION ="select p  "
-			+ " from Option_Product "
+			+ " from Option_Product p"
 			+ " where p.option =:option";
 
 	@Query(SELECT_BY_ID)
 	Object findByIdProduct(@Param("product") Product product);
 	
 	@Query(SELECT_BY_OPTION)
-	Option_Product findByIdOption(@Param("opiton") Options option);
+	Option_Product findByIdOption(@Param("option") Options option);
 
 }

@@ -7,7 +7,7 @@ import com.it15306.entities.Option_Product;
 import com.it15306.entities.Options;
 import com.it15306.repository.OptionProductsRespository;
 
-@Service
+@Service("OptionsProductsServiceImpl")
 public class OptionsProductsServiceImpl {
 
 	
