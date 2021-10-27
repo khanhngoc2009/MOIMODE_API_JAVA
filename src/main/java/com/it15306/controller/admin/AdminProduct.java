@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +41,7 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getAllProducts(@RequestBody PageDto dto) {
+	public ResponseEntity<?> getAllProducts(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductDTO> data = new DataResponseList<ProductDTO>();
 		long count = (long) this.productServiceImpl.getCountClient();
@@ -58,11 +60,13 @@ public class AdminProduct {
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
+		
 	}
 	
 	

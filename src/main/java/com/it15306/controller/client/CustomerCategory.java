@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +36,7 @@ public class CustomerCategory {
 	
 	@RequestMapping(value = "/getListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryParent(@RequestBody PageDto dto) {
+	public ResponseEntity<?> getListCategoryParent(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
@@ -54,17 +55,18 @@ public class CustomerCategory {
 			data.setCount(Category.size());
 			data.setListData(categoryDTOs);
 			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
 	}
 	
 	@RequestMapping(value = "/getListCategoryChildren", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
+	public ResponseEntity<?> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
@@ -82,10 +84,12 @@ public class CustomerCategory {
 			data.setCount(Category.size());
 			data.setListData(categoryDTOs);
 			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
+		
 	}
 }
