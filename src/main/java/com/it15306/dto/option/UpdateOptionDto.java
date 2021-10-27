@@ -1,48 +1,35 @@
 package com.it15306.dto.option;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.it15306.entities.OptionValue;
-
-public class OptionDTO {	
+public class UpdateOptionDto {
 	private Integer id;
 	private String name;
 	private String description;
-	private List<OptionValueClientDto> option_values = new ArrayList<>();
+	private Integer status;
 	
-	public List<OptionValueClientDto> getOption_values() {
-		return option_values;
-	}
-
-	public void setOption_values(List<OptionValueClientDto> option_values) {
-		this.option_values = option_values;
-	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
+	
 }

@@ -8,7 +8,9 @@ import java.util.List;
 import org.hibernate.type.TimestampType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +56,7 @@ public class CustomerProduct {
 	private ProductServiceImpl productServiceImpl;
 	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProducts() {
+	public ResponseEntity<?> getListProducts() {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -85,16 +87,18 @@ public class CustomerProduct {
 			l.setCount(Integer.parseInt(String.valueOf(count)));
 			l.setListData(productDTOs);
 			l.setMessage("Success");
+			return new ResponseEntity<>(l,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
 			l.setMessage("Fail");
-			l.setCode(500);
+			l.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			return new ResponseEntity<>(l,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return l;
+		
 	}
 	@RequestMapping(value = "/getListProductByCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto) {
+	public ResponseEntity<?>  getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto) {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -127,16 +131,17 @@ public class CustomerProduct {
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");	
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			data.setMessage("Fail");
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
 	}
 	
 	@RequestMapping(value = "/getListProductSelling", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getListProductSelling() {
+	public ResponseEntity<?> getListProductSelling() {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
@@ -165,17 +170,19 @@ public class CustomerProduct {
 			data.setCode(200);
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
-			data.setMessage("Success");	
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			data.setMessage("Fail");
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
+		
 	}
 
 	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponse<ProductDetailDto> getProductDetail(@PathVariable Integer product_id) {
+	public ResponseEntity<?> getProductDetail(@PathVariable Integer product_id) {
 		DataResponse<ProductDetailDto> response = new DataResponse<ProductDetailDto>();
 		try {
 			Object[] obj = (Object[]) this.productServiceImpl.getByIdProduct(product_id);
@@ -202,7 +209,6 @@ public class CustomerProduct {
 					optionProductDTOs.add(op);
 				}
 			}
-			
 			ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
 			productDTO.setMin_price((Double) obj[1]);
 			productDTO.setMax_price((Double) obj[2]);
@@ -213,16 +219,16 @@ public class CustomerProduct {
 			response.setCode(200);
 			response.setMessage("Success");
 			response.setData(pr);
-			
+			return new ResponseEntity<>(response,HttpStatus.OK);
 		} catch (Exception e) {
-			response.setCode(500);
+			response.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			response.setMessage("Fail");
+			return new ResponseEntity<>(response,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return response;
 	}
 	@RequestMapping(value = "/getProductSkuPrice", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponse<ProductSkuDto> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
+	public ResponseEntity<?> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();
 		try {
 			Object[] sku_obj = (Object[]) productServiceImpl.findBySku(dto.getProduct_id(), dto.getOption_value_1(), dto.getOption_value_2(), dto.getOption_value_3());
@@ -239,13 +245,12 @@ public class CustomerProduct {
 			response.setCode(200);
 			response.setMessage("Success");
 			response.setData(p);
-			return response;
+			return new ResponseEntity<>(response,HttpStatus.OK);
 		} catch (Exception e) {
-			response.setCode(500);
+			response.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			response.setMessage("Fail");
-
+			return new ResponseEntity<>(response,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return response;
 	}
 }
 

@@ -1,14 +1,14 @@
 package com.it15306.controller.admin;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,16 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
-import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.option.OptionDTO;
-import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.dto.product.DataCreateProductDtos;
 import com.it15306.dto.product.ProductDTO;
-import com.it15306.entities.Options;
-import com.it15306.entities.OptionValue;
 import com.it15306.entities.Product;
-import com.it15306.servicesImpl.OptionProductServiceImpl;
-import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -42,13 +36,12 @@ public class AdminProduct {
 	@ResponseBody
 	public List<OptionDTO> createProduct(@RequestBody DataCreateProductDtos body) {
 		
-		
 		return body.getOptions();
 	}
 	
 	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<ProductDTO> getAllProducts(@RequestBody PageDto dto) {
+	public ResponseEntity<?> getAllProducts(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductDTO> data = new DataResponseList<ProductDTO>();
 		long count = (long) this.productServiceImpl.getCountClient();
@@ -67,10 +60,14 @@ public class AdminProduct {
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setListData(productDTOs);
 			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
-			data.setCode(500);
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return data;
+		
 	}
+	
+	
 }

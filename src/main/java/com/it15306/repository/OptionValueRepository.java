@@ -18,7 +18,14 @@ import com.it15306.entities.User;
 
 @Repository
 public interface OptionValueRepository extends JpaRepository<OptionValue, Integer>  {
-	final String SELECT_ALL = "SELECT ov FROM OptionValue ov WHERE ov.option=:option";
-	@Query(SELECT_ALL)
+	final String SELECT_BY_OPTION = "SELECT ov FROM OptionValue ov WHERE ov.option=:option";
+	
+	final String DELETE_BY_OPTIONS = "DELETE FROM OptionValue ov where ov.option=:option";
+	
+	
+	@Query(SELECT_BY_OPTION)
 	List<OptionValue> findAllOptionValue(@Param("option") Options option);
+	
+	@Query(DELETE_BY_OPTIONS)
+	String deleteByOption(@Param("option") Options option);
 }
