@@ -21,4 +21,5 @@ public interface CategoryService {
 	List<CategoryDTO> getAllCategoryChildent();
 	CategoryDTO CreateCategory(CategoryDTO data);
 	CategoryDTO updateCategory(CategoryDTO data);
+	Integer countCategoryParentById(Integer category_parent_id);
 }

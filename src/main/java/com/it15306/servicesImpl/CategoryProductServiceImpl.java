@@ -179,4 +179,10 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public Integer countCategoryChildent() {
 		return categoryRepository.countByTypes(2);
 	}
+
+	@Override
+	public Integer countCategoryParentById(Integer category_parent_id) {
+
+		return categoryRepository.countCategoryParentByID(category_parent_id);
+	}
 }
