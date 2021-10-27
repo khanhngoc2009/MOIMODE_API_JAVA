@@ -20,6 +20,7 @@ import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.category.PageCategoryDTO;
+import com.it15306.dto.category.ResponCategoryParent;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -33,18 +34,18 @@ public class AdminCategory {
 	
 	@RequestMapping(value = "/admin/createCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponse<CategoryDTO> createCategory(@RequestBody CategoryDTO body) {
+	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
 		try {
 			System.out.println("-----------createCategory1----------");
 			rp.setCode(200);
 			rp.setMessage("Success");	
 			rp.setData(categoryService.CreateCategory(body));
-			return rp;
+			return ResponseEntity.ok(rp);
 		} catch (Exception e) {
 			rp.setCode(500);
 			rp.setMessage("Fail");	
-			return rp;
+			return ResponseEntity.badRequest().build();
 		}
 		
 	}
@@ -69,49 +70,57 @@ public class AdminCategory {
 	
 	@DeleteMapping("/admin/category/{id}")
 	@ResponseBody
-	public DataResponse<Integer> delete(@PathVariable("id") Integer id) {
+	public ResponseEntity<DataResponse<Integer>> delete(@PathVariable("id") Integer id) {
 		DataResponse<Integer> rp=  new DataResponse<Integer>();
 		Integer idrp =categoryService.delete(id);
 		try {
 			if(idrp != null) {
-			rp.setCode(200);
 			rp.setMessage("Success");
 			rp.setData(idrp);
-			}else {
-				rp.setCode(404);
-				rp.setMessage("Fail");
+			return ResponseEntity.ok(rp);
 			}
-			return rp;
 		} catch (Exception e) {
-			rp.setCode(500);
 			rp.setMessage("Fail");	
-			return rp;
+			return ResponseEntity.badRequest().build();
 		}
+		return ResponseEntity.noContent().build();
 	}
 	
 	
 	@RequestMapping(value = "/admin/ListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponseList<CategoryDTO> getListCategoryParent(@RequestBody PageCategoryDTO pagedata) {
-		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
+	public ResponseEntity<DataResponseList<ResponCategoryParent>> getListCategoryParent(@RequestBody PageCategoryDTO pagedata) {
+		DataResponseList<ResponCategoryParent> data = new DataResponseList<ResponCategoryParent>();
 		List<CategoryDTO> lis=categoryService.getAllCategoryParent();
+		List<ResponCategoryParent> lis2=new ArrayList<ResponCategoryParent>();
+		lis.forEach(ct ->{
+			ResponCategoryParent parent =new ResponCategoryParent();
+			parent.setId(ct.getId());
+			parent.setName(ct.getName());
+			parent.setCreate_date(ct.getCreate_date());
+			parent.setStatus(ct.getStatus());
+			parent.setType(ct.getType());
+			parent.setDescription(ct.getDescription());
+			parent.setNumberOfSubcategories(categoryService.countCategoryParentById(ct.getId()));
+			lis2.add(parent);
+		});
 		try {
 			if(lis.size() > 0) {
-				data.setCode(200);
 				data.setCount(categoryService.countCategoryParent());
 				data.setMessage("Success");
-				data.setListData(lis);
+				data.setListData(lis2);
+				return  ResponseEntity.ok(data);
 				}else {
-					data.setCode(500);
 					data.setMessage("Fail");
+					return  ResponseEntity.noContent().build();
 				}
-				return data;
+	
 		
 		} catch (Exception e) {
 
 			data.setCode(500);
 			data.setMessage("Fail");
-			return data;
+			return  ResponseEntity.badRequest().build();
 		}
 	}
 	

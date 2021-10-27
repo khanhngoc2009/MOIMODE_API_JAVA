@@ -14,7 +14,7 @@ public class CategoryDTO {
 	private Integer category_parent_id;
 	
 	private Integer type;
-	private String category_name;
+	private String name;
 	private String description;
 	private String image;
 	
@@ -30,7 +30,7 @@ public class CategoryDTO {
 		this.id = id;
 		this.create_date = create_date;
 		this.status = status;
-		this.category_name = category_name;
+		this.name = category_name;
 		this.image = image;
 	}
 
@@ -74,12 +74,20 @@ public class CategoryDTO {
 		this.type = type;
 	}
 
-	public String getCategory_name() {
-		return category_name;
+	
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
-	public void setCategory_name(String category_name) {
-		this.category_name = category_name;
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {

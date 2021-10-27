@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
 import com.it15306.services.VoucherService;
 
@@ -22,9 +25,9 @@ public class CustomerVoucher {
 	@Autowired
 	VoucherService voucherService;
 	
-	@GetMapping("/listVoucher")
+	@PostMapping("/listVoucher")
 	@ResponseBody
-	public ResponseEntity< List<Voucherdto>> getAllVouchers() {
+	public ResponseEntity< List<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
 		List<Voucherdto> list= voucherService.getAllVouchers();
 		if(list.isEmpty()) {
 			return ResponseEntity.noContent().build();
