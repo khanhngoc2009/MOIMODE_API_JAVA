@@ -124,9 +124,9 @@ public class AdminOptionValue {
 		}
 	}
 	
-	@RequestMapping(value = "/admin/findByOptionId/{option_id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/findByOptionId/{option_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> deleteOptionValue(@PathVariable Integer option_id) {
+	public ResponseEntity<?> findByOptionId(@PathVariable Integer option_id) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<String> dataRes = new DataResponseList<String>();
 		try {

@@ -42,17 +42,18 @@ public class AdminOptions {
 	@RequestMapping(value = "/admin/createOption", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> createOption(@RequestBody CreateOptionDto body) {
-		DataResponse<String> dataRes= new DataResponse<String>();
+		DataResponse<OptionResponseDto> dataRes= new DataResponse<OptionResponseDto>();
+		ModelMapper modelMapper = new ModelMapper();
 		try {
 			Options option = new Options();
 			option.setDescription(body.getDescription());
 			option.setName(body.getName());
 			option.setStatus(1);
 			option.setCreate_date(new Date());
-			optionProductServiceImpl.saveOptionProduct(option);
+			Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
 			dataRes.setCode(200);
 			dataRes.setMessage("Thêm thành công ");
-			dataRes.setData("");
+			dataRes.setData((modelMapper.map(resOption, OptionResponseDto.class)));
 			return new ResponseEntity<>(dataRes,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
