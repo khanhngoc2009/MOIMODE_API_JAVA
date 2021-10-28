@@ -46,8 +46,9 @@ public class AdminOptionValue {
 	public ResponseEntity<?> createOptionValue(@RequestBody BodyCreateOptionValue body) {
 		DataResponse<String> dataRes = new DataResponse<String>();
 		try {
-			Options option = optionsServiceImpl.getById(body.getOption_id());
-			if(option != null) {
+			
+			if(optionsServiceImpl.checkOptionExist(body.getOption_id())) {
+				Options option = optionsServiceImpl.getById(body.getOption_id());
 				int size = body.getListValue().size();
 				for(int i=0;i<size;i++) {
 					OptionValue option_value = new OptionValue();
@@ -131,8 +132,8 @@ public class AdminOptionValue {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<OptionValueDTO> dataRes = new DataResponseList<OptionValueDTO>();
 		try {
-			Options option = optionsServiceImpl.getById(option_id);
-			if(option != null) {
+			if(optionsServiceImpl.checkOptionExist(option_id)) {
+				Options option = optionsServiceImpl.getById(option_id);
 				 List<OptionValue> listOptionValue =   optionValueServiceImpl.getAllOptionValueByOption(option);
 				 int size = listOptionValue.size();
 				 List<OptionValueDTO> optionVaDTOs = new ArrayList<OptionValueDTO>();

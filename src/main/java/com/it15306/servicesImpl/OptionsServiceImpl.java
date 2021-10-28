@@ -31,6 +31,12 @@ public class OptionsServiceImpl implements OptionProductService{
 		// TODO Auto-generated method stub
 		return optionProductRepository.getOne(option_id);
 	}
+	
+	
+	public boolean checkOptionExist(Integer option_id) {
+		// TODO Auto-generated method stub
+		return optionProductRepository.existsById(option_id);
+	}
 
 	@Override
 	public Options saveOptionProduct(Options option) {

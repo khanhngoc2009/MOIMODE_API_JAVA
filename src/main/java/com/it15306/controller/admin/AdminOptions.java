@@ -70,8 +70,8 @@ public class AdminOptions {
 			Options option = new Options();
 			option.setId(dto.getOption_id());
 			Option_Product op_pr = optionsProductsServiceImpl.getOption(option);
-			if(op_pr!=null) {
-				dataRes.setCode(201);
+			if(op_pr != null ) {
+				dataRes.setCode(HttpStatus.FOUND.value());
 				dataRes.setMessage("Bạn không thể xoá option này ");
 				return new ResponseEntity<>(dataRes,HttpStatus.FOUND);
 			}else {
@@ -95,8 +95,9 @@ public class AdminOptions {
 	public ResponseEntity<?> updateOption(@RequestBody UpdateOptionDto dto) {
 		DataResponse<Options> dataRes= new DataResponse<Options>();
 		try {
-			Options option = optionProductServiceImpl.getById(dto.getId());
-			if(option!=null) {
+			
+			if(optionProductServiceImpl.checkOptionExist(dto.getId())) {
+				Options option = optionProductServiceImpl.getById(dto.getId());
 				option.setDescription(dto.getDescription());
 				option.setStatus(dto.getStatus());
 				option.setName(dto.getName());
