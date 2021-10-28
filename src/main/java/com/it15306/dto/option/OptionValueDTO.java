@@ -3,7 +3,7 @@ package com.it15306.dto.option;
 
 
 public class OptionValueDTO {
-	
+	private Integer id;
 	private String value_name;
 	private Integer option_id;
 	
@@ -22,5 +22,12 @@ public class OptionValueDTO {
 	public void setOption_id(Integer option_id) {
 		this.option_id = option_id;
 	}
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }
