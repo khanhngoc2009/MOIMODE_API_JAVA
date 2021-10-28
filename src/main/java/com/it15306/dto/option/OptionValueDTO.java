@@ -1,6 +1,6 @@
 package com.it15306.dto.option;
 
-
+import com.it15306.entities.Options;
 
 public class OptionValueDTO {
 	private Integer id;
@@ -15,13 +15,7 @@ public class OptionValueDTO {
 		this.value_name = value_name;
 	}
 
-	public Integer getOption_id() {
-		return option_id;
-	}
 
-	public void setOption_id(Integer option_id) {
-		this.option_id = option_id;
-	}
 
 	public Integer getId() {
 		return id;
@@ -30,4 +24,15 @@ public class OptionValueDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Integer getOption_id() {
+		return option_id;
+	}
+
+	public void setOption_id(Integer option_id) {
+		this.option_id = option_id;
+	}
+
+	
+	
 }

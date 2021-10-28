@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.option.OptionValueDTO;
@@ -128,7 +129,7 @@ public class AdminOptionValue {
 	@ResponseBody
 	public ResponseEntity<?> findByOptionId(@PathVariable Integer option_id) {
 		ModelMapper modelMapper = new ModelMapper();
-		DataResponseList<String> dataRes = new DataResponseList<String>();
+		DataResponseList<OptionValueDTO> dataRes = new DataResponseList<OptionValueDTO>();
 		try {
 			Options option = optionsServiceImpl.getById(option_id);
 			if(option != null) {
@@ -137,11 +138,13 @@ public class AdminOptionValue {
 				 List<OptionValueDTO> optionVaDTOs = new ArrayList<OptionValueDTO>();
 				 for(int i = 0;i<size;i++) {
 					 OptionValueDTO value = (modelMapper.map(listOptionValue.get(i), OptionValueDTO.class));
+					 value.setOption_id(option_id);
 					 optionVaDTOs.add(value);
 				 }
 				dataRes.setCode(HttpStatus.OK.value());
 				dataRes.setMessage("Thanh cong");
 				dataRes.setCount(size);
+				dataRes.setListData(optionVaDTOs);
 				return new ResponseEntity<>(dataRes,HttpStatus.OK);
 			}
 			else {
