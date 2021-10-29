@@ -8,6 +8,7 @@ public class Voucherdto {
 	
 	
 	private Integer voucher_id;
+	private String codeVoucher;
 	private Date create_time;
 	private Date start_time;
 	private Date end_time;
@@ -22,6 +23,19 @@ public class Voucherdto {
 	}
 	public void setVoucher_id(Integer voucher_id) {
 		this.voucher_id = voucher_id;
+	}
+	
+	/**
+	 * @return the codeVoucher
+	 */
+	public String getCodeVoucher() {
+		return codeVoucher;
+	}
+	/**
+	 * @param codeVoucher the codeVoucher to set
+	 */
+	public void setCodeVoucher(String codeVoucher) {
+		this.codeVoucher = codeVoucher;
 	}
 	public Date getCreate_time() {
 		return create_time;

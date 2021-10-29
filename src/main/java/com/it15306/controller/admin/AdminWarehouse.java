@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.PageDto;
 import com.it15306.dto.WarehouseDTO;
 import com.it15306.services.WarehouseService;
 
@@ -25,9 +26,9 @@ public class AdminWarehouse {
 	@Autowired
 	WarehouseService warehouseService;
 	
-	@GetMapping("/admin/listWarehouse")
+	@PostMapping("/admin/listWarehouse")
 	@ResponseBody
-	public ResponseEntity<List<WarehouseDTO>>  getAll() {
+	public ResponseEntity<List<WarehouseDTO>>  getAll(@RequestBody PageDto data) {
 	List<WarehouseDTO> list=warehouseService.getAllWarehouses();
 		
 		if( list.isEmpty()) {
