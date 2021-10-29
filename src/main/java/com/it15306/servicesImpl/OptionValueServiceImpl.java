@@ -23,9 +23,9 @@ public class OptionValueServiceImpl implements OptionValueService {
 	@Autowired private OptionValueRepository optionValueRepository;
 	
 	@Override
-	public List<OptionValue> getAllOptionValueByOption(Integer option_id) {
+	public List<OptionValue> getAllOptionValueByOption(Options option) {
 		// TODO Auto-generated method stub
-		return null;
+		return optionValueRepository.findAllOptionValue(option);
 	}
 
 	@Override
@@ -51,5 +51,6 @@ public class OptionValueServiceImpl implements OptionValueService {
 		// TODO Auto-generated method stub
 		return optionValueRepository.deleteByOption(option);
 	}
+	
 	
 }

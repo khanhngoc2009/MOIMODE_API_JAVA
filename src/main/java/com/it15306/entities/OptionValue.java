@@ -32,7 +32,7 @@ public class OptionValue {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "value_id")
-	private Integer value_id;
+	private Integer id;
 	
 	
 	private String value_name;
@@ -41,12 +41,18 @@ public class OptionValue {
 	@JoinColumn(name = "option_id")
 	private Options option = new Options();
 
-	public Integer getValue_id() {
-		return value_id;
+	
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setValue_id(Integer value_id) {
-		this.value_id = value_id;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getValue_name() {

@@ -22,7 +22,11 @@ import com.it15306.entities.User;
 public interface OptionsRepository extends JpaRepository<Options, Integer>  {
 	final String SELECT_ALL = "SELECT op FROM Options op WHERE op.status= 1";
 	
+	final String FIND_BY_ID = "SELECT op FROM Options op WHERE op.option_id= :option_id";
+	
 	@Query(SELECT_ALL)
 	Page<Options> getOptions(Pageable page);
 	
+	@Query(SELECT_ALL)
+	Options findByOptionId(@Param("option_id") Integer option_id);
 }
