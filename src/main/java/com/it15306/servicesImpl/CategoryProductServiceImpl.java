@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.it15306.dto.WarehouseDTO;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.category.PageCategoryDTO;
+import com.it15306.dto.category.categoryParent;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Warehouse;
@@ -209,5 +210,12 @@ public class CategoryProductServiceImpl implements CategoryService{
 			});
 		}
 		return listdto;
+	}
+
+	@Override
+	public categoryParent getCategoryByID(Integer category_id) {
+		//categoryRepository.SelectCategoryParentByID(category_id);
+		
+		return modelMapper.map(categoryRepository.SelectCategoryParentByID(category_id), categoryParent.class);
 	}
 }

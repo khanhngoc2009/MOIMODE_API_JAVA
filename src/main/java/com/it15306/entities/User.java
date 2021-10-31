@@ -64,7 +64,8 @@ public class User {
 	@JoinColumn(name = "ward_id")
 	private Ward ward = new Ward();
 	
-	
+	@OneToMany(mappedBy = "user")
+	private List<ReviewProduct> reviewProducts;
 
 	@OneToMany(mappedBy = "user")
 	private List<Cart> cart = new ArrayList<>();

@@ -29,11 +29,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String COUNT_CATEGORY_PARENT_BY_ID = "SELECT count(category_id) FROM Category c WHERE c.type = 2 and c.category_parent_id =:id";
 	
 //	loc list
-	final String SELECT_ALL_NAME_TIME ="";
-	final String SELECT_ALL_NAME_TIME_STATUS ="";
-	final String SELECT_ALL_NAME_STARTTIME_ENDTIME ="";
-	final String SELECT_ALL_NAME_STARTTIME_ENDTIME_STATUS ="";
-	final String SELECT_ALL_NAME_PARENTNAME_STARTTIME_ENDTIME_STATUS ="";
+	final String SELECT_CATEGORY_BY_ID ="SELECT c FROM Category c WHERE c.id =:id";
+
 	
 	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like %?1% and "
 									+ "c.category_id like %?2% and c.create_date  between ?3 "
@@ -78,6 +75,9 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	
 	@Query(COUNT_CATEGORY_PARENT_BY_ID)
 	Integer countCategoryParentByID(@Param("id") Integer ID);
+	
+	@Query(SELECT_CATEGORY_BY_ID)
+	Category SelectCategoryParentByID(@Param("id") Integer ID);
 	
 	@Query(value = SELECT_ALL_FILTER, nativeQuery=true)
 	Page<Category> selectAllCategoryParentPage(@Param("name") String name,@Param("parentID") String parentID,
