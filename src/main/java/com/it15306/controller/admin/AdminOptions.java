@@ -22,10 +22,16 @@ import com.it15306.dto.option.CreateOptionDto;
 import com.it15306.dto.option.DeleteOptionDto;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.option.OptionResponseDto;
+import com.it15306.dto.option.OptionValueClientDto;
+import com.it15306.dto.option.OptionValueDTO;
 import com.it15306.dto.option.UpdateOptionDto;
 import com.it15306.dto.product.ProductDTO;
+import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
+import com.it15306.entities.Option_Sku_Value;
 import com.it15306.entities.Options;
+import com.it15306.servicesImpl.OptionValueServiceImpl;
+import com.it15306.servicesImpl.OptionValueSkuServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 
@@ -39,21 +45,50 @@ public class AdminOptions {
 	@Autowired
 	private OptionsProductsServiceImpl optionsProductsServiceImpl;
 	
+	@Autowired
+	OptionValueServiceImpl optionValueServiceImpl;
+	
+	@Autowired OptionValueSkuServiceImpl optionValueSkuServiceImpl;
 	@RequestMapping(value = "/admin/createOption", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> createOption(@RequestBody CreateOptionDto body) {
-		DataResponse<OptionResponseDto> dataRes= new DataResponse<OptionResponseDto>();
+	public ResponseEntity<?> createOption(@RequestBody List<CreateOptionDto> bod) {
+		DataResponseList<OptionDTO> dataRes= new DataResponseList<OptionDTO>();
 		ModelMapper modelMapper = new ModelMapper();
 		try {
-			Options option = new Options();
-			option.setDescription(body.getDescription());
-			option.setName(body.getName());
-			option.setStatus(1);
-			option.setCreate_date(new Date());
-			Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
+			List<OptionDTO> list = new ArrayList<OptionDTO>();
+			try {
+				for(int b=0;b<bod.size();b++) {
+					CreateOptionDto body = bod.get(b);
+					Options option = new Options();
+					option.setName(body.getName());
+					option.setType(body.getOptionTypeId());
+					int size = body.getValue().size();
+					List<OptionValueClientDto> op = new ArrayList<OptionValueClientDto>();
+					for(int i=0;i< size ;i++) {
+						OptionValue option_value = new OptionValue();
+						option_value.setOption(option);
+						option_value.setValue_name(body.getValue().get(i));
+						OptionValue v= optionValueServiceImpl.saveOptionValue(option_value);
+						OptionValueClientDto ov = (modelMapper.map(v, OptionValueClientDto.class));
+						Option_Sku_Value osv = new Option_Sku_Value();
+						osv.setOption_sku_id(ov.getId());
+						osv.setOption_value_id(ov.getId());
+						optionValueSkuServiceImpl.save(osv);
+						op.add(ov);
+					}
+					option.setStatus(1);
+					option.setCreate_date(new Date());
+					Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
+					OptionDTO o = (modelMapper.map(resOption, OptionDTO.class));
+					o.setOption_values(op);
+					list.add(o);
+				}
+			} catch (Exception e) {
+				
+			}
 			dataRes.setCode(200);
 			dataRes.setMessage("Thêm thành công ");
-			dataRes.setData((modelMapper.map(resOption, OptionResponseDto.class)));
+			dataRes.setListData(list);
 			return new ResponseEntity<>(dataRes,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception

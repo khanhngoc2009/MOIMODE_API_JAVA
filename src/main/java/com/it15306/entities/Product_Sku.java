@@ -41,7 +41,7 @@ public class Product_Sku {
 	private double price;
 	private int quantity_remain;
 	private int quantiy_rest;
-//	private int quantity_total;
+	private int quantity_total;
 	private String url_media;
 	private int status;
 	
@@ -131,14 +131,14 @@ public class Product_Sku {
 	}
 
 
-//	public int getQuantity_total() {
-//		return quantity_total;
-//	}
-//
-//
-//	public void setQuantity_total(int quantity_total) {
-//		this.quantity_total = quantity_total;
-//	}
+	public int getQuantity_total() {
+		return quantity_total;
+	}
+
+
+	public void setQuantity_total(int quantity_total) {
+		this.quantity_total = quantity_total;
+	}
 
 
 	public String getUrl_media() {

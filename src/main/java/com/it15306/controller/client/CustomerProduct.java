@@ -54,13 +54,13 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	@RequestMapping(value = "/getListProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListProductNew", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getListProducts() {
+	public ResponseEntity<?> getListProductNew() {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
+			List<Object> list = this.productServiceImpl.getAllProducts(0,4);
 			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();

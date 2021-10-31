@@ -2,19 +2,8 @@ package com.it15306.dto.product;
 
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.it15306.entities.Product;
-
-public class ProductSkuDto {
-private Integer product_sku_id;
-	
-	private String value_sku;
-	
-	
+public class ProductSkuGetBodyDto {
+	private Integer product_sku_id;
 	private Date create_date;
 	
 	private double price;
@@ -23,13 +12,17 @@ private Integer product_sku_id;
 	private int quantity_total;
 	private String url_media;
 	private int status;
+	private ProductDTO product = new ProductDTO();
+	private String value_sku;
 	
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
 	}
+	
 	public void setProduct_sku_id(Integer product_sku_id) {
 		this.product_sku_id = product_sku_id;
 	}
+	
 	public String getValue_sku() {
 		return value_sku;
 	}
@@ -73,12 +66,16 @@ private Integer product_sku_id;
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+	public ProductDTO getProduct() {
+		return product;
+	}
+	public void setProduct(ProductDTO product) {
+		this.product = product;
+	}
 	public int getQuantiy_rest() {
 		return quantiy_rest;
 	}
 	public void setQuantiy_rest(int quantiy_rest) {
 		this.quantiy_rest = quantiy_rest;
 	}
-	
 }
