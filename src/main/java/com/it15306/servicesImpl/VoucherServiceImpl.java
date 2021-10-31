@@ -9,8 +9,12 @@ import java.util.Optional;
 import org.apache.commons.beanutils.BeanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
 import com.it15306.entities.Voucher;
 import com.it15306.repository.VoucherRepository;
@@ -25,12 +29,17 @@ public class VoucherServiceImpl implements VoucherService {
 	ModelMapper modelMapper;
 
 	@Override
-	public List<Voucherdto> getAllVouchers() {
+	public List<Voucherdto> getAllVouchers(PageDto data) {
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
-		List<Voucher> listenti = voucherRepository.findAllVoucher();
+		//List<Voucher> listenti = voucherRepository.findAllVoucher();
+		Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
+		System.out.println("---------------"+listenti2.getContent().size());
+		listenti2.getContent().forEach(l -> System.out.println(l.getVoucher_id()));
 		Voucherdto dto = new Voucherdto();
 		try {
-			for (Voucher voucher : listenti) {
+			for (Voucher voucher : listenti2.getContent()) {
 				System.out.println(voucher.toString());
 				dto = mapToModel(voucher, null);
 				System.out.println("22222: " + dto.toString());
@@ -158,6 +167,12 @@ public class VoucherServiceImpl implements VoucherService {
 			enti = new Voucher();
 		enti = modelMapper.map(model, Voucher.class);
 		return enti;
+	}
+
+	@Override
+	public Integer count() {
+		
+		return (int) voucherRepository.count();
 	}
 
 }

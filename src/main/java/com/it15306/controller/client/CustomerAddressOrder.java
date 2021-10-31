@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.dto.AddressOrderDTO;
 import com.it15306.dto.DistrictDTO;
+import com.it15306.dto.PageDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.WardDTO;
@@ -32,9 +33,9 @@ public class CustomerAddressOrder {
 	AddressService addressService;
 	
 	
-	@RequestMapping(value = "/getListAddressOrder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getListAddressOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrder() {
+	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrder(@RequestBody PageDto data) {
 		List<AddressOrderDTO> list =addressService.getAllAddressOrder();
 		if(list.isEmpty()) {
 			return ResponseEntity.noContent().build();

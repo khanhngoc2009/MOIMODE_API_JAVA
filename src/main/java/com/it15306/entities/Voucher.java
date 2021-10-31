@@ -34,6 +34,10 @@ public class Voucher {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "voucher_id")
 	private Integer voucher_id;
+	
+	@Column(name = "code_voucher")
+	private String codeVoucher;
+	
 	@Basic
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -49,6 +53,8 @@ public class Voucher {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date end_time;
 	
+	
+	
 	private String title;
 	private String description;
 	private String url;
@@ -62,9 +68,17 @@ public class Voucher {
 	public Integer getVoucher_id() {
 		return voucher_id;
 	}
-
+	
 	public void setVoucher_id(Integer voucher_id) {
 		this.voucher_id = voucher_id;
+	}
+	
+	public String getCodeVoucher() {
+		return codeVoucher;
+	}
+
+	public void setCodeVoucher(String codeVoucher) {
+		this.codeVoucher = codeVoucher;
 	}
 
 	public Date getCreate_time() {

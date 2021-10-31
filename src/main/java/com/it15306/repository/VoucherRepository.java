@@ -5,6 +5,8 @@ import java.util.List;
 //import java.util.Optional;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,9 +27,13 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	final String SELECT_BY_STATUS = "SELECT v FROM Voucher v WHERE v.status =:status";
 	final String SELECT_BY_BETWEEN_TIME = "SELECT v FROM Voucher v WHERE v.start_time >= :start_time and v.end_time <= :end_time";
 	
-
+	final String SELECT_ALL_TYPE_PAGE = "SELECT v FROM Voucher v where v.status = 1";
+	
 	@Query(SELECT_ALL)
 	List<Voucher> findAllVoucher();
+	
+	@Query(SELECT_ALL_TYPE_PAGE)
+	Page<Voucher> findAllVoucherByTypePage(Pageable page);
 	
 	@Query(SELECT_BY_Id)
 	Optional<Voucher> findVoucherById(@Param("voucher_id") Integer voucher_id);

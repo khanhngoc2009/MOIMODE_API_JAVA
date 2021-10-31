@@ -6,13 +6,14 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
 
 @Service
 public interface VoucherService {
-	List<Voucherdto> getAllVouchers();
+	List<Voucherdto> getAllVouchers(PageDto data);
 	
 	Voucherdto getByIdVoucher(Integer voucher_id);
 	
@@ -28,5 +29,6 @@ public interface VoucherService {
 	Voucherdto create(Voucherdto voucherdto);
 	Voucherdto update(Voucherdto voucherdto);
 	Integer delete(Integer voucher_id);
+	Integer count();
 	
 }

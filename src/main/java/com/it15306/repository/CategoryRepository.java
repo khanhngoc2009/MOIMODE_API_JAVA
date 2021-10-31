@@ -27,6 +27,27 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String SELECT_ALL_CATEGORY_PARENT ="select C.category_id , C.category_name, C.type ,C.category_parent_id,C.description, C.url_image, C.status, C.create_date from category C where C.type ='1'";
 	final String COUNT_BY_TYPE = "SELECT count(category_id) FROM Category c WHERE c.type =:type";
 	final String COUNT_CATEGORY_PARENT_BY_ID = "SELECT count(category_id) FROM Category c WHERE c.type = 2 and c.category_parent_id =:id";
+	
+//	loc list
+	final String SELECT_ALL_NAME_TIME ="";
+	final String SELECT_ALL_NAME_TIME_STATUS ="";
+	final String SELECT_ALL_NAME_STARTTIME_ENDTIME ="";
+	final String SELECT_ALL_NAME_STARTTIME_ENDTIME_STATUS ="";
+	final String SELECT_ALL_NAME_PARENTNAME_STARTTIME_ENDTIME_STATUS ="";
+	
+	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like %?1% and "
+									+ "c.category_id like %?2% and c.create_date  between ?3 "
+									+ "and ?4 and status like %?5% and c.type like %?6%";
+	
+	
+	final String test="SELECT * FROM category c where c.category_name like  %?1% ";
+//	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like '%:name%' and "
+//			+ "c.category_id like '%:parentID' and c.create_date  between :startDate "
+//			+ "and :endDate and status like '%:status%' and c.type like '%:type%'";
+//	select * from category where category_name like '%%'  
+//	AND type  LIKE '%1%' and  create_date  between '2021-10-25' and '2021-12-25' and status like '%%' AND category_id like '%21';
+//	
+	
 	@Query(SELECT_ALL)
 	List<Category> findAllCategory();
 	
@@ -57,4 +78,16 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	
 	@Query(COUNT_CATEGORY_PARENT_BY_ID)
 	Integer countCategoryParentByID(@Param("id") Integer ID);
+	
+	@Query(value = SELECT_ALL_FILTER, nativeQuery=true)
+	Page<Category> selectAllCategoryParentPage(@Param("name") String name,@Param("parentID") String parentID,
+											@Param("startDate") String startDate,@Param("endDate") String endDate,
+											@Param("status") String status,@Param("type") Integer type, Pageable page );
+	@Query(value = test, nativeQuery=true)
+	Page<Category> test(@Param("name") String name, Pageable page);
+//	@Query(value = SELECT_ALL_FILTER, nativeQuery=true)
+//	Page<Category> selectAllCategoryParentPage(@Param("name") String name,@Param("parentID") String parentID,
+//											@Param("startDate") String startDate,@Param("endDate") String endDate,
+//											@Param("status") Integer status,@Param("type") Integer type, Pageable page );
+	
 }

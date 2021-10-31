@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
 import com.it15306.services.VoucherService;
@@ -27,13 +28,17 @@ public class CustomerVoucher {
 	
 	@PostMapping("/listVoucher")
 	@ResponseBody
-	public ResponseEntity< List<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
-		List<Voucherdto> list= voucherService.getAllVouchers();
+	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
+		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
+		List<Voucherdto> list= voucherService.getAllVouchers(data);
 		if(list.isEmpty()) {
 			return ResponseEntity.noContent().build();
-		}
-				
-		return ResponseEntity.ok(list);
+		}else {
+			rp.setMessage("Success");
+		rp.setListData(list);
+		rp.setCount(voucherService.count());
+		}	
+		return ResponseEntity.ok(rp);
 	}
 	
 	

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.category.PageCategoryDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 
@@ -22,4 +23,6 @@ public interface CategoryService {
 	CategoryDTO CreateCategory(CategoryDTO data);
 	CategoryDTO updateCategory(CategoryDTO data);
 	Integer countCategoryParentById(Integer category_parent_id);
+	
+	List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type);
 }
