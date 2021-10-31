@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.it15306.dto.WarehouseDTO;
 import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.category.PageCategoryDTO;
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Warehouse;
@@ -184,5 +185,29 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public Integer countCategoryParentById(Integer category_parent_id) {
 
 		return categoryRepository.countCategoryParentByID(category_parent_id);
+	}
+
+	@Override
+	public List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type) {
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		String status;
+		if(data.getName()== null) data.setName("");
+		if(data.getParentName()== null) data.setParentName("");
+		if(data.getStatus()== null || data.getStatus().equals("")) { 
+			status="";
+		}else {
+			status=String.valueOf(data.getStatus());
+		}
+		Page<Category> pc2 = categoryRepository.selectAllCategoryParentPage(data.getName(), data.getParentName(), data.getStartTime(), 
+				data.getEndTime(),status , type, paging);
+		List<Category> lst2=pc2.getContent();
+		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
+		if(lst2.size() > 0) {
+			lst2.forEach(d -> {
+				CategoryDTO n=mapToModel(d, null);				
+				listdto.add(n);
+			});
+		}
+		return listdto;
 	}
 }

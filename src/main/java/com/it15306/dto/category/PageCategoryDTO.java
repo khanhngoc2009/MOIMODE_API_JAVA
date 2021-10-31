@@ -93,6 +93,11 @@ public class PageCategoryDTO {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
+	@Override
+	public String toString() {
+		return "PageCategoryDTO [page=" + page + ", take=" + take + ", name=" + name + ", status=" + status
+				+ ", parentName=" + parentName + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+	}
 
 	
 	
