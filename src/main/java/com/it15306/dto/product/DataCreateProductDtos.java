@@ -7,18 +7,18 @@ import com.it15306.dto.option.OptionValueDTO;
 
 public class DataCreateProductDtos {
 	private DataProductBodyDtos product;
-	private List<OptionDTO> options;
-//	private List<OptionValueDTO> option_values;
+	private List<Integer> listOption;
 	public DataProductBodyDtos getProduct() {
 		return product;
 	}
 	public void setProduct(DataProductBodyDtos product) {
 		this.product = product;
 	}
-	public List<OptionDTO> getOptions() {
-		return options;
+	public List<Integer> getListOption() {
+		return listOption;
 	}
-	public void setOptions(List<OptionDTO> options) {
-		this.options = options;
+	public void setListOption(List<Integer> listOption) {
+		this.listOption = listOption;
 	}
+	
 }
