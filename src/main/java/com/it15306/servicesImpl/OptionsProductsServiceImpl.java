@@ -17,6 +17,11 @@ public class OptionsProductsServiceImpl {
 		
 		return optionProductsRespository.findByIdOption(option);
 	}
+	
+	public Option_Product save(Option_Product option_product) {
+		
+		return optionProductsRespository.save(option_product);
+	}
 
 	
 }
