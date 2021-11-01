@@ -55,7 +55,9 @@ public class Product {
 	
 	@OneToMany(mappedBy = "product")
 	private List<Option_Product> options_products = new ArrayList<>();
-
+	
+	@OneToMany
+	private List<ReviewProduct> reviewProducts;
 	
 	public List<Product_Sku> getProduct_sku() {
 		return product_sku;

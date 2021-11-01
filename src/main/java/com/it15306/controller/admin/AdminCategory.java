@@ -20,7 +20,9 @@ import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.category.PageCategoryDTO;
+import com.it15306.dto.category.ResponCategoryChildent;
 import com.it15306.dto.category.ResponCategoryParent;
+import com.it15306.dto.category.categoryParent;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
@@ -31,7 +33,8 @@ public class AdminCategory {
 	@Autowired 
 	CategoryService categoryService;
 	
-	
+	@Autowired
+	ModelMapper modelMapper;
 	@RequestMapping(value = "/admin/createCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
@@ -127,24 +130,39 @@ public class AdminCategory {
 	
 	@RequestMapping(value = "/admin/ListCategoryChildent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<DataResponseList<CategoryDTO>> ListCategoryChildent(@RequestBody PageCategoryDTO pagedata) {
-		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
-		List<CategoryDTO> lis=new ArrayList<CategoryDTO>();
+	public ResponseEntity<DataResponseList<ResponCategoryChildent>> ListCategoryChildent(@RequestBody PageCategoryDTO pagedata) {
+		DataResponseList<ResponCategoryChildent> data = new DataResponseList<ResponCategoryChildent>();
+		List<CategoryDTO> lisdata=new ArrayList<CategoryDTO>();
+		List<ResponCategoryChildent> lisdatarespon=new ArrayList<ResponCategoryChildent>();
 		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")|| pagedata.getStartTime().equals(null)) {
-			lis=categoryService.getAllCategoryChildent();
+			lisdata=categoryService.getAllCategoryChildent();
 		}else {
-			lis=categoryService.getAllCategoryPage(pagedata, 2);
+			lisdata=categoryService.getAllCategoryPage(pagedata, 2);
 		}
 		
 		try {
-			if(lis.size() > 0) {
+			lisdata.forEach(ct->{
+				System.out.println("-------1111-------");
+				ResponCategoryChildent cd=new ResponCategoryChildent();
+				//categoryParent parent=	modelMapper.map(categoryService.getCategoryByID(ct.getCategory_parent_id()), categoryParent.class);
+				cd.setId(ct.getId());
+				cd.setName(ct.getName());
+				cd.setCreate_date(ct.getCreate_date());
+				cd.setStatus(ct.getStatus());
+				cd.setType(ct.getType());
+				cd.setDescription(ct.getDescription());
+				cd.setCategoryParent(categoryService.getCategoryByID(ct.getCategory_parent_id()));	
+				lisdatarespon.add(cd);
+			});
+			if(lisdatarespon.size() > 0) {
+				System.out.println("-------2222-------");
 				data.setCount(categoryService.countCategoryChildent());
 				data.setMessage("Success");
-				data.setListData(lis);
+				data.setListData(lisdatarespon);
 				return ResponseEntity.ok(data);
 				}else {
 					data.setMessage("Fail");
-					return ResponseEntity.noContent().build();
+				return ResponseEntity.noContent().build();
 				}
 				
 		
