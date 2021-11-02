@@ -22,6 +22,8 @@ public class OptionsProductsServiceImpl {
 		
 		return optionProductsRespository.save(option_product);
 	}
-
+	public void save_value(Integer option_id,Integer product_id) {
+		optionProductsRespository.saveValue(option_id, product_id);
+	}
 	
 }

@@ -42,6 +42,7 @@ public class Options {
 	private String name;
 	private String description;
 	private Integer status;
+	private Integer type;
 	
 	
 	@OneToMany(mappedBy = "option")
@@ -124,6 +125,16 @@ public class Options {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+
+	public Integer getType() {
+		return type;
+	}
+
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 

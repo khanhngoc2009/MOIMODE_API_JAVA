@@ -10,6 +10,7 @@ public class OptionDTO {
 	private Integer id;
 	private String name;
 	private String description;
+	private Integer type;
 	private List<OptionValueClientDto> option_values = new ArrayList<>();
 	
 	public List<OptionValueClientDto> getOption_values() {
@@ -43,6 +44,14 @@ public class OptionDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }
