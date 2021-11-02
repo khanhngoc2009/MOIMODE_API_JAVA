@@ -29,7 +29,7 @@ public class CustomerDistrict {
 	@Autowired
 	private DistrictServiceImpl districtServiceImpl;
 
-	@RequestMapping(value = "/getListDistricts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/district/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<DistrictDTO> getListDistrict() {
 		ModelMapper modelMapper = new ModelMapper();

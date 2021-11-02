@@ -57,10 +57,8 @@ public class AdminProduct {
 	@Autowired
 	private OptionValueServiceImpl optionValueServiceImpl;
 	
-//	@Autowired
-//	private ProductS optionValueServiceImpl;
 
-	@RequestMapping(value = "/admin/createProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> createProduct(@RequestBody DataCreateProductDtos body) {
 		DataResponse<Integer> res=  new DataResponse<Integer>();
@@ -98,7 +96,7 @@ public class AdminProduct {
 		}
 	}
 
-	@RequestMapping(value = "/admin/getListSku", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-sku/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListSku(@RequestBody ListSkuCreateDto body) {
 		DataResponseList<ProductSkuGetBodyDto> res=  new DataResponseList<ProductSkuGetBodyDto>();
@@ -147,7 +145,7 @@ public class AdminProduct {
 	
 	
 	
-	@RequestMapping(value = "/admin/getAllProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getAllProducts(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
@@ -176,6 +174,30 @@ public class AdminProduct {
 		}
 		
 	}
+	
+	@RequestMapping(value = "/admin/product-sku/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> updateListSku(@RequestBody PageDto dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<String> data = new DataResponseList<String>();
+		long count = (long) this.productServiceImpl.getCountAdmin();
+		try {
+			
+			
+			
+			
+			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+		
+	}
+	
+	
 	
 	
 //	public List<String> mergeToArray(List<String> array1,List<String> array2) {

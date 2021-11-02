@@ -10,7 +10,10 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.DataResponseList;
+import com.it15306.dto.PageDto;
 import com.it15306.dto.UserDTO;
 import com.it15306.entities.District;
 import com.it15306.entities.Province;
@@ -100,21 +105,32 @@ public class AdminUser {
 		return userDTO;
 	}
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/admin/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public List<UserDTO> getAll() {
-		ModelMapper modelMapper = new ModelMapper();
-		List<User> users = this.userService.getAllUsers();
-		List<UserDTO> userDTOs =new ArrayList<UserDTO>();
-		if (users.size() > 0) {
-			
-			for (int i = 0; i < users.size(); i++) {
-				userDTOs.add(modelMapper.map(users.get(i), UserDTO.class));
+	public ResponseEntity<?> getAll(PageDto dto) {
+		DataResponseList<UserDTO> dataRes = new DataResponseList<UserDTO>();
+		try {
+			ModelMapper modelMapper = new ModelMapper();
+			List<User> users = this.userService.getAllUsers();
+			List<UserDTO> userDTOs =new ArrayList<UserDTO>();
+			if (users.size() > 0) {
+				
+				for (int i = 0; i < users.size(); i++) {
+					userDTOs.add(modelMapper.map(users.get(i), UserDTO.class));
+				}
 			}
-			return userDTOs;
+			dataRes.setMessage("Thanh cong");
+			dataRes.setCode(200);
+			dataRes.setListData(userDTOs);
+			return new ResponseEntity<>( dataRes,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			dataRes.setMessage("That bai");
+//			dataRes.setListData(null)
+			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 		}
-		return userDTOs;
-
+		
 	}
 
 }

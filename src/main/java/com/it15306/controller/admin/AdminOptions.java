@@ -49,7 +49,7 @@ public class AdminOptions {
 	OptionValueServiceImpl optionValueServiceImpl;
 	
 	@Autowired OptionValueSkuServiceImpl optionValueSkuServiceImpl;
-	@RequestMapping(value = "/admin/createOption", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/option/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> createOption(@RequestBody List<CreateOptionDto> bod) {
 		DataResponseList<OptionDTO> dataRes= new DataResponseList<OptionDTO>();
@@ -154,7 +154,7 @@ public class AdminOptions {
 //		}
 //		
 //	}
-	@RequestMapping(value = "/admin/listOption", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/option/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> listOption() {
 		DataResponseList<OptionResponseDto> dataRes= new DataResponseList<OptionResponseDto>();

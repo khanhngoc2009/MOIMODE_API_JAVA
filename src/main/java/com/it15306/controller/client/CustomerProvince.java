@@ -25,7 +25,7 @@ public class CustomerProvince {
 	@Autowired
 	private ProvinceServiceImpl provinceServiceImpl;
 
-	@RequestMapping(value = "/getListProvinces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/province/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<ProvinceDTO> getListProvinces() {
 		ModelMapper modelMapper = new ModelMapper();
