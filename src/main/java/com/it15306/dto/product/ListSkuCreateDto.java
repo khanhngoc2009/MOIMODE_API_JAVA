@@ -6,6 +6,7 @@ public class ListSkuCreateDto {
 
 	private Integer product_id;
 	private List<String> list_sku;
+	private List<String> list_id;
 	public Integer getProduct_id() {
 		return product_id;
 	}
@@ -17,6 +18,12 @@ public class ListSkuCreateDto {
 	}
 	public void setList_sku(List<String> list_sku) {
 		this.list_sku = list_sku;
+	}
+	public List<String> getList_id() {
+		return list_id;
+	}
+	public void setList_id(List<String> list_id) {
+		this.list_id = list_id;
 	}
 	
 	

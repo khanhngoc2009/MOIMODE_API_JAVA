@@ -9,11 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
+import com.it15306.entities.Sku;
 import com.it15306.repository.ProductRepository;
 import com.it15306.repository.ProductSkuRepository;
 import com.it15306.repository.SkuRepository;
@@ -110,6 +112,15 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public Product_Sku saveProductSku(Product_Sku p_u) {
 		return productSkuRepository.save(p_u);
+	}
+	
+	public Iterable<Sku> saveListSku(List<Sku> listSku) {
+		Iterable<Sku> iterableSku = listSku;
+		return skuRepository.saveAll(iterableSku);
+	}
+	
+	public void saveSku(Integer product_sku_id,Integer option_sku_id) {
+		 skuRepository.saveValue(product_sku_id,option_sku_id);
 	}
 }
 

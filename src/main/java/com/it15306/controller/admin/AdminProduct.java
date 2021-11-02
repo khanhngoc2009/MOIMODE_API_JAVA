@@ -30,9 +30,11 @@ import com.it15306.dto.product.ProductSkuGetBodyDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
+import com.it15306.entities.Option_Sku_Value;
 import com.it15306.entities.Options;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
+import com.it15306.entities.Sku;
 import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
@@ -55,6 +57,8 @@ public class AdminProduct {
 	@Autowired
 	private OptionValueServiceImpl optionValueServiceImpl;
 	
+//	@Autowired
+//	private ProductS optionValueServiceImpl;
 
 	@RequestMapping(value = "/admin/createProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -63,6 +67,7 @@ public class AdminProduct {
 		Option_Product op_pr = new Option_Product();
 		Product product = new Product();
 		Category category = new Category();
+		
 		try {
 			 // them san pham
 			product.setCreate_date(new Date());
@@ -75,13 +80,10 @@ public class AdminProduct {
 			product.setProduct_name(body.getProduct().getProduct_name());
 			Product p =  productServiceImpl.saveProduct(product);
 			// them vao ban option_product
-			Integer sizeListOption =  body.getListOption().size();
+			int sizeListOption =  body.getListOption().size();
 			if(sizeListOption>0) {
 				for(int i=0;i<sizeListOption;i++) {
-					Options op = optionsServiceImpl.getById(body.getListOption().get(i).getId());
-					op_pr.setProduct(p);
-					op_pr.setOption(op);
-					optionsProductsServiceImpl.save(op_pr);
+					optionsProductsServiceImpl.save_value(body.getListOption().get(i).getId(), p.getId());
 				}
 			}
 			res.setCode(200);
@@ -90,6 +92,8 @@ public class AdminProduct {
 			return new ResponseEntity<>(res,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
+			res.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			res.setMessage("THAT BAI");
 			return new ResponseEntity<>(res,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
@@ -103,6 +107,7 @@ public class AdminProduct {
 		try {
 			int size = body.getList_sku().size();
 			for(int i=0;i<size;i++) {
+				System.out.print(i + "\n");
 				Product_Sku p_u=new Product_Sku();
 				p_u.setCreate_date(new Date());
 				p_u.setPrice(0);
@@ -117,6 +122,16 @@ public class AdminProduct {
 				ProductSkuGetBodyDto product_sku_dto = (modelMapper.map(pro_s, ProductSkuGetBodyDto.class));
 				product_sku_dto.setProduct((modelMapper.map(p, ProductDTO.class)));
 				listProductDtos.add(product_sku_dto);
+			}
+			for(int i=0;i<body.getList_id() .size();i++) {
+				int idSkuProduct =  listProductDtos.get(i).getProduct_sku_id();
+				
+				String[] listRes = body.getList_id().get(i).split("/");
+				for(int j=0;j<listRes.length;j++) {
+					System.out.print(idSkuProduct + "\n");
+					System.out.print(j + "\n");
+					productServiceImpl.saveSku(idSkuProduct,Integer.parseInt(listRes[j]));
+				}
 			}
 			res.setCode(200);
 			res.setMessage("Thanh cong");

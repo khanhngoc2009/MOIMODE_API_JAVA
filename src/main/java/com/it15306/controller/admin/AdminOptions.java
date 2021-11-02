@@ -42,8 +42,8 @@ public class AdminOptions {
 	@Autowired
 	private OptionsServiceImpl optionProductServiceImpl;
 	
-	@Autowired
-	private OptionsProductsServiceImpl optionsProductsServiceImpl;
+//	@Autowired
+//	private OptionsProductsServiceImpl optionsProductsServiceImpl;
 	
 	@Autowired
 	OptionValueServiceImpl optionValueServiceImpl;
@@ -62,6 +62,11 @@ public class AdminOptions {
 					Options option = new Options();
 					option.setName(body.getName());
 					option.setType(body.getOptionTypeId());
+					option.setStatus(1);
+					option.setCreate_date(new Date());
+					Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
+					OptionDTO o = (modelMapper.map(resOption, OptionDTO.class));
+					
 					int size = body.getValue().size();
 					List<OptionValueClientDto> op = new ArrayList<OptionValueClientDto>();
 					for(int i=0;i< size ;i++) {
@@ -70,51 +75,20 @@ public class AdminOptions {
 						option_value.setValue_name(body.getValue().get(i));
 						OptionValue v= optionValueServiceImpl.saveOptionValue(option_value);
 						OptionValueClientDto ov = (modelMapper.map(v, OptionValueClientDto.class));
-						Option_Sku_Value osv = new Option_Sku_Value();
-						osv.setOption_sku_id(ov.getId());
-						osv.setOption_value_id(ov.getId());
-						optionValueSkuServiceImpl.save(osv);
+						optionValueSkuServiceImpl.save(ov.getId());
 						op.add(ov);
 					}
-					option.setStatus(1);
-					option.setCreate_date(new Date());
-					Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
-					OptionDTO o = (modelMapper.map(resOption, OptionDTO.class));
 					o.setOption_values(op);
 					list.add(o);
 				}
+				dataRes.setCode(200);
+				dataRes.setMessage("Thêm thành công ");
+				dataRes.setListData(list);
+				return new ResponseEntity<>(dataRes,HttpStatus.OK);
 			} catch (Exception e) {
-				
-			}
-			dataRes.setCode(200);
-			dataRes.setMessage("Thêm thành công ");
-			dataRes.setListData(list);
-			return new ResponseEntity<>(dataRes,HttpStatus.OK);
-		} catch (Exception e) {
-			// TODO: handle exception
-			dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-			dataRes.setMessage("Thất bại");
-			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
-		}
-	}
-	@RequestMapping(value = "/admin/deleteOption", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<?> deleteOption(@RequestBody DeleteOptionDto dto) {
-		DataResponse<String> dataRes= new DataResponse<String>();
-		try {
-			Options option = new Options();
-			option.setId(dto.getOption_id());
-			Option_Product op_pr = optionsProductsServiceImpl.getOption(option);
-			if(op_pr != null ) {
-				dataRes.setCode(HttpStatus.FOUND.value());
-				dataRes.setMessage("Bạn không thể xoá option này ");
-				return new ResponseEntity<>(dataRes,HttpStatus.FOUND);
-			}else {
-				optionProductServiceImpl.delete(option);
-				dataRes.setCode(200);
-				dataRes.setMessage("Xoá thành công");
-				dataRes.setData("");
-				return new ResponseEntity<>(dataRes,HttpStatus.OK);
+				dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+				dataRes.setMessage("Thất bại");
+				return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 			}
 			
 		} catch (Exception e) {
@@ -123,36 +97,63 @@ public class AdminOptions {
 			dataRes.setMessage("Thất bại");
 			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 		}
-		
 	}
-	@RequestMapping(value = "/admin/updateOption", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<?> updateOption(@RequestBody UpdateOptionDto dto) {
-		DataResponse<Options> dataRes= new DataResponse<Options>();
-		try {
-			
-			if(optionProductServiceImpl.checkOptionExist(dto.getId())) {
-				Options option = optionProductServiceImpl.getById(dto.getId());
-				option.setDescription(dto.getDescription());
-				option.setStatus(dto.getStatus());
-				option.setName(dto.getName());
-				dataRes.setCode(200);
-				dataRes.setMessage("Update thành công");
-				dataRes.setData(option);
-				return new ResponseEntity<>(dataRes,HttpStatus.OK);
-			}else {
-				dataRes.setMessage("Không tồn tại");
-				dataRes.setCode(400);
-				return new ResponseEntity<>(dataRes,HttpStatus.NOT_FOUND);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-			dataRes.setMessage("Thất bại");
-			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
-		}
-		
-	}
+//	@RequestMapping(value = "/admin/deleteOption", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<?> deleteOption(@RequestBody DeleteOptionDto dto) {
+//		DataResponse<String> dataRes= new DataResponse<String>();
+//		try {
+//			Options option = new Options();
+//			option.setId(dto.getOption_id());
+//			Option_Product op_pr = optionsProductsServiceImpl.getOption(option);
+//			if(op_pr != null ) {
+//				dataRes.setCode(HttpStatus.FOUND.value());
+//				dataRes.setMessage("Bạn không thể xoá option này ");
+//				return new ResponseEntity<>(dataRes,HttpStatus.FOUND);
+//			}else {
+//				optionProductServiceImpl.delete(option);
+//				dataRes.setCode(200);
+//				dataRes.setMessage("Xoá thành công");
+//				dataRes.setData("");
+//				return new ResponseEntity<>(dataRes,HttpStatus.OK);
+//			}
+//			
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			dataRes.setMessage("Thất bại");
+//			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
+//		}
+//		
+//	}
+//	@RequestMapping(value = "/admin/updateOption", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<?> updateOption(@RequestBody UpdateOptionDto dto) {
+//		DataResponse<Options> dataRes= new DataResponse<Options>();
+//		try {
+//			
+//			if(optionProductServiceImpl.checkOptionExist(dto.getId())) {
+//				Options option = optionProductServiceImpl.getById(dto.getId());
+//				option.setDescription(dto.getDescription());
+//				option.setStatus(dto.getStatus());
+//				option.setName(dto.getName());
+//				dataRes.setCode(200);
+//				dataRes.setMessage("Update thành công");
+//				dataRes.setData(option);
+//				return new ResponseEntity<>(dataRes,HttpStatus.OK);
+//			}else {
+//				dataRes.setMessage("Không tồn tại");
+//				dataRes.setCode(400);
+//				return new ResponseEntity<>(dataRes,HttpStatus.NOT_FOUND);
+//			}
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			dataRes.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			dataRes.setMessage("Thất bại");
+//			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
+//		}
+//		
+//	}
 	@RequestMapping(value = "/admin/listOption", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> listOption() {

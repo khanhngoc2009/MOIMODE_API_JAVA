@@ -12,8 +12,8 @@ public class OptionValueSkuServiceImpl {
 	
 	@Autowired OptionSkuValueRepository optionSkuValueRepository;
 	
-	public Option_Sku_Value save(Option_Sku_Value op) {
-		return optionSkuValueRepository.save(op);
+	public void save(Integer value) {
+		 optionSkuValueRepository.saveValue(value);
 	}
 	
 }
