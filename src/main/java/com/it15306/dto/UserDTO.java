@@ -116,24 +116,20 @@ private Integer id;
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public UserDTO(Integer id, String email, String username, Integer activated, String photo) {
-//		super();
-//		this.id = id;
-//		this.email = email;
-//		this.username = username;
-//		this.activated = activated;
-//		this.photo = photo;
-//	}
-//	public UserDTO() {
-//		super();
-//	}
+	public UserDTO(Integer id, String email, String username, Integer activated, String photo) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.activated = activated;
+		this.photo = photo;
+	}
+	public UserDTO() {
+		super();
+	}
 	
 //	public UserDTO() {
 ////		super();
-//	}
-	
-
-	
-	
+//	}	
 	
 }
