@@ -43,6 +43,7 @@ private Integer id;
 	private int district_id;
 	private int ward_id;
 	
+	
 	public String getEmail() {
 		return email;
 	}
@@ -114,6 +115,14 @@ private Integer id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public UserDTO(Integer id, String email, String username, Integer activated, String photo) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.activated = activated;
+		this.photo = photo;
 	}
 
 	

@@ -18,6 +18,9 @@ import com.it15306.entities.User;
 @Repository
 public interface ReviewProductRepository extends JpaRepository<ReviewProduct, Integer>  {
 		
-	//final String SELECT_REVIEWPRODUCT_BY_IDPRODUCT = "SELECT r FROM ReviewProduct r where r.";
+	final String SELECT_REVIEWPRODUCT_BY_IDPRODUCT = "SELECT r FROM ReviewProduct r where r.products.id=:id";
+	
+	@Query(SELECT_REVIEWPRODUCT_BY_IDPRODUCT)
+	List<ReviewProduct> findAllReviewProductsByProductId(@Param("id") Integer id);
 
 }

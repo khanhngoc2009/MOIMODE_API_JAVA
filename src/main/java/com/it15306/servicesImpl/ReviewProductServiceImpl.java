@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.UserDTO;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.reviewProduct.ReviewProductDTO;
 import com.it15306.entities.Product;
@@ -79,8 +80,21 @@ public class ReviewProductServiceImpl implements ReviewProductService{
 
 	@Override
 	public List<ReviewProductDTO> getAllReviewProductsByProductId(String id) {
-		//reviewProductRepository.findAllByIdProduct(id);
-		return null;
+		List<ReviewProductDTO> listdto=new ArrayList<ReviewProductDTO>();
+		List<ReviewProduct>  listenti= reviewProductRepository.findAllReviewProductsByProductId(Integer.valueOf(id));
+		if(!listenti.isEmpty()) {
+			System.out.println(listenti.size());
+			listenti.forEach(l->{
+				ReviewProductDTO rv=new ReviewProductDTO();
+				UserDTO user=new UserDTO();
+				user = modelMapper.map(l.getUser(), UserDTO.class);				
+				rv = modelMapper.map(l, ReviewProductDTO.class);
+				rv.setUserdto(user);
+				listdto.add(rv);
+				System.out.println("id: "+l.getId());
+			});
+		}
+		return listdto;
 	}
 	
 	
