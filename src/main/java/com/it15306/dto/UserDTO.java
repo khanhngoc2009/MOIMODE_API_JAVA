@@ -124,6 +124,10 @@ private Integer id;
 		this.activated = activated;
 		this.photo = photo;
 	}
+	
+	public UserDTO() {
+		
+	}
 
 	
 	
