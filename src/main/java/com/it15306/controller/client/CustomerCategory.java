@@ -1,31 +1,26 @@
 package com.it15306.controller.client;
 
+import com.it15306.config.DataResponseList;
+import com.it15306.dto.PageDto;
+import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.category.PageCategoryParent;
+import com.it15306.entities.Category;
+import com.it15306.servicesImpl.CategoryProductServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.it15306.config.DataResponseList;
-import com.it15306.dto.PageDto;
-import com.it15306.dto.ProvinceDTO;
-import com.it15306.dto.UserDTO;
-import com.it15306.dto.category.CategoryDTO;
-import com.it15306.dto.category.PageCategoryParent;
-import com.it15306.entities.Category;
-import com.it15306.entities.Province;
-import com.it15306.entities.User;
-import com.it15306.servicesImpl.CategoryProductServiceImpl;
+
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
@@ -34,7 +29,7 @@ public class CustomerCategory {
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
-	@RequestMapping(value = "/category/category-parent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/category-parent/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListCategoryParent(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
@@ -64,7 +59,7 @@ public class CustomerCategory {
 		}
 	}
 	
-	@RequestMapping(value = "/category/category-children", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/Category-children/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
 		ModelMapper modelMapper = new ModelMapper();

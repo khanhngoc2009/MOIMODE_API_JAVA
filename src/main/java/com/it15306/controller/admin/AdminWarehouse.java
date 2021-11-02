@@ -26,7 +26,7 @@ public class AdminWarehouse {
 	@Autowired
 	WarehouseService warehouseService;
 	
-	@PostMapping("/admin/listWarehouse")
+	@PostMapping("/admin/warehouse/list")
 	@ResponseBody
 	public ResponseEntity<List<WarehouseDTO>>  getAll(@RequestBody PageDto data) {
 	List<WarehouseDTO> list=warehouseService.getAllWarehouses();
@@ -48,7 +48,7 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(warehouseDTO);
 	}
 	
-	@PostMapping("/admim/createWarehouse")
+	@PostMapping("/admim/warehouse/create")
 	@ResponseBody
 	public ResponseEntity<WarehouseDTO>  create(@RequestBody WarehouseDTO warehouseDTO) {
 	WarehouseDTO whDTO =warehouseService.createWarehouse(warehouseDTO);
@@ -59,7 +59,7 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(whDTO);
 	}
 	
-	@PutMapping("/admin/updateWarehouse")
+	@PutMapping("/admin/warehouse/update")
 	@ResponseBody
 	public ResponseEntity<WarehouseDTO>  update(@RequestBody WarehouseDTO warehouseDTO) {
 	WarehouseDTO whDTO =warehouseService.updateWarehouse(warehouseDTO);
@@ -70,7 +70,7 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(whDTO);
 	}
 	
-	@DeleteMapping("/admin/warehouse/{id}")
+	@DeleteMapping("/admin/warehouse/delete/{id}")
 	@ResponseBody
 	public ResponseEntity<Integer>  delete(@PathVariable("id") Integer id) {
 		Integer idresutl =warehouseService.deleteWarehouse(id);

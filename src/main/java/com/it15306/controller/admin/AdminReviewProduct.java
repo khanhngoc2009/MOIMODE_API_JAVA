@@ -25,7 +25,7 @@ public class AdminReviewProduct {
 	@Autowired
 	ReviewProductService reviewProductService;
 	
-	@RequestMapping(value = "/admin/listReviewProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/review-product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<ReviewProductDTO>> getListReviewProduct() {
 		DataResponseList<ReviewProductDTO> list=new DataResponseList<ReviewProductDTO>();
@@ -43,7 +43,7 @@ public class AdminReviewProduct {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "/admin/delete/reviewProduct/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/review-product/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Integer> deletereviewProduct(@PathVariable("id") Integer id) {		
 		try {
