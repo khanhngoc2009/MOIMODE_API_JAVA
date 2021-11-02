@@ -34,7 +34,7 @@ public class CustomerCategory {
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
-	@RequestMapping(value = "/getListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/category-parent/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListCategoryParent(@RequestBody PageDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
@@ -64,7 +64,7 @@ public class CustomerCategory {
 		}
 	}
 	
-	@RequestMapping(value = "/getListCategoryChildren", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/Category-children/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
 		ModelMapper modelMapper = new ModelMapper();

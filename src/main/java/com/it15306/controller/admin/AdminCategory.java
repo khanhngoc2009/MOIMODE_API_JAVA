@@ -35,7 +35,7 @@ public class AdminCategory {
 	
 	@Autowired
 	ModelMapper modelMapper;
-	@RequestMapping(value = "/admin/createCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
@@ -52,7 +52,7 @@ public class AdminCategory {
 		
 	}
 	
-	@RequestMapping(value = "/admin/updateCategory", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public DataResponse<CategoryDTO> updateCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
@@ -67,7 +67,7 @@ public class AdminCategory {
 		
 	}
 	
-	@DeleteMapping("/admin/category/{id}")
+	@DeleteMapping("/admin/category/dalete/{id}")
 	@ResponseBody
 	public ResponseEntity<DataResponse<Integer>> delete(@PathVariable("id") Integer id) {
 		DataResponse<Integer> rp=  new DataResponse<Integer>();
@@ -86,7 +86,7 @@ public class AdminCategory {
 	}
 	
 	
-	@RequestMapping(value = "/admin/ListCategoryParent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category-parent/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<ResponCategoryParent>> getListCategoryParent(@RequestBody PageCategoryDTO pagedata) {
 		DataResponseList<ResponCategoryParent> data = new DataResponseList<ResponCategoryParent>();
@@ -128,7 +128,7 @@ public class AdminCategory {
 		}
 	}
 	
-	@RequestMapping(value = "/admin/ListCategoryChildent", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category-children/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<ResponCategoryChildent>> ListCategoryChildent(@RequestBody PageCategoryDTO pagedata) {
 		DataResponseList<ResponCategoryChildent> data = new DataResponseList<ResponCategoryChildent>();

@@ -26,7 +26,7 @@ public class CustomerVoucher {
 	@Autowired
 	VoucherService voucherService;
 	
-	@PostMapping("/listVoucher")
+	@PostMapping("/voucher/list")
 	@ResponseBody
 	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
 		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
