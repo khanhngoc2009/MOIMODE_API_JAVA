@@ -11,4 +11,6 @@ public interface ReviewProductService {
 	ReviewProductDTO getById(String id);
 	ReviewProductDTO saveReviewProduct(ReviewProductDTO ReviewProduct);
 	Integer delete(Integer id);
+	List<ReviewProductDTO> getAllReviewProductsByProductId(String id);
+	ReviewProductDTO create(ReviewProductDTO data);
 }
