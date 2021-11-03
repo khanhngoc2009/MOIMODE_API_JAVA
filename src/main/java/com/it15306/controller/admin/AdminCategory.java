@@ -67,7 +67,7 @@ public class AdminCategory {
 		
 	}
 	
-	@DeleteMapping("/admin/category/dalete/{id}")
+	@DeleteMapping("/admin/category/delete/{id}")
 	@ResponseBody
 	public ResponseEntity<DataResponse<Integer>> delete(@PathVariable("id") Integer id) {
 		DataResponse<Integer> rp=  new DataResponse<Integer>();
