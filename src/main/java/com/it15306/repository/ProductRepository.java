@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
@@ -53,7 +54,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
 			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
-	
+	final String SELECT_CATEGORY_ID ="select c from Product c where c.category.category_parent_id=:id";
 	
 	
 	@Query(SELECT_ALL)
@@ -76,6 +77,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 	@Query(SELECT_COUNT_CLIENT)
 	long countProductClient();
-
 	
+	
+	@Query(SELECT_CATEGORY_ID)
+	List<Product> findByCategoryIds(@Param("id")Integer id);
 }

@@ -22,6 +22,7 @@ import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Warehouse;
 import com.it15306.repository.CategoryRepository;
+import com.it15306.repository.ProductRepository;
 import com.it15306.services.CategoryService;
 
 
@@ -34,6 +35,8 @@ public class CategoryProductServiceImpl implements CategoryService{
 	@Autowired
 	ModelMapper modelMapper;
 	
+	@Autowired
+	ProductRepository productRepository;
 	
 	@Override
 	public List<Category> getAllCategoryByType(int type,int page,int take) {
@@ -162,13 +165,34 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public Integer delete(Integer id) {
+				
 		Optional<Category> optional= categoryRepository.findById(id);
 		if(optional.isPresent()) {
+		//lay ra category theo id	
+			Category enti=optional.get();
+		if(checkDelete(id, enti.getCategory_parent_id())) {		
 			Category category=optional.get();
 			categoryRepository.delete(category);
 			return category.getId();
 		}
+		}
 		return null;
+	}
+	public Boolean checkDelete(Integer idParent,Integer idChildren) {
+		System.out.println("checkkkkkk");
+		List<Product> lpro =	productRepository.findByCategoryIds(idChildren);
+		System.out.println("checkkkkkk2222");
+		//check theo san pham
+		if(lpro.size() > 0) {
+			return false;
+		}else{
+			Integer count =	this.countCategoryParentById(Integer.valueOf(idParent));
+			if(count > 0) {
+				return false;
+			}else {
+				return true;
+			}			
+		}
 	}
 
 	@Override

@@ -53,8 +53,8 @@ public class Category {
 	@OneToMany(mappedBy = "category")
 	private List<Product> products = new ArrayList<>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Category categoryParent;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private Category categoryParent;
 	/**
 	 * @return the id
 	 */
