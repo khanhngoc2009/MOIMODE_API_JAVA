@@ -142,7 +142,7 @@ public class Authen {
 			}	
 		}
 	}
-	@RequestMapping(value = "/user/forgotPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/user/forgot-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> forgotPassword(@RequestBody BodyForgotPasswordDto body) {
 		User user = userService.getByEmail(body.getEmail());
@@ -191,7 +191,7 @@ public class Authen {
 				return new ResponseEntity<>(eBody,HttpStatus.NOT_FOUND);
 			}
 	   }
-	@RequestMapping(value = "/checkCodeEmail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/check-code-email", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	   public ResponseEntity<?> toCheckCode(@RequestBody CheckCodeDto dto){
 			DataResponse<String> data = new DataResponse<String>();

@@ -54,13 +54,13 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	@RequestMapping(value = "/getListProductNew", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListProductNew() {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			List<Object> list = this.productServiceImpl.getAllProducts(0,4);
+			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
@@ -96,7 +96,7 @@ public class CustomerProduct {
 		}
 		
 	}
-	@RequestMapping(value = "/getListProductByCategory", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list-by-category", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?>  getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto) {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
@@ -139,7 +139,7 @@ public class CustomerProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/getListProductSelling", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list-selling", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListProductSelling() {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
@@ -180,7 +180,7 @@ public class CustomerProduct {
 		
 	}
 
-	@RequestMapping(value = "/getProductDetail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/detail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getProductDetail(@PathVariable Integer product_id) {
 		DataResponse<ProductDetailDto> response = new DataResponse<ProductDetailDto>();
@@ -226,7 +226,7 @@ public class CustomerProduct {
 			return new ResponseEntity<>(response,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
-	@RequestMapping(value = "/getProductSkuPrice", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/sku-price", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();

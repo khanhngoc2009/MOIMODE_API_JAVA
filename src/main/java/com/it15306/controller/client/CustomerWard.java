@@ -31,7 +31,7 @@ public class CustomerWard {
 	
 
 
-	@RequestMapping(value = "/getListWards", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/ward/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<WardDTO> getListWard() {
 		ModelMapper modelMapper = new ModelMapper();

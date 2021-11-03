@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class UploadFile {
-	@PostMapping("/uploadFile")
+	@PostMapping("/upload-file")
 	public String upload(
 		@RequestParam MultipartFile uploadedFile
 	) {
