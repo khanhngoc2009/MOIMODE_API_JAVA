@@ -7,6 +7,7 @@ import com.it15306.entities.Product;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +52,9 @@ public class Category {
 	
 	@OneToMany(mappedBy = "category")
 	private List<Product> products = new ArrayList<>();
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Category categoryParent;
 	/**
 	 * @return the id
 	 */
