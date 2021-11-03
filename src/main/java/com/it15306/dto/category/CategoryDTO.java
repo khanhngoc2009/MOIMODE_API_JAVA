@@ -2,6 +2,8 @@ package com.it15306.dto.category;
 
 import java.util.Date;
 
+import com.it15306.entities.Category;
+
 
 
 public class CategoryDTO {
@@ -17,7 +19,7 @@ public class CategoryDTO {
 	private String name;
 	private String description;
 	private String image;
-	
+	private CategoryDTO categoryParentDTO;
 
 	
 
@@ -104,6 +106,20 @@ public class CategoryDTO {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	/**
+	 * @return the categoryParentDTO
+	 */
+	public CategoryDTO getCategoryParentDTO() {
+		return categoryParentDTO;
+	}
+
+	/**
+	 * @param categoryParentDTO the categoryParentDTO to set
+	 */
+	public void setCategoryParentDTO(CategoryDTO categoryParentDTO) {
+		this.categoryParentDTO = categoryParentDTO;
 	}
 
 	

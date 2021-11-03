@@ -1,5 +1,7 @@
 package com.it15306.controller.admin;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.DataResponseList;
+import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
 import com.it15306.services.VoucherService;
 
@@ -53,5 +57,19 @@ public class AdminVoucher {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.ok(id_voucher);
+	}
+	@PostMapping("/admin/voucher/list")
+	@ResponseBody
+	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
+		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
+		List<Voucherdto> list= voucherService.getAllVouchers(data);
+		if(list.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}else {
+			rp.setMessage("Success");
+		rp.setListData(list);
+		rp.setCount(voucherService.count());
+		}	
+		return ResponseEntity.ok(rp);
 	}
 }
