@@ -93,11 +93,20 @@ public class CategoryProductServiceImpl implements CategoryService{
 //	}
 
 	@Override
-	public List<CategoryDTO> getAllCategoryParent() {
-		List<Category> enti= categoryRepository.selectAllCategoryParent();
+	public List<CategoryDTO> getAllCategoryParent(PageCategoryDTO data) {
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null) {
+			data.setTake(10);
+		}
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		
+		Page<Category> enti= categoryRepository.selectAllCategoryParent(paging);
+
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
-		if(enti.size() > 0) {
-			enti.forEach(d -> {
+		if(enti.getContent().size() > 0) {
+			enti.getContent().forEach(d -> {
 				CategoryDTO n=mapToModel(d, null);				
 				listdto.add(n);
 			});
@@ -106,10 +115,17 @@ public class CategoryProductServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<CategoryDTO> getAllCategoryChildent() {
-		List<Category> enti= categoryRepository.findByType(2);
+	public List<CategoryDTO> getAllCategoryChildent(PageCategoryDTO data) {
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null) {
+			data.setTake(10);
+		}
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		Page<Category> enti= categoryRepository.findByType(2,paging);
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
-		if(enti.size() > 0) {
+		if(enti.getContent().size() > 0) {
 			enti.forEach(d -> {
 				CategoryDTO n=mapToModel(d, null);				
 				listdto.add(n);
@@ -122,11 +138,18 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public CategoryDTO CreateCategory(CategoryDTO data) {
 		System.out.println("-----------CreateCategory2----------");
 		try {
-			Category enti = modelMapper.map(data, Category.class);
-			categoryRepository.save(enti);
-			data.setId(enti.getId());
-			return data;
+				if(data.getCategory_parent_id() != null) {
+					data.setType(2);
+				}else {				
+								
+					data.setType(1);
+				}
+				Category enti = modelMapper.map(data, Category.class);
+				categoryRepository.save(enti);
+				data.setId(enti.getId());
+				return data;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -214,6 +237,12 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type) {
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null) {
+			data.setTake(10);
+		}
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		String status;
 		if(data.getName()== null) data.setName("");
