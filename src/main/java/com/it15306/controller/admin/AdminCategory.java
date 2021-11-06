@@ -40,15 +40,18 @@ public class AdminCategory {
 	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
 		try {
-
+			CategoryDTO dto =categoryService.CreateCategory(body);
+			if(!dto.equals(null)) {
 			rp.setMessage("Success");	
-			rp.setData(categoryService.CreateCategory(body));
+			rp.setData(dto);
 			return ResponseEntity.ok(rp);
+			}
 		} catch (Exception e) {
 
 			rp.setMessage("Fail");	
 			return ResponseEntity.badRequest().build();
 		}
+		return ResponseEntity.badRequest().build();
 		
 	}
 	
@@ -92,7 +95,7 @@ public class AdminCategory {
 		DataResponseList<ResponCategoryParent> data = new DataResponseList<ResponCategoryParent>();
 		List<CategoryDTO> lis = new ArrayList<CategoryDTO>();
 		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")) {
-			lis=categoryService.getAllCategoryParent();
+			lis=categoryService.getAllCategoryParent(pagedata);
 		}else {
 			lis=categoryService.getAllCategoryPage(pagedata, 1);
 		}
@@ -135,7 +138,7 @@ public class AdminCategory {
 		List<CategoryDTO> lisdata=new ArrayList<CategoryDTO>();
 		List<ResponCategoryChildent> lisdatarespon=new ArrayList<ResponCategoryChildent>();
 		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")|| pagedata.getStartTime().equals(null)) {
-			lisdata=categoryService.getAllCategoryChildent();
+			lisdata=categoryService.getAllCategoryChildent(pagedata);
 		}else {
 			lisdata=categoryService.getAllCategoryPage(pagedata, 2);
 		}
