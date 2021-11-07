@@ -64,7 +64,7 @@ public class AdminUser {
 		user.setPassword(hashPass);
 		
 		String nameFile = user.getPhoto();
-		user.setPhoto("http://localhost:9090/storages/"+nameFile);
+		user.setPhoto("http://34.87.157.20:8089/storages/"+nameFile);
 		
 		this.userService.saveUser(user);
 		return user;
@@ -89,7 +89,7 @@ public class AdminUser {
 		
 		if(!oldUser.getPhoto().equalsIgnoreCase(user.getPhoto())) {
 			String nameFile = user.getPhoto();
-			user.setPhoto("http://localhost:9090/storages/"+nameFile);
+			user.setPhoto("http://34.87.157.20:8089/storages/"+nameFile);
 		}
 		
 		user.setId(id);
@@ -104,6 +104,7 @@ public class AdminUser {
 		this.userService.delete(String.valueOf(user.getId()));
 		return userDTO;
 	}
+	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
