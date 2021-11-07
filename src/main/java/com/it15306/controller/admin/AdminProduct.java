@@ -55,12 +55,6 @@ public class AdminProduct {
 	
 	@Autowired
 	private OptionsProductsServiceImpl optionsProductsServiceImpl;
-
-	@Autowired
-	private OptionsServiceImpl optionsServiceImpl;
-	
-	@Autowired
-	private OptionValueServiceImpl optionValueServiceImpl;
 	
 	@Autowired
 	private CategoryProductServiceImpl categoryProductServiceImpl;
@@ -78,7 +72,7 @@ public class AdminProduct {
 			 // them san pham
 			product.setCreate_date(new Date());
 			product.setDescription(body.getProduct().getDescription());
-			product.setImage(body.getProduct().getImage());
+			product.setImage("http://34.87.157.20:8089/storages/"+ body.getProduct().getImage());
 			product.setStatus(1);
 			product.setType(1);
 			category.setId(body.getProduct().getCategory_id());
@@ -120,6 +114,7 @@ public class AdminProduct {
 				p_u.setStatus(1);
 				Product p = productServiceImpl.getById(body.getProduct_id());
 				p_u.setProduct(p);
+				p_u.setUrl_media("");
 				p_u.setQuantity_remain(0);
 				p_u.setQuantiy_rest(0);
 				p_u.setQuantity_total(0);

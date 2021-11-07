@@ -14,9 +14,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.it15306.entities.Category;
+import com.it15306.entities.ImageProduct;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
+import com.it15306.repository.ImageProductRepository;
 import com.it15306.repository.ProductRepository;
 import com.it15306.repository.ProductSkuRepository;
 import com.it15306.repository.SkuRepository;
@@ -29,6 +31,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	@Autowired
 	private SkuRepository skuRepository;
+	
+	@Autowired
+	private ImageProductRepository imageProductRepository;
 	
 	@Autowired
 	private ProductSkuRepository productSkuRepository;
@@ -114,6 +119,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public Product_Sku saveProductSku(Product_Sku p_u) {
 		return productSkuRepository.save(p_u);
+	}
+	public ImageProduct saveImageProduct(ImageProduct i_p) {
+		return imageProductRepository.save(i_p);
 	}
 	
 	public Iterable<Sku> saveListSku(List<Sku> listSku) {
