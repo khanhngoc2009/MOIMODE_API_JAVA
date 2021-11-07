@@ -94,11 +94,11 @@ public class AdminCategory {
 	public ResponseEntity<DataResponseList<ResponCategoryParent>> getListCategoryParent(@RequestBody PageCategoryDTO pagedata) {
 		DataResponseList<ResponCategoryParent> data = new DataResponseList<ResponCategoryParent>();
 		List<CategoryDTO> lis = new ArrayList<CategoryDTO>();
-		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")) {
-			lis=categoryService.getAllCategoryParent(pagedata);
-		}else {
+//		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")) {
+//			lis=categoryService.getAllCategoryParent(pagedata);
+//		}else {
 			lis=categoryService.getAllCategoryPage(pagedata, 1);
-		}
+	//	}
 		List<ResponCategoryParent> lis2=new ArrayList<ResponCategoryParent>();
 		lis.forEach(ct ->{
 			ResponCategoryParent parent =new ResponCategoryParent();
@@ -137,11 +137,11 @@ public class AdminCategory {
 		DataResponseList<ResponCategoryChildent> data = new DataResponseList<ResponCategoryChildent>();
 		List<CategoryDTO> lisdata=new ArrayList<CategoryDTO>();
 		List<ResponCategoryChildent> lisdatarespon=new ArrayList<ResponCategoryChildent>();
-		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")|| pagedata.getStartTime().equals(null)) {
-			lisdata=categoryService.getAllCategoryChildent(pagedata);
-		}else {
+//		if(pagedata.getEndTime() == "" || pagedata.getStartTime().equals("")|| pagedata.getStartTime().equals(null)) {
+//			lisdata=categoryService.getAllCategoryChildent(pagedata);
+//		}else {
 			lisdata=categoryService.getAllCategoryPage(pagedata, 2);
-		}
+		//}
 		
 		try {
 			lisdata.forEach(ct->{

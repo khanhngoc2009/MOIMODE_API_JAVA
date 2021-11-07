@@ -27,7 +27,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String SELECT_ALL_CATEGORY_PARENT ="select C from Category C where C.type ='1' ORDER BY C.create_date desc";
 	final String COUNT_BY_TYPE = "SELECT count(category_id) FROM Category c WHERE c.type =:type";
 	final String COUNT_CATEGORY_PARENT_BY_ID = "SELECT count(category_id) FROM Category c WHERE c.type = 2 and c.category_parent_id =:id";
-	
+//	final String START_DATE="select C.create_date from Category C order by C.create_date desc limit 1";
+//	final String END_DATE="select C.create_date from Category C order by C.create_date asc limit 1";
 //	loc list
 	final String SELECT_CATEGORY_BY_ID ="SELECT c FROM Category c WHERE c.id =:id";
 
@@ -90,4 +91,10 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 //											@Param("startDate") String startDate,@Param("endDate") String endDate,
 //											@Param("status") Integer status,@Param("type") Integer type, Pageable page );
 	
+	
+	
+	@Query(value = "select create_date from category order by create_date asc limit 1", nativeQuery = true)
+	String START_DATE();
+	@Query(value = "select create_date from category order by create_date desc limit 1", nativeQuery = true)
+	String END_DATE();
 }
