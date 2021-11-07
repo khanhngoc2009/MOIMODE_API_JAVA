@@ -23,7 +23,7 @@ private Integer product_sku_id;
 	private int quantity_total;
 	private String url_media;
 	private int status;
-	
+	private int id_image;
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
 	}
@@ -79,6 +79,18 @@ private Integer product_sku_id;
 	}
 	public void setQuantiy_rest(int quantiy_rest) {
 		this.quantiy_rest = quantiy_rest;
+	}
+	/**
+	 * @return the id_image
+	 */
+	public int getId_image() {
+		return id_image;
+	}
+	/**
+	 * @param id_image the id_image to set
+	 */
+	public void setId_image(int id_image) {
+		this.id_image = id_image;
 	}
 	
 }
