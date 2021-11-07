@@ -97,7 +97,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 		if(data.getPage() == null) {
 			data.setPage(0);
 		}
-		if(data.getTake() == null) {
+		if(data.getTake() == null || data.getTake() == 0) {
 			data.setTake(10);
 		}
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
