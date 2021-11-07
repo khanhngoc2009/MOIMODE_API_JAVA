@@ -301,4 +301,11 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public String endDate() {
 		return categoryRepository.END_DATE();
 	}
+	
+	
+	
+	public Category getCayegoryChildrenById(Integer id) {
+		
+		return categoryRepository.findById(id).get();
+	}
 }

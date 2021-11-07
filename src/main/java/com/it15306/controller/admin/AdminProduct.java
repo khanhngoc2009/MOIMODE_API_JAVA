@@ -39,6 +39,7 @@ import com.it15306.entities.Options;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
+import com.it15306.servicesImpl.CategoryProductServiceImpl;
 import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
@@ -60,6 +61,9 @@ public class AdminProduct {
 	
 	@Autowired
 	private OptionValueServiceImpl optionValueServiceImpl;
+	
+	@Autowired
+	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
 
 	@RequestMapping(value = "/admin/product/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -153,67 +157,49 @@ public class AdminProduct {
 	public ResponseEntity<?> getAllProducts(@RequestBody DataBodyListProductDto dto) throws ParseException {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductResponseAdminDto> data = new DataResponseList<ProductResponseAdminDto>();
-		long count = (long) this.productServiceImpl.getCountAdmin();
-	    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
-		String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
-		String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
-		String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? dto.getEnd_date() : "2099-01-01"; 
-		String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
-		List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
-		List<Product> prs = new ArrayList<Product>();
-		System.out.print(obj.size());
-		for (int i=0; i<obj.size(); i++){
-			   Object[] row = (Object[]) obj.get(i);
-			   Product pr = new Product();
-			   pr.setId((Integer) ((BigInteger) row[0]).intValue());
-			   pr.setProduct_name((String) row[1]);
-			   pr.setCreate_date((Date) row[2]);
-			   pr.setDescription((String) row[3]);
-			   pr.setStatus((Integer) row[5]);
-			   pr.setType((Integer) row[6]);
-			   pr.setImage((String) row[7]);
-			   prs.add(pr);
-		}
-		List<ProductResponseAdminDto> productDTOs =new ArrayList<ProductResponseAdminDto>();
-		if (prs.size() > 0) {
-			for (int i = 0; i < prs.size(); i++) {
-				ProductResponseAdminDto prDto = (modelMapper.map(prs.get(i), ProductResponseAdminDto.class));
-				prDto.setCategory_name(prs.get(i).getCategory().getName());
-				productDTOs.add(prDto);
+		
+		try {
+			long count = (long) this.productServiceImpl.getCountAdmin();
+		    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
+			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
+			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
+			String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? dto.getEnd_date() : "2099-01-01"; 
+			String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
+			List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
+			List<Product> prs = new ArrayList<Product>();
+			System.out.print(obj.size());
+			for (int i=0; i<obj.size(); i++){
+				   Object[] row = (Object[]) obj.get(i);
+				   Product pr = new Product();
+				   pr.setId((Integer) ((BigInteger) row[0]).intValue());
+				   pr.setProduct_name((String) row[1]);
+				   pr.setCreate_date((Date) row[2]);
+				   pr.setDescription((String) row[3]);
+				   Category cate = categoryProductServiceImpl.getCayegoryChildrenById((Integer) ((BigInteger) row[4]).intValue());
+				   pr.setCategory(cate);
+				   pr.setStatus((Integer) row[5]);
+				   pr.setType((Integer) row[6]);
+				   pr.setImage((String) row[7]);
+				   prs.add(pr);
 			}
+			List<ProductResponseAdminDto> productDTOs =new ArrayList<ProductResponseAdminDto>();
+			if (prs.size() > 0) {
+				for (int i = 0; i < prs.size(); i++) {
+					ProductResponseAdminDto prDto = (modelMapper.map(prs.get(i), ProductResponseAdminDto.class));
+					prDto.setCategory_name(prs.get(i).getCategory().getName());
+					productDTOs.add(prDto);
+				}
+			}
+			data.setCode(200);
+			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setListData(productDTOs);
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		data.setCode(200);
-		data.setCount(Integer.parseInt(String.valueOf(count)));
-		data.setListData(productDTOs);
-		data.setMessage("Success");
-		return new ResponseEntity<>(data,HttpStatus.OK);
-//		try {
-//			Category category = new Category();
-//			category.setId(dto.getCategory_id()!=null ? dto.getCategory_id() : null);
-//			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
-//			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
-//			String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? dto.getEnd_date() : "2021-12-31";
-//			String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
-//			List<Product> prs = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category,start_date,end_start,name,status);
-//			
-//			List<ProductResponseAdminDto> productDTOs =new ArrayList<ProductResponseAdminDto>();
-//			if (prs.size() > 0) {
-//				for (int i = 0; i < prs.size(); i++) {
-//					ProductResponseAdminDto prDto = (modelMapper.map(prs.get(i), ProductResponseAdminDto.class));
-//					prDto.setCategory_name(prs.get(i).getCategory().getName());
-//					productDTOs.add(prDto);
-//				}
-//			}
-//			data.setCode(200);
-//			data.setCount(Integer.parseInt(String.valueOf(count)));
-//			data.setListData(productDTOs);
-//			data.setMessage("Success");
-//			return new ResponseEntity<>(data,HttpStatus.OK);
-//		} catch (Exception e) {
-//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-//			data.setMessage("Fail");
-//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-//		}
 		
 	}
 	
