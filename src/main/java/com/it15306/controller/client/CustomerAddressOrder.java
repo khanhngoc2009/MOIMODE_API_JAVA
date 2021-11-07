@@ -33,7 +33,7 @@ public class CustomerAddressOrder {
 	AddressService addressService;
 	
 	
-	@RequestMapping(value = "/getListAddressOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrder(@RequestBody PageDto data) {
 		List<AddressOrderDTO> list =addressService.getAllAddressOrder();
@@ -43,7 +43,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(list);	 
 	}
 	
-	@RequestMapping(value = "/getListAddressOrderByUserID/{user_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/list/{user_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrderByUserID(@PathVariable("user_id")String user_id) {
 		List<AddressOrderDTO> list =addressService.getAllAddressByUserId(user_id);	
@@ -55,7 +55,7 @@ public class CustomerAddressOrder {
 	}
 	
 	
-	@RequestMapping(value = "/AddressOrder/detail/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/detail/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<AddressOrderDTO> detailAddressOrderByID(@PathVariable("id") Integer id) {
 
@@ -67,7 +67,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(dto);	
 	}
 	
-	@RequestMapping(value = "/AddressOrder/create/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/create/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<AddressOrderDTO> create(@RequestBody AddressOrderDTO addressOrderDTO) {
 		
@@ -79,7 +79,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(addressService.createAddressOrder(addressOrderDTO));
 	}
 	
-	@RequestMapping(value = "/AddressOrder/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Integer> delete(@PathVariable("id") Integer id) {
 		Integer resullid = addressService.deleteAddressOrder(id);
@@ -89,7 +89,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok( resullid);
 	}
 	
-	@RequestMapping(value = "/AddressOrder/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public AddressOrder update(@RequestBody AddressOrderDTO addressOrderDTO) {
 		

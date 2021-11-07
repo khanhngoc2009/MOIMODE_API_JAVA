@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.it15306.dto.PageDto;
 import com.it15306.dto.Voucherdto;
+import com.it15306.entities.Order;
 import com.it15306.entities.Voucher;
+import com.it15306.repository.OrderRepository;
 import com.it15306.repository.VoucherRepository;
 import com.it15306.services.VoucherService;
 
@@ -28,14 +30,17 @@ public class VoucherServiceImpl implements VoucherService {
 	@Autowired
 	ModelMapper modelMapper;
 
+	@Autowired
+	OrderRepository orderRepository;
+
 	@Override
 	public List<Voucherdto> getAllVouchers(PageDto data) {
-		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
-		
+		Pageable paging = PageRequest.of(data.getPage(), data.getTake());
+
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
-		//List<Voucher> listenti = voucherRepository.findAllVoucher();
+		// List<Voucher> listenti = voucherRepository.findAllVoucher();
 		Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
-		System.out.println("---------------"+listenti2.getContent().size());
+		System.out.println("---------------" + listenti2.getContent().size());
 		listenti2.getContent().forEach(l -> System.out.println(l.getVoucher_id()));
 		Voucherdto dto = new Voucherdto();
 		try {
@@ -126,7 +131,7 @@ public class VoucherServiceImpl implements VoucherService {
 			Voucher vo = new Voucher();
 			if (optional.isPresent()) {
 				Voucher voucher = optional.get();
-				vo =mapToEnyities(voucherdto, voucher);
+				vo = mapToEnyities(voucherdto, voucher);
 				voucherRepository.save(vo);
 				return mapToModel(vo, null);
 			}
@@ -139,18 +144,27 @@ public class VoucherServiceImpl implements VoucherService {
 	@Override
 	public Integer delete(Integer voucher_id) {
 		try {
-
-			Optional<Voucher> optional = voucherRepository.findById(voucher_id);
-			Voucher vo = new Voucher();
-			if (optional.isPresent()) {
-				Voucher voucher = optional.get();
-				voucherRepository.delete(voucher);
-				return voucher.getVoucher_id();
+			if (checkdalete(voucher_id)) {
+				Optional<Voucher> optional = voucherRepository.findById(voucher_id);
+				if (optional.isPresent()) {
+					Voucher voucher = optional.get();
+					voucherRepository.delete(voucher);
+					return voucher.getVoucher_id();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return null;
+	}
+
+	public Boolean checkdalete(Integer voucher_id) {
+		List<Order> list = orderRepository.findOrderByIdVoucher(voucher_id);
+		if (list.size() > 0) {
+			return false;
+		}
+		return true;
 	}
 
 	public Voucherdto mapToModel(Voucher enti, Voucherdto model)
@@ -171,7 +185,7 @@ public class VoucherServiceImpl implements VoucherService {
 
 	@Override
 	public Integer count() {
-		
+
 		return (int) voucherRepository.count();
 	}
 

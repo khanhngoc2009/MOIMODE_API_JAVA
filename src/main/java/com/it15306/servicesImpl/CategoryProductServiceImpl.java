@@ -22,6 +22,7 @@ import com.it15306.entities.Category;
 import com.it15306.entities.Product;
 import com.it15306.entities.Warehouse;
 import com.it15306.repository.CategoryRepository;
+import com.it15306.repository.ProductRepository;
 import com.it15306.services.CategoryService;
 
 
@@ -34,6 +35,8 @@ public class CategoryProductServiceImpl implements CategoryService{
 	@Autowired
 	ModelMapper modelMapper;
 	
+	@Autowired
+	ProductRepository productRepository;
 	
 	@Override
 	public List<Category> getAllCategoryByType(int type,int page,int take) {
@@ -89,12 +92,28 @@ public class CategoryProductServiceImpl implements CategoryService{
 //		
 //	}
 
+	
 	@Override
-	public List<CategoryDTO> getAllCategoryParent() {
-		List<Category> enti= categoryRepository.selectAllCategoryParent();
+	public List<CategoryDTO> getAllCategoryParent(PageCategoryDTO data) {
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null || data.getTake() == 0) {
+			data.setTake(10);
+		}
+		if(data.getStartTime()== null) {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null) {
+			data.setEndTime(endDate());
+		}
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		
+		Page<Category> enti= categoryRepository.selectAllCategoryParent(paging);
+
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
-		if(enti.size() > 0) {
-			enti.forEach(d -> {
+		if(enti.getContent().size() > 0) {
+			enti.getContent().forEach(d -> {
 				CategoryDTO n=mapToModel(d, null);				
 				listdto.add(n);
 			});
@@ -103,10 +122,25 @@ public class CategoryProductServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public List<CategoryDTO> getAllCategoryChildent() {
-		List<Category> enti= categoryRepository.findByType(2);
+	public List<CategoryDTO> getAllCategoryChildent(PageCategoryDTO data) {
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null) {
+			data.setTake(10);
+		}
+		if(data.getStartTime()== null) {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null) {
+			data.setEndTime(endDate());
+		}
+		System.out.println("check date"+startDate());
+		System.out.println("check date"+endDate());
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
+		Page<Category> enti= categoryRepository.findByType(2,paging);
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
-		if(enti.size() > 0) {
+		if(enti.getContent().size() > 0) {
 			enti.forEach(d -> {
 				CategoryDTO n=mapToModel(d, null);				
 				listdto.add(n);
@@ -119,11 +153,18 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public CategoryDTO CreateCategory(CategoryDTO data) {
 		System.out.println("-----------CreateCategory2----------");
 		try {
-			Category enti = modelMapper.map(data, Category.class);
-			categoryRepository.save(enti);
-			data.setId(enti.getId());
-			return data;
+				if(data.getCategory_parent_id() != null) {
+					data.setType(2);
+				}else {				
+								
+					data.setType(1);
+				}
+				Category enti = modelMapper.map(data, Category.class);
+				categoryRepository.save(enti);
+				data.setId(enti.getId());
+				return data;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -162,13 +203,34 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public Integer delete(Integer id) {
+				
 		Optional<Category> optional= categoryRepository.findById(id);
 		if(optional.isPresent()) {
+		//lay ra category theo id	
+			Category enti=optional.get();
+		if(checkDelete(id, enti.getCategory_parent_id())) {		
 			Category category=optional.get();
 			categoryRepository.delete(category);
 			return category.getId();
 		}
+		}
 		return null;
+	}
+	public Boolean checkDelete(Integer idParent,Integer idChildren) {
+		System.out.println("checkkkkkk");
+		List<Product> lpro =	productRepository.findByCategoryIds(idChildren);
+		System.out.println("checkkkkkk2222");
+		//check theo san pham
+		if(lpro.size() > 0) {
+			return false;
+		}else{
+			Integer count =	this.countCategoryParentById(Integer.valueOf(idParent));
+			if(count > 0) {
+				return false;
+			}else {
+				return true;
+			}			
+		}
 	}
 
 	@Override
@@ -190,6 +252,21 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type) {
+		if(data.getStatus() == null) {
+			data.setStatus(null);
+		}
+		if(data.getPage() == null) {
+			data.setPage(0);
+		}
+		if(data.getTake() == null) {
+			data.setTake(10);
+		}
+		if(data.getStartTime() == null || data.getStartTime() == "") {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null || data.getEndTime()== "") {
+			data.setEndTime(endDate());
+		}
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		String status;
 		if(data.getName()== null) data.setName("");
@@ -217,5 +294,11 @@ public class CategoryProductServiceImpl implements CategoryService{
 		//categoryRepository.SelectCategoryParentByID(category_id);
 		
 		return modelMapper.map(categoryRepository.SelectCategoryParentByID(category_id), categoryParent.class);
+	}
+	public String startDate() {
+		return categoryRepository.START_DATE();
+	}
+	public String endDate() {
+		return categoryRepository.END_DATE();
 	}
 }

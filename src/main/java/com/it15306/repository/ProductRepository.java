@@ -1,25 +1,20 @@
 package com.it15306.repository;
 
-import java.util.Date;
+import com.it15306.entities.Category;
+import com.it15306.entities.Product;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-//import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+//import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+//import org.springframework.data.jpa.repository.Modifying;
+//import org.springframework.data.repository.query.Param;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.dto.product.ProductDTO;
-import com.it15306.entities.Category;
-import com.it15306.entities.Product;
-import com.it15306.entities.User;
 
 
 @Repository
@@ -60,9 +55,11 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
 			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
+
 	
 //	select * from product 
 //	where category_id like '%1%' and create_date between '2021-10-26' and '2021-11-02' and product_name like '%%'
+	final String SELECT_CATEGORY_ID ="select c from Product c where c.category.category_parent_id=:id";
 	
 	
 	
@@ -93,6 +90,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
 	@Query(SELECT_COUNT_CLIENT)
 	long countProductClient();
-
 	
+	
+	@Query(SELECT_CATEGORY_ID)
+	List<Product> findByCategoryIds(@Param("id")Integer id);
 }

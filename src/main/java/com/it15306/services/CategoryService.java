@@ -19,8 +19,8 @@ public interface CategoryService {
 	Integer delete(Integer id);
 	Integer countCategoryParent();
 	Integer countCategoryChildent();
-	List<CategoryDTO> getAllCategoryParent();
-	List<CategoryDTO> getAllCategoryChildent();
+	List<CategoryDTO> getAllCategoryParent(PageCategoryDTO data);
+	List<CategoryDTO> getAllCategoryChildent(PageCategoryDTO pagedata);
 	CategoryDTO CreateCategory(CategoryDTO data);
 	CategoryDTO updateCategory(CategoryDTO data);
 	Integer countCategoryParentById(Integer category_parent_id);

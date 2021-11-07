@@ -21,20 +21,21 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String SELECT_ALL = "SELECT c FROM Category c";
 	final String SELECT_BY_NAME = "SELECT c FROM Category c WHERE c.name =:name";
 	final String SELECT_BY_PARENT_ID = "SELECT c FROM Category c WHERE c.type =:type AND c.category_parent_id =:category_parent_id  ";
-	final String SELECT_BY_TYPE = "SELECT c FROM Category c WHERE c.type =:type";
+	final String SELECT_BY_TYPE = "SELECT c FROM Category c WHERE c.type =:type ORDER BY c.create_date desc";
 	final String SELECT_BETWEEN_CREATE_DATE = "SELECT c FROM Category c WHERE c.create_date BETWEEN :ngay_bat_dau AND :ngay_ket_thuc";
 	final String SELECT_BY_STATUS = "SELECT c FROM Category c WHERE c.status =:status";
-	final String SELECT_ALL_CATEGORY_PARENT ="select C.category_id , C.category_name, C.type ,C.category_parent_id,C.description, C.url_image, C.status, C.create_date from category C where C.type ='1'";
+	final String SELECT_ALL_CATEGORY_PARENT ="select C from Category C where C.type ='1' ORDER BY C.create_date desc";
 	final String COUNT_BY_TYPE = "SELECT count(category_id) FROM Category c WHERE c.type =:type";
 	final String COUNT_CATEGORY_PARENT_BY_ID = "SELECT count(category_id) FROM Category c WHERE c.type = 2 and c.category_parent_id =:id";
-	
+//	final String START_DATE="select C.create_date from Category C order by C.create_date desc limit 1";
+//	final String END_DATE="select C.create_date from Category C order by C.create_date asc limit 1";
 //	loc list
 	final String SELECT_CATEGORY_BY_ID ="SELECT c FROM Category c WHERE c.id =:id";
 
 	
 	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like %?1% and "
 									+ "c.category_id like %?2% and c.create_date  between ?3 "
-									+ "and ?4 and status like %?5% and c.type like %?6%";
+									+ "and ?4 and status like %?5% and c.type like %?6% ORDER BY c.create_date desc";
 	
 	
 	final String test="SELECT * FROM category c where c.category_name like  %?1% ";
@@ -55,7 +56,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	Page<Category> findByCategoryParentId(@Param("category_parent_id") Integer category_parent_id,@Param("type") Integer type, Pageable page);
 	
 	@Query(SELECT_BY_TYPE)
-	List<Category> findByType(@Param("type") Integer type);
+	Page<Category> findByType(@Param("type") Integer type, Pageable page);
 	
 	@Query(SELECT_BY_TYPE)
 	Page<Category> findByTypePage(@Param("type") Integer type, Pageable page);
@@ -66,8 +67,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	@Query(SELECT_BY_STATUS)
 	List<Category> findByStatus(@Param("status") Integer status);
 	
-	@Query(value = SELECT_ALL_CATEGORY_PARENT, nativeQuery=true)
-	List<Category> selectAllCategoryParent();
+	@Query(value = SELECT_ALL_CATEGORY_PARENT)
+	Page<Category> selectAllCategoryParent(Pageable page);
 	
 
 	@Query(COUNT_BY_TYPE)
@@ -90,4 +91,10 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 //											@Param("startDate") String startDate,@Param("endDate") String endDate,
 //											@Param("status") Integer status,@Param("type") Integer type, Pageable page );
 	
+	
+	
+	@Query(value = "select create_date from category order by create_date asc limit 1", nativeQuery = true)
+	String START_DATE();
+	@Query(value = "select create_date from category order by create_date desc limit 1", nativeQuery = true)
+	String END_DATE();
 }
