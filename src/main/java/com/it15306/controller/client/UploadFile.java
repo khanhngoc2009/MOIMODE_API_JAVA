@@ -36,8 +36,9 @@ public class UploadFile {
 			uploadedFile.transferTo(savedFile);
 			data.setCode(200);
 			FileImageDto res = new FileImageDto();
-//			res.setId();
-//			data.setData("Thanh cong");
+			res.setId(null);
+			res.setUrl(uploadedFile.getName());
+			data.setData(res);
 			data.setMessage("Thanh cong");
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
