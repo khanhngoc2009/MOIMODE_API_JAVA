@@ -1,21 +1,17 @@
 package com.it15306.repository;
 
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-
 import org.springframework.stereotype.Repository;
 
-
-import com.it15306.entities.Product;
+import com.it15306.entities.Cart;
 import com.it15306.entities.Product_Sku;
-import com.it15306.entities.Sku;
 
 
 @Repository
-public interface ProductSkuRepository extends PagingAndSortingRepository<Product_Sku, Integer>  {
+public interface ProductSkuRepository extends JpaRepository<Product_Sku, Integer>  {
 //	final String SELECT_BY_OPTION_VALUE="select s"
 //			+ " from sku s join s.product_sku p_sku"
 //			+ " where p_sku.product =:product AND"
@@ -33,4 +29,7 @@ public interface ProductSkuRepository extends PagingAndSortingRepository<Product
 //			@Param("option_2") Integer option_value_2,
 //			@Param("option_3") Integer option_value_3
 //	);
+	final String SELECT_PRODUCT_SKU_BY_ID = "SELECT P FROM Product_Sku  P WHERE P.product_sku_id=:id";
+	@Query(SELECT_PRODUCT_SKU_BY_ID)
+	Product_Sku findProductSKUById(@Param("id") Integer id);
 }

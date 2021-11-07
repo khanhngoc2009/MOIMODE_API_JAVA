@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.tomcat.util.bcel.Const;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
@@ -29,6 +30,7 @@ import com.it15306.services.CategoryService;
 
 @Service("CategoryProductServiceImpl")
 public class CategoryProductServiceImpl implements CategoryService{
+	Long totalElement;
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
@@ -126,7 +128,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 		if(data.getPage() == null) {
 			data.setPage(0);
 		}
-		if(data.getTake() == null) {
+		if(data.getTake() == null || data.getTake() == 0) {
 			data.setTake(10);
 		}
 		if(data.getStartTime()== null) {
@@ -152,12 +154,16 @@ public class CategoryProductServiceImpl implements CategoryService{
 	@Override
 	public CategoryDTO CreateCategory(CategoryDTO data) {
 		System.out.println("-----------CreateCategory2----------");
+		String URI="http://34.87.157.20:8089/storages/";
 		try {
 				if(data.getCategory_parent_id() != null) {
 					data.setType(2);
 				}else {				
 								
 					data.setType(1);
+				}
+				if(data.getImage() != null) {
+					data.setImage(URI+data.getImage());
 				}
 				Category enti = modelMapper.map(data, Category.class);
 				categoryRepository.save(enti);
@@ -258,7 +264,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 		if(data.getPage() == null) {
 			data.setPage(0);
 		}
-		if(data.getTake() == null) {
+		if(data.getTake() == null || data.getTake() == 0) {
 			data.setTake(10);
 		}
 		if(data.getStartTime() == null || data.getStartTime() == "") {
@@ -267,6 +273,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 		if(data.getEndTime()== null || data.getEndTime()== "") {
 			data.setEndTime(endDate());
 		}
+		System.out.println(data.getName());
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		String status;
 		if(data.getName()== null) data.setName("");
@@ -286,6 +293,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 				listdto.add(n);
 			});
 		}
+		totalElement=pc2.getTotalElements();
 		return listdto;
 	}
 
@@ -307,5 +315,13 @@ public class CategoryProductServiceImpl implements CategoryService{
 	public Category getCayegoryChildrenById(Integer id) {
 		
 		return categoryRepository.findById(id).get();
+	}
+	public Long getTototelement(Long sobanghi) {
+		return sobanghi;
+	}
+
+	@Override
+	public Long totalement() {
+		return totalElement;
 	}
 }
