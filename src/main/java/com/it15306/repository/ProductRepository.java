@@ -24,7 +24,14 @@ import com.it15306.entities.User;
 
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>  {
-	final String SELECT_ALL = "SELECT p FROM Product p order by p.create_date desc";
+//	final String SELECT_ALL = "SELECT p FROM Product p"
+//			+ " where p.category.id like %:category_id% "
+//			+ " order by p.create_date desc";
+	final String SELECT_ALL = "select * from product \r\n"
+			+ "where category_id like CONCAT('%', ?1, '%') "
+			+ "and create_date between ?2 "
+			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ " and status like CONCAT('%', ?5, '%')";
 	
 	final String SELECT_COUNT_ADMIN = "SELECT count(p) FROM Product p ";
 	
@@ -54,10 +61,20 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 			+ " from Product p join p.product_sku sku"
 			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
 	
+//	select * from product 
+//	where category_id like '%1%' and create_date between '2021-10-26' and '2021-11-02' and product_name like '%%'
 	
 	
-	@Query(SELECT_ALL)
-	Page<Product> findAllProductsAdmin(Pageable page );
+	
+	@Query( value = SELECT_ALL,
+			  nativeQuery = true)
+	Page<Object> findAllProductsAdmin(Pageable page ,
+			@Param("category_id") String category_id,
+			@Param("start_date") String start_date,
+			@Param("end_date") String end_date,
+			@Param("name") String name,
+			@Param("status") String status
+			);
 	
 	@Query(SELECT_COUNT_ADMIN)
 	long countProductAdmin();

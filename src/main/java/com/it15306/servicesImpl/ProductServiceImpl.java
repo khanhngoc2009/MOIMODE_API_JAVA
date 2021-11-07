@@ -1,6 +1,7 @@
 package com.it15306.servicesImpl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,14 +55,15 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		}
 	}
 	
-	public List<Product> getAllProductsAdmin(int page,int take) {
+	public List<Object> getAllProductsAdmin(int page,int take,String category_id,String start_date, String end_date, String name, String status ) {
 		Pageable paging =  PageRequest.of(page, take,Sort.by("create_date"));
-        Page<Product> pagedResult = productRepository.findAllProductsAdmin(paging);
+		System.out.print("k" + category_id + "k\n");
+        Page<Object> pagedResult = productRepository.findAllProductsAdmin(paging, category_id, start_date, end_date, name, status);
        
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {
-        	return new ArrayList<Product>();
+        	return new ArrayList<Object>();
 		}
 	}
 	
