@@ -113,13 +113,15 @@ public class AdminCategory {
 		});
 		try {
 			if(lis.size() > 0) {
-				data.setCount(categoryService.countCategoryParent());
+				Long n=categoryService.totalement();
+				Integer sobanghi=n.intValue();
+				data.setCount(sobanghi);
 				data.setMessage("Success");
 				data.setListData(lis2);
 				return  ResponseEntity.ok(data);
 				}else {
-					data.setMessage("Fail");
-					return  ResponseEntity.noContent().build();
+
+					 return  ResponseEntity.ok(data);
 				}
 	
 		
@@ -143,6 +145,7 @@ public class AdminCategory {
 			lisdata=categoryService.getAllCategoryPage(pagedata, 2);
 		//}
 		
+			
 		try {
 			lisdata.forEach(ct->{
 				System.out.println("-------1111-------");
@@ -159,13 +162,15 @@ public class AdminCategory {
 			});
 			if(lisdatarespon.size() > 0) {
 				System.out.println("-------2222-------");
-				data.setCount(categoryService.countCategoryChildent());
+				Long n=categoryService.totalement();
+				Integer sobanghi=n.intValue();
+				data.setCount(sobanghi);
 				data.setMessage("Success");
 				data.setListData(lisdatarespon);
 				return ResponseEntity.ok(data);
 				}else {
-					data.setMessage("Fail");
-				return ResponseEntity.noContent().build();
+					
+					return  ResponseEntity.ok(data);
 				}
 				
 		

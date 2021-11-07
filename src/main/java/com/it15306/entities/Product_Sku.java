@@ -169,6 +169,15 @@ public class Product_Sku {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Product_Sku [product_sku_id=" + product_sku_id + ", value_sku=" + value_sku + ", create_date="
+				+ create_date + ", price=" + price + ", quantity_remain=" + quantity_remain + ", quantiy_rest="
+				+ quantiy_rest + ", quantity_total=" + quantity_total + ", url_media=" + url_media + ", status="
+				+ status + ", product=" + product + ", sku=" + sku + "]";
+	}
 	
 	
 }

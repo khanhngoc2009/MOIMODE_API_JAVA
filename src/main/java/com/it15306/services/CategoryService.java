@@ -26,4 +26,5 @@ public interface CategoryService {
 	Integer countCategoryParentById(Integer category_parent_id);
 	categoryParent getCategoryByID(Integer category_id);
 	List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type);
+	Long totalement();
 }
