@@ -21,10 +21,10 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	final String SELECT_ALL = "SELECT c FROM Category c";
 	final String SELECT_BY_NAME = "SELECT c FROM Category c WHERE c.name =:name";
 	final String SELECT_BY_PARENT_ID = "SELECT c FROM Category c WHERE c.type =:type AND c.category_parent_id =:category_parent_id  ";
-	final String SELECT_BY_TYPE = "SELECT c FROM Category c WHERE c.type =:type";
+	final String SELECT_BY_TYPE = "SELECT c FROM Category c WHERE c.type =:type ORDER BY c.create_date desc";
 	final String SELECT_BETWEEN_CREATE_DATE = "SELECT c FROM Category c WHERE c.create_date BETWEEN :ngay_bat_dau AND :ngay_ket_thuc";
 	final String SELECT_BY_STATUS = "SELECT c FROM Category c WHERE c.status =:status";
-	final String SELECT_ALL_CATEGORY_PARENT ="select C from Category C where C.type ='1'";
+	final String SELECT_ALL_CATEGORY_PARENT ="select C from Category C where C.type ='1' ORDER BY C.create_date desc";
 	final String COUNT_BY_TYPE = "SELECT count(category_id) FROM Category c WHERE c.type =:type";
 	final String COUNT_CATEGORY_PARENT_BY_ID = "SELECT count(category_id) FROM Category c WHERE c.type = 2 and c.category_parent_id =:id";
 	
@@ -34,7 +34,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	
 	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like %?1% and "
 									+ "c.category_id like %?2% and c.create_date  between ?3 "
-									+ "and ?4 and status like %?5% and c.type like %?6%";
+									+ "and ?4 and status like %?5% and c.type like %?6% ORDER BY c.create_date desc";
 	
 	
 	final String test="SELECT * FROM category c where c.category_name like  %?1% ";
