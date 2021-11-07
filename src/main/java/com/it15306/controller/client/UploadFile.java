@@ -15,7 +15,7 @@ import com.it15306.config.DataResponse;
 import com.it15306.dto.FileImageDto;
 
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class UploadFile {
@@ -37,7 +37,7 @@ public class UploadFile {
 			data.setCode(200);
 			FileImageDto res = new FileImageDto();
 			res.setId(null);
-			res.setUrl(uploadedFile.getName());
+			res.setUrl(uploadedFile.getOriginalFilename());
 			data.setData(res);
 			data.setMessage("Thanh cong");
 			return new ResponseEntity<>(data,HttpStatus.OK);

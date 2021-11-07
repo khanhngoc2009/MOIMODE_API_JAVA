@@ -35,7 +35,7 @@ import com.it15306.servicesImpl.OptionValueSkuServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class AdminOptions {

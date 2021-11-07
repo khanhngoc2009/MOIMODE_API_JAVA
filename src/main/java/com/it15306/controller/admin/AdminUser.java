@@ -43,7 +43,7 @@ import com.it15306.repository.UserRepository;
 //import com.it15306.services.ProductService;
 import com.it15306.services.UserServiceImpl;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class AdminUser {
