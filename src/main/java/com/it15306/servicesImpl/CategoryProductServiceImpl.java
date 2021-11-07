@@ -92,6 +92,7 @@ public class CategoryProductServiceImpl implements CategoryService{
 //		
 //	}
 
+	
 	@Override
 	public List<CategoryDTO> getAllCategoryParent(PageCategoryDTO data) {
 		if(data.getPage() == null) {
@@ -99,6 +100,12 @@ public class CategoryProductServiceImpl implements CategoryService{
 		}
 		if(data.getTake() == null || data.getTake() == 0) {
 			data.setTake(10);
+		}
+		if(data.getStartTime()== null) {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null) {
+			data.setEndTime(endDate());
 		}
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		
@@ -122,6 +129,14 @@ public class CategoryProductServiceImpl implements CategoryService{
 		if(data.getTake() == null) {
 			data.setTake(10);
 		}
+		if(data.getStartTime()== null) {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null) {
+			data.setEndTime(endDate());
+		}
+		System.out.println("check date"+startDate());
+		System.out.println("check date"+endDate());
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		Page<Category> enti= categoryRepository.findByType(2,paging);
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
@@ -237,11 +252,20 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type) {
+		if(data.getStatus() == null) {
+			data.setStatus(null);
+		}
 		if(data.getPage() == null) {
 			data.setPage(0);
 		}
 		if(data.getTake() == null) {
 			data.setTake(10);
+		}
+		if(data.getStartTime() == null || data.getStartTime() == "") {
+			data.setStartTime(startDate());
+		}
+		if(data.getEndTime()== null || data.getEndTime()== "") {
+			data.setEndTime(endDate());
 		}
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
 		String status;
@@ -270,5 +294,11 @@ public class CategoryProductServiceImpl implements CategoryService{
 		//categoryRepository.SelectCategoryParentByID(category_id);
 		
 		return modelMapper.map(categoryRepository.SelectCategoryParentByID(category_id), categoryParent.class);
+	}
+	public String startDate() {
+		return categoryRepository.START_DATE();
+	}
+	public String endDate() {
+		return categoryRepository.END_DATE();
 	}
 }
