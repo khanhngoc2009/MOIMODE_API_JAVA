@@ -29,16 +29,22 @@ public class CustomerVoucher {
 	@PostMapping("/voucher/list")
 	@ResponseBody
 	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody PageDto data) {
+		try {
+			
+		
 		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
 		List<Voucherdto> list= voucherService.getAllVouchers(data);
-		if(list.isEmpty()) {
-			return ResponseEntity.noContent().build();
+		if(list.size() > 0) {
+			rp.setListData(list);
+			rp.setCount(voucherService.count());
+			return ResponseEntity.ok(rp);
 		}else {
-			rp.setMessage("Success");
-		rp.setListData(list);
-		rp.setCount(voucherService.count());
+			return ResponseEntity.ok(rp);
 		}	
-		return ResponseEntity.ok(rp);
+		
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
 	
