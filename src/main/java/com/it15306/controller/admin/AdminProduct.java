@@ -31,6 +31,7 @@ import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductResponseAdminDto;
 import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.dto.product.ProductSkuGetBodyDto;
+import com.it15306.dto.product.UpdateProductSkuDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
@@ -154,7 +155,7 @@ public class AdminProduct {
 		DataResponseList<ProductResponseAdminDto> data = new DataResponseList<ProductResponseAdminDto>();
 		
 		try {
-			long count = (long) this.productServiceImpl.getCountAdmin();
+			
 		    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
 			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
 			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
@@ -162,6 +163,7 @@ public class AdminProduct {
 			String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
 			List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
 			List<Product> prs = new ArrayList<Product>();
+			BigInteger count = this.productServiceImpl.getCountAdminByQuery(category_id,start_date,end_start,name,status);
 			System.out.print(obj.size());
 			for (int i=0; i<obj.size(); i++){
 				   Object[] row = (Object[]) obj.get(i);
@@ -186,7 +188,7 @@ public class AdminProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setCount((Integer) ((BigInteger) count).intValue());
 			data.setListData(productDTOs);
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);
@@ -200,14 +202,16 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/product-sku/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> updateListSku(@RequestBody List<ProductSkuDto> dto) {
+	public ResponseEntity<?> updateListSku(@RequestBody List<UpdateProductSkuDto> dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<String> data = new DataResponseList<String>();
 		long count = (long) this.productServiceImpl.getCountAdmin();
 		try {
 			int size = dto.size();
 			for(int i=0;i<size;i++) {
-				Product_Sku p_sku=modelMapper.map(dto.get(i), Product_Sku.class); 
+				UpdateProductSkuDto up = dto.get(i);
+				
+				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class); 
 				productServiceImpl.saveProductSku(p_sku);
 			}
 			data.setCount(Integer.parseInt(String.valueOf(count)));

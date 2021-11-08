@@ -2,6 +2,8 @@ package com.it15306.repository;
 
 import com.it15306.entities.Category;
 import com.it15306.entities.Product;
+
+import java.math.BigInteger;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,11 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 //			+ " where p.category.id like %:category_id% "
 //			+ " order by p.create_date desc";
 	final String SELECT_ALL = "select * from product \r\n"
+			+ "where category_id like CONCAT('%', ?1, '%') "
+			+ "and create_date between ?2 "
+			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ " and status like CONCAT('%', ?5, '%')";
+	final String SELECT_COUNT_ADMIN_QUERY = "select count(*) from product \r\n"
 			+ "where category_id like CONCAT('%', ?1, '%') "
 			+ "and create_date between ?2 "
 			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
@@ -66,6 +73,16 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	@Query( value = SELECT_ALL,
 			  nativeQuery = true)
 	Page<Object> findAllProductsAdmin(Pageable page ,
+			@Param("category_id") String category_id,
+			@Param("start_date") String start_date,
+			@Param("end_date") String end_date,
+			@Param("name") String name,
+			@Param("status") String status
+			);
+	
+	@Query(value = SELECT_COUNT_ADMIN_QUERY,
+			  nativeQuery = true)
+	BigInteger countAdminQuery(
 			@Param("category_id") String category_id,
 			@Param("start_date") String start_date,
 			@Param("end_date") String end_date,

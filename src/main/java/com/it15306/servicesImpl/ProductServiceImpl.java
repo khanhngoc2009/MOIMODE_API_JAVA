@@ -1,5 +1,6 @@
 package com.it15306.servicesImpl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +90,10 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public long getCountAdmin() {
 		return productRepository.countProductAdmin(); 
+	}
+	
+	public BigInteger getCountAdminByQuery(String category_id,String start_date, String end_date, String name, String status ) {
+		return productRepository.countAdminQuery(category_id, start_date, end_date, name, status); 
 	}
 	
 
