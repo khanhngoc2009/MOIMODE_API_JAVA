@@ -23,10 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Orders")
-@Getter
-@Setter
-@Component
+@Table(name = "orders")
 public class Order {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -37,7 +34,7 @@ public class Order {
 	@Column(name = "create_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date create_date;
-
+	private Double total_price;
 	private Integer status;
 
 	
@@ -94,6 +91,18 @@ public class Order {
 	}
 	public void setAddress(AddressOrder address) {
 		this.address = address;
+	}
+	/**
+	 * @return the total_price
+	 */
+	public Double getTotal_price() {
+		return total_price;
+	}
+	/**
+	 * @param total_price the total_price to set
+	 */
+	public void setTotal_price(Double total_price) {
+		this.total_price = total_price;
 	}
 	
 	

@@ -35,6 +35,12 @@ public class VoucherServiceImpl implements VoucherService {
 
 	@Override
 	public List<Voucherdto> getAllVouchers(PageDto data) {
+		if(data.getTake() == 0) {
+			data.setTake(10);
+		}
+		if(data.getPage() < 0) {
+			data.setPage(0);
+		}
 		Pageable paging = PageRequest.of(data.getPage(), data.getTake());
 
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
@@ -45,7 +51,6 @@ public class VoucherServiceImpl implements VoucherService {
 		Voucherdto dto = new Voucherdto();
 		try {
 			for (Voucher voucher : listenti2.getContent()) {
-				System.out.println(voucher.toString());
 				dto = mapToModel(voucher, null);
 				System.out.println("22222: " + dto.toString());
 				list.add(dto);
