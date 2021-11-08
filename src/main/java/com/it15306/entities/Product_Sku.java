@@ -44,6 +44,7 @@ public class Product_Sku {
 	private int quantity_total;
 	private String url_media;
 	private int status;
+	private int id_image;
 	
 	
 	@ManyToOne
@@ -171,12 +172,13 @@ public class Product_Sku {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Product_Sku [product_sku_id=" + product_sku_id + ", value_sku=" + value_sku + ", create_date="
-				+ create_date + ", price=" + price + ", quantity_remain=" + quantity_remain + ", quantiy_rest="
-				+ quantiy_rest + ", quantity_total=" + quantity_total + ", url_media=" + url_media + ", status="
-				+ status + ", product=" + product + ", sku=" + sku + "]";
+	public int getId_image() {
+		return id_image;
+	}
+
+
+	public void setId_image(int id_image) {
+		this.id_image = id_image;
 	}
 	
 	

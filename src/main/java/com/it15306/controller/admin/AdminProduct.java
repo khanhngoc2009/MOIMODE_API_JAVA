@@ -1,5 +1,8 @@
 package com.it15306.controller.admin;
 
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,12 +24,14 @@ import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.option.OptionDTO;
+import com.it15306.dto.product.DataBodyListProductDto;
 import com.it15306.dto.product.DataCreateProductDtos;
 import com.it15306.dto.product.ListSkuCreateDto;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductResponseAdminDto;
 import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.dto.product.ProductSkuGetBodyDto;
+import com.it15306.dto.product.UpdateProductSkuDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
@@ -35,12 +40,13 @@ import com.it15306.entities.Options;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
+import com.it15306.servicesImpl.CategoryProductServiceImpl;
 import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class AdminProduct {
@@ -50,12 +56,9 @@ public class AdminProduct {
 	
 	@Autowired
 	private OptionsProductsServiceImpl optionsProductsServiceImpl;
-
-	@Autowired
-	private OptionsServiceImpl optionsServiceImpl;
 	
 	@Autowired
-	private OptionValueServiceImpl optionValueServiceImpl;
+	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
 
 	@RequestMapping(value = "/admin/product/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +73,7 @@ public class AdminProduct {
 			 // them san pham
 			product.setCreate_date(new Date());
 			product.setDescription(body.getProduct().getDescription());
-			product.setImage(body.getProduct().getImage());
+			product.setImage("http://34.87.157.20:8089/storages/"+ body.getProduct().getImage());
 			product.setStatus(1);
 			product.setType(1);
 			category.setId(body.getProduct().getCategory_id());
@@ -112,6 +115,7 @@ public class AdminProduct {
 				p_u.setStatus(1);
 				Product p = productServiceImpl.getById(body.getProduct_id());
 				p_u.setProduct(p);
+				p_u.setUrl_media("");
 				p_u.setQuantity_remain(0);
 				p_u.setQuantiy_rest(0);
 				p_u.setQuantity_total(0);
@@ -144,16 +148,37 @@ public class AdminProduct {
 	}
 	
 	
-	
 	@RequestMapping(value = "/admin/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getAllProducts(@RequestBody PageDto dto) {
+	public ResponseEntity<?> getAllProducts(@RequestBody DataBodyListProductDto dto) throws ParseException {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductResponseAdminDto> data = new DataResponseList<ProductResponseAdminDto>();
-		long count = (long) this.productServiceImpl.getCountAdmin();
+		
 		try {
-			List<Product> prs = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake());
 			
+		    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
+			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
+			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
+			String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? dto.getEnd_date() : "2099-01-01"; 
+			String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
+			List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
+			List<Product> prs = new ArrayList<Product>();
+			BigInteger count = this.productServiceImpl.getCountAdminByQuery(category_id,start_date,end_start,name,status);
+			System.out.print(obj.size());
+			for (int i=0; i<obj.size(); i++){
+				   Object[] row = (Object[]) obj.get(i);
+				   Product pr = new Product();
+				   pr.setId((Integer) ((BigInteger) row[0]).intValue());
+				   pr.setProduct_name((String) row[1]);
+				   pr.setCreate_date((Date) row[2]);
+				   pr.setDescription((String) row[3]);
+				   Category cate = categoryProductServiceImpl.getCayegoryChildrenById((Integer) ((BigInteger) row[4]).intValue());
+				   pr.setCategory(cate);
+				   pr.setStatus((Integer) row[5]);
+				   pr.setType((Integer) row[6]);
+				   pr.setImage((String) row[7]);
+				   prs.add(pr);
+			}
 			List<ProductResponseAdminDto> productDTOs =new ArrayList<ProductResponseAdminDto>();
 			if (prs.size() > 0) {
 				for (int i = 0; i < prs.size(); i++) {
@@ -163,7 +188,7 @@ public class AdminProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setCount((Integer) ((BigInteger) count).intValue());
 			data.setListData(productDTOs);
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);
@@ -177,15 +202,18 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/product-sku/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> updateListSku(@RequestBody PageDto dto) {
+	public ResponseEntity<?> updateListSku(@RequestBody List<UpdateProductSkuDto> dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<String> data = new DataResponseList<String>();
 		long count = (long) this.productServiceImpl.getCountAdmin();
 		try {
-			
-			
-			
-			
+			int size = dto.size();
+			for(int i=0;i<size;i++) {
+				UpdateProductSkuDto up = dto.get(i);
+				
+				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class); 
+				productServiceImpl.saveProductSku(p_sku);
+			}
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);

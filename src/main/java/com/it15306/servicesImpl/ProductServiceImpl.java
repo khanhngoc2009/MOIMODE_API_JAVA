@@ -1,6 +1,8 @@
 package com.it15306.servicesImpl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +15,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.it15306.entities.Category;
+import com.it15306.entities.ImageProduct;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
+import com.it15306.repository.ImageProductRepository;
 import com.it15306.repository.ProductRepository;
 import com.it15306.repository.ProductSkuRepository;
 import com.it15306.repository.SkuRepository;
@@ -28,6 +32,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	@Autowired
 	private SkuRepository skuRepository;
+	
+	@Autowired
+	private ImageProductRepository imageProductRepository;
 	
 	@Autowired
 	private ProductSkuRepository productSkuRepository;
@@ -54,14 +61,15 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		}
 	}
 	
-	public List<Product> getAllProductsAdmin(int page,int take) {
+	public List<Object> getAllProductsAdmin(int page,int take,String category_id,String start_date, String end_date, String name, String status ) {
 		Pageable paging =  PageRequest.of(page, take,Sort.by("create_date"));
-        Page<Product> pagedResult = productRepository.findAllProductsAdmin(paging);
+		System.out.print("k" + category_id + "k\n");
+        Page<Object> pagedResult = productRepository.findAllProductsAdmin(paging, category_id, start_date, end_date, name, status);
        
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {
-        	return new ArrayList<Product>();
+        	return new ArrayList<Object>();
 		}
 	}
 	
@@ -82,6 +90,10 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public long getCountAdmin() {
 		return productRepository.countProductAdmin(); 
+	}
+	
+	public BigInteger getCountAdminByQuery(String category_id,String start_date, String end_date, String name, String status ) {
+		return productRepository.countAdminQuery(category_id, start_date, end_date, name, status); 
 	}
 	
 
@@ -112,6 +124,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public Product_Sku saveProductSku(Product_Sku p_u) {
 		return productSkuRepository.save(p_u);
+	}
+	public ImageProduct saveImageProduct(ImageProduct i_p) {
+		return imageProductRepository.save(i_p);
 	}
 	
 	public Iterable<Sku> saveListSku(List<Sku> listSku) {

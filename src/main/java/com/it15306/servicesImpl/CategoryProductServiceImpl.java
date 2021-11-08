@@ -310,6 +310,12 @@ public class CategoryProductServiceImpl implements CategoryService{
 		return categoryRepository.END_DATE();
 	}
 	
+	
+	
+	public Category getCayegoryChildrenById(Integer id) {
+		
+		return categoryRepository.findById(id).get();
+	}
 	public Long getTototelement(Long sobanghi) {
 		return sobanghi;
 	}

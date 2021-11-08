@@ -18,7 +18,7 @@ import com.it15306.config.DataResponseList;
 import com.it15306.dto.reviewProduct.ReviewProductDTO;
 import com.it15306.services.ReviewProductService;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class AdminReviewProduct {

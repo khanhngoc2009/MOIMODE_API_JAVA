@@ -2,18 +2,10 @@ package com.it15306.dto.product;
 
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.it15306.entities.Product;
-
-public class ProductSkuDto {
-private Integer product_sku_id;
+public class UpdateProductSkuDto {
+	private Integer product_sku_id;
 	
 	private String value_sku;
-	
 	
 	private Date create_date;
 	
@@ -22,8 +14,8 @@ private Integer product_sku_id;
 	private int quantiy_rest;
 	private int quantity_total;
 	private String url_media;
-	private int status;
 	private int id_image;
+	private int status;
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
 	}
@@ -54,7 +46,12 @@ private Integer product_sku_id;
 	public void setQuantity_remain(int quantity_remain) {
 		this.quantity_remain = quantity_remain;
 	}
-	
+	public int getQuantiy_rest() {
+		return quantiy_rest;
+	}
+	public void setQuantiy_rest(int quantiy_rest) {
+		this.quantiy_rest = quantiy_rest;
+	}
 	public int getQuantity_total() {
 		return quantity_total;
 	}
@@ -67,30 +64,16 @@ private Integer product_sku_id;
 	public void setUrl_media(String url_media) {
 		this.url_media = url_media;
 	}
+	public int getId_image() {
+		return id_image;
+	}
+	public void setId_image(int id_image) {
+		this.id_image = id_image;
+	}
 	public int getStatus() {
 		return status;
 	}
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	public int getQuantiy_rest() {
-		return quantiy_rest;
-	}
-	public void setQuantiy_rest(int quantiy_rest) {
-		this.quantiy_rest = quantiy_rest;
-	}
-	/**
-	 * @return the id_image
-	 */
-	public int getId_image() {
-		return id_image;
-	}
-	/**
-	 * @param id_image the id_image to set
-	 */
-	public void setId_image(int id_image) {
-		this.id_image = id_image;
-	}
-	
 }
