@@ -102,9 +102,9 @@ public class AdminOptions {
 			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
-	@RequestMapping(value = "/admin/option/type/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/option-type/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> updateCategory() {
+	public ResponseEntity<?> listOptionType() {
 		DataResponseList<TypeOptionDto> rp=  new DataResponseList<TypeOptionDto>();
 		ModelMapper modelMapper = new ModelMapper();
 		try {
