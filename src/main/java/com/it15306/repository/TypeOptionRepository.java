@@ -12,16 +12,13 @@ import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
 import com.it15306.entities.Order;
+import com.it15306.entities.TypeOptions;
 import com.it15306.entities.User;
 
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer>  {
-	final String SELECT_ORDER_BY_ID_VOUCHER = "SELECT o FROM Order o WHERE o.voucher.id =:id";
+public interface TypeOptionRepository extends JpaRepository<TypeOptions, Integer>  {
 	
-	
-	@Query(SELECT_ORDER_BY_ID_VOUCHER)
-	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
 	
 	
 }

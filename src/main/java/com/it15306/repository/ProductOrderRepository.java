@@ -11,17 +11,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
+import com.it15306.entities.OptionValue;
+import com.it15306.entities.Options;
 import com.it15306.entities.Order;
+import com.it15306.entities.ProductOrder;
 import com.it15306.entities.User;
 
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer>  {
-	final String SELECT_ORDER_BY_ID_VOUCHER = "SELECT o FROM Order o WHERE o.voucher.id =:id";
-	
-	
-	@Query(SELECT_ORDER_BY_ID_VOUCHER)
-	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
-	
-	
+public interface ProductOrderRepository extends JpaRepository<ProductOrder, Integer>  {
+	final String SELECT_BY_ORDER_ID = " select p from ProductOrder p where p.order.id = :order_id ";
+			
+	@Query(SELECT_BY_ORDER_ID)
+	List<ProductOrder> getByOrderId(@Param("order_id") Integer order_id);
 }

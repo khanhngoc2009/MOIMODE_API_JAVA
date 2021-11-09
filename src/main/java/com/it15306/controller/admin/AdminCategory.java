@@ -39,6 +39,7 @@ public class AdminCategory {
 	@ResponseBody
 	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
+		System.out.print(body.getName());
 		try {
 			CategoryDTO dto =categoryService.CreateCategory(body);
 			if(!dto.equals(null)) {

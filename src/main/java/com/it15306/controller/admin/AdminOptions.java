@@ -18,22 +18,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
+import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.option.CreateOptionDto;
 import com.it15306.dto.option.DeleteOptionDto;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.option.OptionResponseDto;
 import com.it15306.dto.option.OptionValueClientDto;
 import com.it15306.dto.option.OptionValueDTO;
+import com.it15306.dto.option.TypeOptionDto;
 import com.it15306.dto.option.UpdateOptionDto;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
 import com.it15306.entities.Option_Sku_Value;
 import com.it15306.entities.Options;
+import com.it15306.entities.TypeOptions;
 import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionValueSkuServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
+import com.it15306.servicesImpl.ProductServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -42,8 +46,8 @@ public class AdminOptions {
 	@Autowired
 	private OptionsServiceImpl optionProductServiceImpl;
 	
-//	@Autowired
-//	private OptionsProductsServiceImpl optionsProductsServiceImpl;
+	@Autowired
+	private ProductServiceImpl productServiceImpl;
 	
 	@Autowired
 	OptionValueServiceImpl optionValueServiceImpl;
@@ -97,6 +101,29 @@ public class AdminOptions {
 			dataRes.setMessage("Thất bại");
 			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 		}
+	}
+	@RequestMapping(value = "/admin/option/type/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> updateCategory() {
+		DataResponseList<TypeOptionDto> rp=  new DataResponseList<TypeOptionDto>();
+		ModelMapper modelMapper = new ModelMapper();
+		try {
+			List<TypeOptions> list = productServiceImpl.getListTypeOption();
+			List<TypeOptionDto> listDto = new ArrayList<TypeOptionDto>();
+			for(int i = 0;i<list.size();i++ ) {
+				listDto.add(modelMapper.map(list.get(i),TypeOptionDto.class));
+			}
+			rp.setMessage("Success");	
+			rp.setListData(listDto);
+			rp.setCode(200);
+			
+			return new ResponseEntity<>(rp,HttpStatus.OK);
+		} catch (Exception e) {
+			rp.setMessage("Fail");	
+			rp.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			return new ResponseEntity<>(rp,HttpStatus.FAILED_DEPENDENCY);
+		}
+		
 	}
 //	@RequestMapping(value = "/admin/deleteOption", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 //	@ResponseBody
