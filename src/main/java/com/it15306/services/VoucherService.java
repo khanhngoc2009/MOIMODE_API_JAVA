@@ -7,7 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.it15306.dto.PageDto;
-import com.it15306.dto.Voucherdto;
+import com.it15306.dto.voucher.RequetVoucher;
+import com.it15306.dto.voucher.Voucherdto;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
 
@@ -26,9 +27,11 @@ public interface VoucherService {
 	List<Voucherdto> getByBetweenTime(Date start_time,Date end_time);
 	
 	Voucherdto saveVoucher(Voucherdto voucher);
-	Voucherdto create(Voucherdto voucherdto);
+	Voucherdto create(RequetVoucher voucherdto);
 	Voucherdto update(Voucherdto voucherdto);
 	Integer delete(Integer voucher_id);
 	Integer count();
+
+	Long totalement();
 	
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
-import com.it15306.dto.Voucherdto;
+import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.services.VoucherService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })

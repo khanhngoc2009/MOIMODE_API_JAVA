@@ -1,6 +1,8 @@
 package com.it15306.servicesImpl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.it15306.dto.PageDto;
-import com.it15306.dto.Voucherdto;
+import com.it15306.dto.voucher.RequetVoucher;
+import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.Order;
 import com.it15306.entities.Voucher;
 import com.it15306.repository.OrderRepository;
@@ -24,7 +27,8 @@ import com.it15306.services.VoucherService;
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
-
+	Long totalElement;
+	
 	@Autowired
 	VoucherRepository voucherRepository;
 	@Autowired
@@ -46,8 +50,8 @@ public class VoucherServiceImpl implements VoucherService {
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
 		// List<Voucher> listenti = voucherRepository.findAllVoucher();
 		Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
-		System.out.println("---------------" + listenti2.getContent().size());
-		listenti2.getContent().forEach(l -> System.out.println(l.getVoucher_id()));
+		totalElement = listenti2.getTotalElements();
+		listenti2.getContent().forEach(l -> System.out.println(l.getId()));
 		Voucherdto dto = new Voucherdto();
 		try {
 			for (Voucher voucher : listenti2.getContent()) {
@@ -111,17 +115,19 @@ public class VoucherServiceImpl implements VoucherService {
 	}
 
 	@Override
-	public Voucherdto create(Voucherdto voucherdto) {
-		Voucher entity;
+	public Voucherdto create(RequetVoucher voucherdto) {
 		try {
-			entity = mapToEnyities(voucherdto, null);
-			voucherRepository.save(entity);
-			System.out.println("id voucher: " + entity.getVoucher_id());
-			voucherdto.setVoucher_id(entity.getVoucher_id());
-			return voucherdto;
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+
+		Voucher entity;
+		Voucherdto dto =new Voucherdto();		
+		
+		entity = modelMapper.map(voucherdto, Voucher.class);
+		entity.setCreate_time(new Date());
+		voucherRepository.save(entity);
+		dto.setId(entity.getId());
+		
+		return modelMapper.map(entity, Voucherdto.class); 		
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -132,7 +138,7 @@ public class VoucherServiceImpl implements VoucherService {
 	public Voucherdto update(Voucherdto voucherdto) {
 		try {
 
-			Optional<Voucher> optional = voucherRepository.findById(voucherdto.getVoucher_id());
+			Optional<Voucher> optional = voucherRepository.findById(voucherdto.getId());
 			Voucher vo = new Voucher();
 			if (optional.isPresent()) {
 				Voucher voucher = optional.get();
@@ -154,7 +160,7 @@ public class VoucherServiceImpl implements VoucherService {
 				if (optional.isPresent()) {
 					Voucher voucher = optional.get();
 					voucherRepository.delete(voucher);
-					return voucher.getVoucher_id();
+					return voucher.getId();
 				}
 			}
 		} catch (Exception e) {
@@ -192,6 +198,11 @@ public class VoucherServiceImpl implements VoucherService {
 	public Integer count() {
 
 		return (int) voucherRepository.count();
+	}
+	
+	@Override
+	public Long totalement() {
+		return totalElement;
 	}
 
 }

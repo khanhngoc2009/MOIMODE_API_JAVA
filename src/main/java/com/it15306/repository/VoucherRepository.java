@@ -21,7 +21,7 @@ import com.it15306.entities.Voucher;
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	final String SELECT_ALL = "SELECT v FROM Voucher v where v.status = 1";
-	final String SELECT_BY_Id = "SELECT v FROM Voucher v WHERE  v.status = 1 and v.voucher_id =:voucher_id";
+	final String SELECT_BY_Id = "SELECT v FROM Voucher v WHERE  v.status = 1 and v.id =:id";
 	final String SELECT_BY_TITLE = "SELECT v FROM Voucher v WHERE v.title =:title";
 	final String SELECT_BY_TYPE_DISCOUNT = "SELECT v FROM Voucher v WHERE v.type_discount =:type_discount";
 	final String SELECT_BY_STATUS = "SELECT v FROM Voucher v WHERE v.status =:status";
@@ -36,7 +36,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	Page<Voucher> findAllVoucherByTypePage(Pageable page);
 	
 	@Query(SELECT_BY_Id)
-	Optional<Voucher> findVoucherById(@Param("voucher_id") Integer voucher_id);
+	Optional<Voucher> findVoucherById(@Param("id") Integer id);
 	
 	@Query(SELECT_BY_TITLE)
 	Voucher findByTitle(@Param("title") String title);

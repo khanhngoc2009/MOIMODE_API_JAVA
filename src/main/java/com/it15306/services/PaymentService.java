@@ -2,16 +2,19 @@ package com.it15306.services;
 
 import java.util.List;
 
-import com.it15306.entities.Payment;
-//import com.it15306.entities.Category;
-import com.it15306.entities.User;
+import org.springframework.stereotype.Service;
 
+import com.it15306.dto.payment.PaymentDTO;
+import com.it15306.dto.payment.RequestPaymentPage;
+import com.it15306.entities.Payment;
+@Service
 public interface PaymentService {
-	List<Payment> getAllPayment();
-	Payment getById(String payment_id);
-	Payment getByName(String name);
-	Payment getByType(Integer type);
-	Payment getByStatus(Integer status);
-	Payment savePaymnet(Payment payment);
-	void delete(Integer payment_id);
+	List<PaymentDTO> getAllPayment(RequestPaymentPage data);
+	PaymentDTO getById(String payment_id);
+	PaymentDTO getByName(String name);
+	PaymentDTO getByType(Integer type);
+	PaymentDTO getByStatus(Integer status);
+	PaymentDTO savePaymnet(PaymentDTO payment);
+	Integer delete(Integer payment_id);
+	PaymentDTO update(PaymentDTO data);
 }
