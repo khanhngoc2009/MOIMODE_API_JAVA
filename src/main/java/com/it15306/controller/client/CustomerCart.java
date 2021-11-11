@@ -41,6 +41,20 @@ public class CustomerCart {
 		}
 		
 	}
+	@RequestMapping(value = "/cart/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<CartProductDTO> updateQuantity(@RequestBody dataBodyCart data) {
+		try {			
+			CartProductDTO  dto =	cartService.updateProductToCart(data);
+			if(dto != null) {
+				return ResponseEntity.ok(dto);
+			}
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+	}
 	
 	@RequestMapping(value = "/cart/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

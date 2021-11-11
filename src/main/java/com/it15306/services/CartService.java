@@ -23,4 +23,6 @@ public interface CartService {
 	
 	CartProductDTO insertProductToCart(dataBodyCart data); 
 	
+	CartProductDTO updateProductToCart(dataBodyCart data); 
+	
 }
