@@ -109,11 +109,15 @@ public class CartServiceImpl implements CartService{
 		Cart cart=new Cart();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date date=new Date();
+
 		if(data.getQuantity()==0) {
 			data.setQuantity(1);
 		}
 		User user =	userRepository.getOne(data.getUserId());
 		Product_Sku productSKU= productSkuRepository.findProductSKUById(data.getProductSKUId());
+		if(productSKU== null || user == null) {
+			return null;
+		}
 		Cart cvo = cartRepository.findUserID(data.getUserId());
 		CartProduct carpro=new CartProduct();
 		CartProduct cartproduct =new CartProduct();

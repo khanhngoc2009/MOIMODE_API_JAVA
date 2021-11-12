@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.it15306.dto.PageDto;
 import com.it15306.dto.voucher.RequetVoucher;
+import com.it15306.dto.voucher.ResponBodyVoucher;
 import com.it15306.dto.voucher.Voucherdto;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
 
 @Service
 public interface VoucherService {
-	List<Voucherdto> getAllVouchers(PageDto data);
+	List<Voucherdto> getAllVouchers(ResponBodyVoucher data);
 	
 	Voucherdto getByIdVoucher(Integer voucher_id);
 	

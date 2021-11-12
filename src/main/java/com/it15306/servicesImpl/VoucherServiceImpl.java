@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.it15306.dto.PageDto;
 import com.it15306.dto.voucher.RequetVoucher;
+import com.it15306.dto.voucher.ResponBodyVoucher;
 import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.Order;
 import com.it15306.entities.Voucher;
@@ -38,18 +39,32 @@ public class VoucherServiceImpl implements VoucherService {
 	OrderRepository orderRepository;
 
 	@Override
-	public List<Voucherdto> getAllVouchers(PageDto data) {
-		if(data.getTake() == 0) {
+	public List<Voucherdto> getAllVouchers(ResponBodyVoucher data) {
+		String status;
+		if(data.getTake() == null ||  data.getTake() == 0) {
 			data.setTake(10);
 		}
-		if(data.getPage() < 0) {
+		if(data.getPage() == null || data.getPage() < 0) {
 			data.setPage(0);
+		}
+		if(data.getStart_time() == null) {
+			data.setStart_time(startDate());
+		}
+		if(data.getEnd_time() == null) {
+			data.setEnd_time(endDate());
+		}
+		if(data.getTitle() == null) data.setTitle("");
+		if(data.getStatus() == null) {
+			status="";
+		}else {
+			status=String.valueOf(data.getStatus());
 		}
 		Pageable paging = PageRequest.of(data.getPage(), data.getTake());
 
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
 		// List<Voucher> listenti = voucherRepository.findAllVoucher();
-		Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
+		//Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
+		Page<Voucher> listenti2=voucherRepository.locVoucher(data.getTitle(), data.getStart_time(), data.getEnd_time(), status, paging);
 		totalElement = listenti2.getTotalElements();
 		listenti2.getContent().forEach(l -> System.out.println(l.getId()));
 		Voucherdto dto = new Voucherdto();
@@ -204,5 +219,11 @@ public class VoucherServiceImpl implements VoucherService {
 	public Long totalement() {
 		return totalElement;
 	}
-
+	
+	public String startDate() {
+		return voucherRepository.START_DATE();
+	}
+	public String endDate() {
+		return voucherRepository.END_DATE();
+	}
 }
