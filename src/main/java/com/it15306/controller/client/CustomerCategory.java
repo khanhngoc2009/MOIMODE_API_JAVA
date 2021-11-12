@@ -59,7 +59,7 @@ public class CustomerCategory {
 		}
 	}
 	
-	@RequestMapping(value = "/Category-children/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/category-children/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListCategoryChildren(@RequestBody PageCategoryParent dto) {
 		ModelMapper modelMapper = new ModelMapper();

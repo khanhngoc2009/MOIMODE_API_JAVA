@@ -34,9 +34,12 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 
 	
 	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like %?1% and "
-									+ "c.category_id like %?2% and c.create_date  between ?3 "
-									+ "and ?4 and status like %?5% and c.type like %?6% ORDER BY c.create_date desc";
+									+ " c.create_date  between ?2 "
+									+ "and ?3 and status like %?4% and c.type like %?5% ORDER BY c.create_date desc";
 	
+	final String SELECT_ALL_FILTER_2 ="SELECT * FROM category c where c.category_name like %?1% and "
+			+ "c.category_parent_id like %?2% and c.create_date  between ?3 "
+			+ "and ?4 and status like %?5% and c.type like %?6% ORDER BY c.create_date desc";
 	
 	final String test="SELECT * FROM category c where c.category_name like  %?1% ";
 //	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like '%:name%' and "
@@ -81,9 +84,15 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	Category SelectCategoryParentByID(@Param("id") Integer ID);
 	
 	@Query(value = SELECT_ALL_FILTER, nativeQuery=true)
-	Page<Category> selectAllCategoryParentPage(@Param("name") String name,@Param("parentID") String parentID,
+	Page<Category> selectAllCategoryParentPage(@Param("name") String name,
 											@Param("startDate") String startDate,@Param("endDate") String endDate,
 											@Param("status") String status,@Param("type") Integer type, Pageable page );
+	
+	@Query(value = SELECT_ALL_FILTER_2, nativeQuery=true)
+	Page<Category> selectAllCategoryParentchidentPage(@Param("name") String name,@Param("cateParentID") String cateParentID,
+											@Param("startDate") String startDate,@Param("endDate") String endDate,
+											@Param("status") String status,@Param("type") Integer type, Pageable page );
+	
 	@Query(value = test, nativeQuery=true)
 	Page<Category> test(@Param("name") String name, Pageable page);
 //	@Query(value = SELECT_ALL_FILTER, nativeQuery=true)

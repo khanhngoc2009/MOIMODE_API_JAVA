@@ -6,7 +6,7 @@ public class PageCategoryDTO {
 	private Integer take;
 	private String name;
 	private Integer status;
-	private String parentName;
+	private Integer parentId;
 	private String startTime;
 	private String endTime;
 	/**
@@ -60,14 +60,14 @@ public class PageCategoryDTO {
 	/**
 	 * @return the parentName
 	 */
-	public String getParentName() {
-		return parentName;
+	public Integer getParentId() {
+		return parentId;
 	}
 	/**
 	 * @param parentName the parentName to set
 	 */
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 	/**
 	 * @return the startTime
@@ -93,11 +93,7 @@ public class PageCategoryDTO {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
-	@Override
-	public String toString() {
-		return "PageCategoryDTO [page=" + page + ", take=" + take + ", name=" + name + ", status=" + status
-				+ ", parentName=" + parentName + ", startTime=" + startTime + ", endTime=" + endTime + "]";
-	}
+
 
 	
 	

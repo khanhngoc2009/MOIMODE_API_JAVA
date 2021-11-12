@@ -3,6 +3,8 @@ package com.it15306.repository;
 import java.util.List;
 //import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +23,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer>  {
 	final String SELECT_BY_TYPE = "SELECT p FROM Payment p WHERE p.type =:type";
 
 	@Query(SELECT_ALL)
-	List<Payment> findAllPayment();
+	Page<Payment> findAllPayment(Pageable page);
 	
 	@Query(SELECT_BY_NAME)
 	Payment findByName(@Param("name") String name);

@@ -258,6 +258,10 @@ public class CategoryProductServiceImpl implements CategoryService{
 
 	@Override
 	public List<CategoryDTO> getAllCategoryPage(PageCategoryDTO data,Integer type) {
+		try {
+			String status;
+			String parentId;
+		
 		if(data.getStatus() == null) {
 			data.setStatus(null);
 		}
@@ -275,16 +279,28 @@ public class CategoryProductServiceImpl implements CategoryService{
 		}
 		System.out.println(data.getName());
 		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());
-		String status;
+		
 		if(data.getName()== null) data.setName("");
-		if(data.getParentName()== null) data.setParentName("");
+		if(data.getParentId()== null) {
+			parentId="";
+		}else{
+			parentId=String.valueOf(data.getParentId());
+		};
 		if(data.getStatus()== null || data.getStatus().equals("")) { 
 			status="";
 		}else {
 			status=String.valueOf(data.getStatus());
 		}
-		Page<Category> pc2 = categoryRepository.selectAllCategoryParentPage(data.getName(), data.getParentName(), data.getStartTime(), 
-				data.getEndTime(),status , type, paging);
+		Page<Category> pc2;
+		if(data.getParentId() == null || type==1) {
+			System.out.println("111111");
+			 pc2 = categoryRepository.selectAllCategoryParentPage(data.getName(),  data.getStartTime(), data.getEndTime(),status , type, paging);
+		}else {
+			System.out.println("222222222");
+			pc2 = categoryRepository.selectAllCategoryParentchidentPage(data.getName(),parentId,  data.getStartTime(), data.getEndTime(),status , type, paging);
+		}
+		
+				
 		List<Category> lst2=pc2.getContent();
 		List<CategoryDTO> listdto=new ArrayList<CategoryDTO>();
 		if(lst2.size() > 0) {
@@ -294,7 +310,13 @@ public class CategoryProductServiceImpl implements CategoryService{
 			});
 		}
 		totalElement=pc2.getTotalElements();
+		
 		return listdto;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 	@Override
