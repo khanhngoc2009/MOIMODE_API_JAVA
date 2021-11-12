@@ -7,6 +7,7 @@ import com.it15306.entities.Product;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,15 +25,13 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Category")
-@Getter
-@Setter
-@Component
+
 public class Category {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "category_id")
-	private Integer category_id;
+	private Integer id;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -43,86 +42,148 @@ public class Category {
 	private Integer category_parent_id;
 	
 	private Integer type;
-	private String category_name;
+	
+	@Column(name = "category_name")
+	private String name;
+	
 	private String description;
-	private String url_image;
+	@Column(name = "url_image")
+	private String image;
 	
 	@OneToMany(mappedBy = "category")
 	private List<Product> products = new ArrayList<>();
-
-	public Integer getCategory_id() {
-		return category_id;
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	private Category categoryParent;
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCategory_id(Integer category_id) {
-		this.category_id = category_id;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
+	/**
+	 * @return the create_date
+	 */
 	public Date getCreate_date() {
 		return create_date;
 	}
 
+	/**
+	 * @param create_date the create_date to set
+	 */
 	public void setCreate_date(Date create_date) {
 		this.create_date = create_date;
 	}
 
+	/**
+	 * @return the status
+	 */
 	public Integer getStatus() {
 		return status;
 	}
 
+	/**
+	 * @param status the status to set
+	 */
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
+	/**
+	 * @return the category_parent_id
+	 */
 	public Integer getCategory_parent_id() {
 		return category_parent_id;
 	}
 
+	/**
+	 * @param category_parent_id the category_parent_id to set
+	 */
 	public void setCategory_parent_id(Integer category_parent_id) {
 		this.category_parent_id = category_parent_id;
 	}
 
+	/**
+	 * @return the type
+	 */
 	public Integer getType() {
 		return type;
 	}
 
+	/**
+	 * @param type the type to set
+	 */
 	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public String getCategory_name() {
-		return category_name;
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
-	public void setCategory_name(String category_name) {
-		this.category_name = category_name;
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
+	/**
+	 * @return the description
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description the description to set
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * @return the image
+	 */
+	public String getImage() {
+		return image;
+	}
 
+	/**
+	 * @param image the image to set
+	 */
+	public void setImage(String image) {
+		this.image = image;
+	}
 
+	/**
+	 * @return the products
+	 */
 	public List<Product> getProducts() {
 		return products;
 	}
 
+	/**
+	 * @param products the products to set
+	 */
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
 
-	public String getUrl_image() {
-		return url_image;
-	}
+	
 
-	public void setUrl_image(String url_image) {
-		this.url_image = url_image;
-	}
+
 	
 	
 }

@@ -32,7 +32,7 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id")
-	private Integer product_id;
+	private Integer id;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -43,27 +43,45 @@ public class Product {
 	private String description;
 	private Integer status;
 	private Integer type;
+	@Column(name = "media_url")
+	private String image;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category = new Category();
-	
-	@ManyToOne
-	@JoinColumn(name = "ware_house_id")
-	private Warehouse warehouse = new Warehouse();
-	
-	@OneToMany(mappedBy = "product")
-	private List<OptionProduct> options = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "product")
-	private List<ProductSkuValues> product_sku_values = new ArrayList<>();
 
-	public Integer getProduct_id() {
-		return product_id;
+	@OneToMany(mappedBy = "product")
+	private List<Product_Sku> product_sku = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "product")
+	private List<Option_Product> options_products = new ArrayList<>();
+	
+	@OneToMany
+	private List<ReviewProduct> reviewProducts;
+	
+	public List<Product_Sku> getProduct_sku() {
+		return product_sku;
 	}
 
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
+	public void setProduct_sku(List<Product_Sku> product_sku) {
+		this.product_sku = product_sku;
+	}
+
+	public List<Option_Product> getOptions_products() {
+		return options_products;
+	}
+
+	public void setOptions_products(List<Option_Product> options_products) {
+		this.options_products = options_products;
+	}
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getCreate_date() {
@@ -84,6 +102,18 @@ public class Product {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public void setDescription(String description) {
@@ -113,32 +143,6 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
-	public Warehouse getWarehouse() {
-		return warehouse;
-	}
-
-	public void setWarehouse(Warehouse warehouse) {
-		this.warehouse = warehouse;
-	}
-
-	public List<OptionProduct> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<OptionProduct> options) {
-		this.options = options;
-	}
-
-	public List<ProductSkuValues> getProduct_sku_values() {
-		return product_sku_values;
-	}
-
-	public void setProduct_sku_values(List<ProductSkuValues> product_sku_values) {
-		this.product_sku_values = product_sku_values;
-	}
 	
-	
-	
-	
+		
 }

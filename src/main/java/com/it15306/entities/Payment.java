@@ -32,7 +32,7 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "payment_id")
-	private Integer payment_id;
+	private Integer id;
 	
 	private String name;
 	private Integer type;
@@ -44,11 +44,11 @@ public class Payment {
 	private List<Order> orders = new ArrayList<>();
 
 	public Integer getPayment_id() {
-		return payment_id;
+		return id;
 	}
 
-	public void setPayment_id(Integer payment_id) {
-		this.payment_id = payment_id;
+	public void setPayment_id(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {

@@ -1,63 +1,114 @@
 package com.it15306.repository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import com.it15306.entities.Category;
+import com.it15306.entities.Product;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Modifying;
+import java.math.BigInteger;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-//import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+//import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+//import org.springframework.data.jpa.repository.Modifying;
+//import org.springframework.data.repository.query.Param;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.dto.ProductDTO;
-import com.it15306.entities.Category;
-import com.it15306.entities.Product;
-import com.it15306.entities.User;
 
 
 @Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Integer>  {
-	final String SELECT_ALL = "SELECT p FROM Product p";
-	final String SELECT_BY_CATEGORY = "SELECT p FROM Product p WHERE p.category =:category";
-//	final String SELECT_BY_ID = "SELECT p FROM Product p WHERE p.product_id =:product_id";
-	final String SEARCH = "SELECT p FROM Product p WHERE"
-			+ " p.create_date BETWEEN :start_date AND :end_date "
-			+ "AND p.status = :status "
-			+ "AND p.product_name = :product_name ";
-//	
+//	final String SELECT_ALL = "SELECT p FROM Product p"
+//			+ " where p.category.id like %:category_id% "
+//			+ " order by p.create_date desc";
+	final String SELECT_ALL = "select * from product \r\n"
+			+ "where category_id like CONCAT('%', ?1, '%') "
+			+ "and create_date between ?2 "
+			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ " and status like CONCAT('%', ?5, '%')";
+	final String SELECT_COUNT_ADMIN_QUERY = "select count(*) from product \r\n"
+			+ "where category_id like CONCAT('%', ?1, '%') "
+			+ "and create_date between ?2 "
+			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ " and status like CONCAT('%', ?5, '%')";
+	
+	final String SELECT_COUNT_ADMIN = "SELECT count(p) FROM Product p ";
+	
+	final String SELECT_COUNT_CLIENT = 
+			"SELECT count(p) FROM Product p "
+			+ " where p.status = 1 and p.type= 2";
+
+	
 	final String SELECT_PRODUCTS ="select p,min(sku.price),max(sku.price)"
-			+ " from Product p join p.product_sku_values sku "
+			+ " from Product p join p.product_sku sku "
 			+ " where p.status = 1 "
-			+ " group by sku.product";
+			+ " group by sku.product"
+			+ " order by p.create_date asc";
 	final String SELECT_PRODUCT_BY_CATEGORY ="select p,min(sku.price),max(sku.price)"
-			+ " from Product p join p.product_sku_values sku "
+			+ " from Product p join p.product_sku sku "
 			+ " where p.status = 1 AND p.category =:category"
-			+ " group by sku.product";
+			+ " group by sku.product"
+			+ " order by p.create_date asc";
+	
+	final String SELECT_PRODUCT_SELLING ="select p,min(sku.price),max(sku.price)"
+			+ " from Product p join p.product_sku sku "
+			+ " where p.status = 1 "
+			+ " group by sku.product"
+			+ " order by max(sku.quantiy_rest) desc";
+	
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
-			+ " from Product p join p.product_sku_values sku "
-			+ " where p.status = 1 AND p.product_id =:product_id"
-			+ " group by sku.product";
+			+ " from Product p join p.product_sku sku"
+			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
+
+	
+//	select * from product 
+//	where category_id like '%1%' and create_date between '2021-10-26' and '2021-11-02' and product_name like '%%'
+	final String SELECT_CATEGORY_ID ="select c from Product c where c.category.category_parent_id=:id";
+	
+	
+	
+	@Query( value = SELECT_ALL,
+			  nativeQuery = true)
+	Page<Object> findAllProductsAdmin(Pageable page ,
+			@Param("category_id") String category_id,
+			@Param("start_date") String start_date,
+			@Param("end_date") String end_date,
+			@Param("name") String name,
+			@Param("status") String status
+			);
+	
+	@Query(value = SELECT_COUNT_ADMIN_QUERY,
+			  nativeQuery = true)
+	BigInteger countAdminQuery(
+			@Param("category_id") String category_id,
+			@Param("start_date") String start_date,
+			@Param("end_date") String end_date,
+			@Param("name") String name,
+			@Param("status") String status
+			);
+	
+	@Query(SELECT_COUNT_ADMIN)
+	long countProductAdmin();
+	
+	@Query(SELECT_PRODUCT_SELLING)
+	Page<Object> findProductSelling(Pageable page);
 	
 	@Query(SELECT_PRODUCTS)
-	List<Object> findAllProduct();
-//	
-	@Query(SEARCH)
-	List<Product> searchProduct(
-			@Param("start_date") Date start_date,
-			@Param("end_date") Date end_date,
-			@Param("status") Integer status,
-			@Param("product_name") String product_name
-			);
-//	
-	@Query(SELECT_PRODUCT_BY_CATEGORY)
-	List<Object> findProductByCategory(@Param("category") Category category);
-//	
-	@Query(SELECT_BY_ID)
-	Object findByIdProduct(@Param("product_id") Integer id);
+	Page<Object> findAllProduct(Pageable page);
 
+	@Query(SELECT_PRODUCT_BY_CATEGORY)
+	Page<Object> findProductByCategory(@Param("category") Category category,Pageable page);
+
+	@Query(SELECT_BY_ID)
+	Object findByIdProduct(@Param("product_id") Integer product_id);
+
+	@Query(SELECT_COUNT_CLIENT)
+	long countProductClient();
+	
+	
+	@Query(SELECT_CATEGORY_ID)
+	List<Product> findByCategoryIds(@Param("id")Integer id);
 }

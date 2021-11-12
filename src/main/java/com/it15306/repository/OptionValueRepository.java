@@ -11,14 +11,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 
-import com.it15306.entities.OptionProduct;
+import com.it15306.entities.Options;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.User;
 
 
 @Repository
 public interface OptionValueRepository extends JpaRepository<OptionValue, Integer>  {
-	final String SELECT_ALL = "SELECT ov FROM OptionValue ov WHERE ov.option=:option";
-	@Query(SELECT_ALL)
-	List<OptionValue> findAllOptionValue(@Param("option") OptionProduct option);
+	final String SELECT_BY_OPTION = "SELECT ov FROM OptionValue ov WHERE ov.option=:option";
+	
+	final String DELETE_BY_OPTIONS = "DELETE FROM OptionValue ov where ov.option=:option";
+	
+	
+	@Query(SELECT_BY_OPTION)
+	List<OptionValue> findAllOptionValue(@Param("option") Options option);
+	
+	@Query(DELETE_BY_OPTIONS)
+	String deleteByOption(@Param("option") Options option);
 }

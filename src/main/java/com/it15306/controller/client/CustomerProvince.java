@@ -18,14 +18,14 @@ import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.servicesImpl.ProvinceServiceImpl;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class CustomerProvince {
 	@Autowired
 	private ProvinceServiceImpl provinceServiceImpl;
 
-	@RequestMapping(value = "/getListProvinces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/province/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<ProvinceDTO> getListProvinces() {
 		ModelMapper modelMapper = new ModelMapper();

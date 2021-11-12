@@ -12,6 +12,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.it15306.entities.Code_Forgot_Password;
+import com.it15306.entities.Product;
+import com.it15306.repository.ForgotCodeRepository;
+import com.it15306.repository.SkuRepository;
+
 @Service
 public class MailServiceImpl {
 	
@@ -21,6 +26,9 @@ public class MailServiceImpl {
 	public MailServiceImpl(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
+	
+	@Autowired
+	private ForgotCodeRepository forgotCodeRepository;
 	
 	public Integer SendEmailToCustomer(String email) throws MailException, MessagingException {
 		
@@ -50,5 +58,18 @@ public class MailServiceImpl {
 		helper.setFrom("khanhpvph10443@fpt.edu.vn");
 		javaMailSender.send(mimeMessage);
 		return code;
+	}
+	
+	public Code_Forgot_Password findByEmail(String email,Integer code) {
+//		forgotCodeRepository.findByEmail(email);
+		return forgotCodeRepository.findByEmail(email,code);
+	}
+	
+	public Code_Forgot_Password saveCode(Code_Forgot_Password code) {
+		return forgotCodeRepository.save(code);
+	}
+	
+	public void delete(Code_Forgot_Password code) {
+		 forgotCodeRepository.delete(code);
 	}
 }

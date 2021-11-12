@@ -7,7 +7,8 @@ public class DataProductBodyDtos {
 	private String product_name;
 	private String description;
 	private Integer category_id;
-	private Integer ware_house_id;
+	private String image;
+	
 	public String getProduct_name() {
 		return product_name;
 	}
@@ -26,11 +27,12 @@ public class DataProductBodyDtos {
 	public void setCategory_id(Integer category_id) {
 		this.category_id = category_id;
 	}
-	public Integer getWare_house_id() {
-		return ware_house_id;
+	public String getImage() {
+		return image;
 	}
-	public void setWare_house_id(Integer ware_house_id) {
-		this.ware_house_id = ware_house_id;
+	public void setImage(String image) {
+		this.image = image;
 	}
+	
 	
 }
