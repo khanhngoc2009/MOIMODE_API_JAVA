@@ -166,6 +166,7 @@ public class CartServiceImpl implements CartService{
 
 	@Override
 	public CartProductDTO updateProductToCart(dataBodyCart data) {
+		if(data.getQuantity() <= 0) data.setQuantity(1);
 		User user =	userRepository.getOne(data.getUserId());
 		Product_Sku productSKU= productSkuRepository.findProductSKUById(data.getProductSKUId());
 		Cart cvo = cartRepository.findUserID(data.getUserId());
@@ -174,7 +175,7 @@ public class CartServiceImpl implements CartService{
 		if(cvo != null) {
 			cartproduct =	cartProductReponsitory.selectCheck(cvo.getId(), data.getProductSKUId());
 			if(cartproduct != null) {
-				Integer soluong=cartproduct.getQuantity()+data.getQuantity();
+				Integer soluong=data.getQuantity();
 				cartProductReponsitory.updateQuantitys(soluong,cvo.getId(), data.getProductSKUId());
 				CartProductDTO resp= modelMapper.map(carpro, CartProductDTO.class);
 				resp.setQuantity(soluong);
