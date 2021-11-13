@@ -21,6 +21,7 @@ import com.it15306.dto.PageDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.WardDTO;
+import com.it15306.dto.addressOrder.BodyAddressOrder;
 import com.it15306.entities.AddressOrder;
 import com.it15306.services.AddressService;
 
@@ -67,9 +68,9 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(dto);	
 	}
 	
-	@RequestMapping(value = "/address-order/create/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<AddressOrderDTO> create(@RequestBody AddressOrderDTO addressOrderDTO) {
+	public ResponseEntity<BodyAddressOrder> create(@RequestBody BodyAddressOrder addressOrderDTO) {
 		
 		if(addressOrderDTO.equals(null)) {
 			System.out.println("vao vung loi null");
@@ -91,9 +92,18 @@ public class CustomerAddressOrder {
 	
 	@RequestMapping(value = "/address-order/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public AddressOrder update(@RequestBody AddressOrderDTO addressOrderDTO) {
-		
-		return addressService.updateAddressOrder(addressOrderDTO);
+	public ResponseEntity<BodyAddressOrder> update(@RequestBody BodyAddressOrder addressOrderDTO) {
+		try {
+			BodyAddressOrder addressOrder =	addressService.updateAddressOrder(addressOrderDTO);
+			if(addressOrder != null) {
+				return ResponseEntity.ok(addressOrder);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.badRequest().build();
 	}
 	
 }

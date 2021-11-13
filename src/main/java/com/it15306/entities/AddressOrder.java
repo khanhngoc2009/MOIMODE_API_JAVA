@@ -30,7 +30,7 @@ public class AddressOrder implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "address_order_id")
-	private Integer address_order_id;
+	private Integer id;
 	
 
 
@@ -62,11 +62,11 @@ public class AddressOrder implements Serializable {
 	private String phone_persion;
 	private Integer isactive;
 	private Integer status;
-	public Integer getAddress_order_id() {
-		return address_order_id;
+	public Integer getId() {
+		return id;
 	}
-	public void setAddress_order_id(Integer address_order_id) {
-		this.address_order_id = address_order_id;
+	public void setid(Integer id) {
+		this.id = id;
 	}
 	public Date getCreate_date() {
 		return create_date;
