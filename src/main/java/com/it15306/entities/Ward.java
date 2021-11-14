@@ -32,13 +32,14 @@ public class Ward {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ward_id")
-	private Integer ward_id;
+	private Integer id;
 	
 //	@Basic
 //	@Column(name = "create_date")
 //	@Temporal(TemporalType.TIMESTAMP)
 //	private Date create_date;
-	private String ward_name; 
+	@Column(name = "ward_name")
+	private String name; 
 	private Integer status;
 	
 	
@@ -49,21 +50,6 @@ public class Ward {
 	@OneToMany(mappedBy = "ward")
 	private List<User> users = new ArrayList<>();
 
-	public Integer getWard_id() {
-		return ward_id;
-	}
-
-	public void setWard_id(Integer ward_id) {
-		this.ward_id = ward_id;
-	}
-
-	public String getWard_name() {
-		return ward_name;
-	}
-
-	public void setWard_name(String ward_name) {
-		this.ward_name = ward_name;
-	}
 
 	public Integer getStatus() {
 		return status;
@@ -88,5 +74,26 @@ public class Ward {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	
 }

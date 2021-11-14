@@ -25,9 +25,9 @@ import lombok.Setter;
 
 public class DistrictDTO {
 
-	private Integer district_id;
+	private Integer id;
 	
-	private String district_name; 
+	private String name; 
 	private Integer status;
 	private Integer province_id;
 	
@@ -40,21 +40,6 @@ public class DistrictDTO {
 		this.province_id = province_id;
 	}
 
-	public Integer getDistrict_id() {
-		return district_id;
-	}
-
-	public void setDistrict_id(Integer district_id) {
-		this.district_id = district_id;
-	}
-
-	public String getDistrict_name() {
-		return district_name;
-	}
-
-	public void setDistrict_name(String district_name) {
-		this.district_name = district_name;
-	}
 
 	public Integer getStatus() {
 		return status;
@@ -63,6 +48,23 @@ public class DistrictDTO {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-		
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 	
 }

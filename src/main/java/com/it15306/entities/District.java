@@ -32,13 +32,13 @@ public class District {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "district_id")
-	private Integer district_id;
+	private Integer id;
 	
 //	@Basic
-//	@Column(name = "create_date")
+	@Column(name = "district_name")
 //	@Temporal(TemporalType.TIMESTAMP)
 //	private Date create_date;
-	private String district_name; 
+	private String name; 
 	private Integer status;
 	
 	
@@ -52,21 +52,6 @@ public class District {
 	@OneToMany(mappedBy = "district")
 	private List<User> users = new ArrayList<>();
 
-	public Integer getDistrict_id() {
-		return district_id;
-	}
-
-	public void setDistrict_id(Integer district_id) {
-		this.district_id = district_id;
-	}
-
-	public String getDistrict_name() {
-		return district_name;
-	}
-
-	public void setDistrict_name(String district_name) {
-		this.district_name = district_name;
-	}
 
 	public Integer getStatus() {
 		return status;
@@ -98,6 +83,26 @@ public class District {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

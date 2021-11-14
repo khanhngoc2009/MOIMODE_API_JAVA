@@ -18,7 +18,7 @@ import com.it15306.entities.Ward;
 public interface WardRepository extends JpaRepository<Ward, Integer> {
 
 	final String SELECT_ALL = "SELECT w FROM Ward w";
-	final String SELECT_BY_NAME = "SELECT w FROM Ward w WHERE w.ward_name =:Ward_name";
+	final String SELECT_BY_NAME = "SELECT w FROM Ward w WHERE w.name =:Ward_name";
 	final String SELECT_BY_STATUS = "SELECT w FROM Ward w WHERE w.status =:status";
 	final String SELECT_BY_DISTRICT = "SELECT w FROM Ward w WHERE w.district =:district";
 

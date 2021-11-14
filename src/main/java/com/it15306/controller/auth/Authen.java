@@ -119,11 +119,11 @@ public class Authen {
 				user.setPassword(hashPass);
 				user.setCreate_date(new Date());
 				Province pr = new Province();
-				pr.setProvince_id(1);
+				pr.setId(1);
 				District dt = new District();
-				dt.setDistrict_id(1);
+				dt.setId(1);
 				Ward w = new Ward();
-				w.setWard_id(1);
+				w.setId(1);
 				user.setProvince(pr);
 				user.setDistrict(dt);
 				user.setWard(w);

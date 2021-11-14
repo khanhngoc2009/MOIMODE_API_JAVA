@@ -53,7 +53,7 @@ public class CustomerWard {
 		ModelMapper modelMapper = new ModelMapper();
 		List<WardDTO> WardDTOs =new ArrayList<WardDTO>();
 		District district = new District();
-		district.setDistrict_id(district_id);
+		district.setId(district_id);
 		List<Ward> entitis =  this.wardServiceImpl.getAllWardByDistrict(district);
 		if (entitis.size() > 0) {
 			

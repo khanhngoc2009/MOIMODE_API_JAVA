@@ -50,7 +50,7 @@ public class CustomerDistrict {
 		ModelMapper modelMapper = new ModelMapper();
 		List<DistrictDTO> DistrictDTOs =new ArrayList<DistrictDTO>();
 		Province province = new Province();
-		province.setProvince_id(province_id);
+		province.setId(province_id);
 		List<District> entitis =  this.districtServiceImpl.getAllDistrictsByProvinceId(province);
 				if (entitis.size() > 0) {
 			
