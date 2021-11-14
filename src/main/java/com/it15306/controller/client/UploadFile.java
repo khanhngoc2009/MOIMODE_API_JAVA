@@ -29,7 +29,7 @@ public class UploadFile {
 	@Autowired 
 	private ProductServiceImpl productServiceImpl;
 	
-	@PostMapping("/upload-single-file")
+	@PostMapping("/upload-file")
 	public ResponseEntity<?> upload_single(
 		@RequestParam MultipartFile uploadedFile
 	) {
@@ -57,44 +57,6 @@ public class UploadFile {
 		}
 		
 	}
-	@PostMapping("/upload-multifile-product")
-	public ResponseEntity<?> upload_multi(
-		@RequestParam MultiFileDto uploadedFiles
-	) {
-		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
-		List<FileImageDto> dta = new ArrayList<FileImageDto>();
-		try {
-			int size = uploadedFiles.getUploadedFile().size();
-			for(int i=0;i<size;i++) {
-				MultipartFile uploadedFile = uploadedFiles.getUploadedFile().get(i);
-				System.out.print(uploadedFile.getResource());
-				File myUploadFolder = new File("/var/www/MOIMODE_API_JAVA/src/main/webapp/storages");
-				// Nếu folder lưu file ko tồn tại -> tạo mới
-				if (!myUploadFolder.exists()) {
-					myUploadFolder.mkdirs();
-				}
-				// Ghi file đã upload vào thư mục lưu trữ file
-				File savedFile = new File(myUploadFolder, uploadedFile.getOriginalFilename());
-				uploadedFile.transferTo(savedFile);
-				FileImageDto res = new FileImageDto();
-				ImageProduct s = new ImageProduct();
-				s.setUrl(uploadedFile.getOriginalFilename());
-				s.setType(2);
-				s.setProduct(productServiceImpl.getById(uploadedFiles.getProduct_id()));
-				ImageProduct i_p = productServiceImpl.saveImageProduct(s);
-				res.setId(i_p.getId());
-				res.setUrl(uploadedFile.getOriginalFilename());
-				dta.add(res);
-			}
-			data.setCode(200);
-			data.setListData(dta);
-			data.setMessage("Thanh cong");
-			return new ResponseEntity<>(data,HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-		}
-		
-	}
+	
 	
 }

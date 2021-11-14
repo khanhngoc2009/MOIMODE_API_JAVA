@@ -65,24 +65,24 @@ public class AdminOptions {
 					CreateOptionDto body = bod.get(b);
 					Options option = new Options();
 					option.setName(body.getName());
-					option.setType(body.getOptionTypeId());
+					option.setType(body.getType());
 					option.setStatus(1);
 					option.setCreate_date(new Date());
 					Options resOption =  optionProductServiceImpl.saveOptionProduct(option);
 					OptionDTO o = (modelMapper.map(resOption, OptionDTO.class));
 					
-					int size = body.getValue().size();
+					int size = body.getValues().size();
 					List<OptionValueClientDto> op = new ArrayList<OptionValueClientDto>();
 					for(int i=0;i< size ;i++) {
 						OptionValue option_value = new OptionValue();
 						option_value.setOption(option);
-						option_value.setValue_name(body.getValue().get(i));
+						option_value.setValue_name(body.getValues().get(i).getValue_name());
 						OptionValue v= optionValueServiceImpl.saveOptionValue(option_value);
 						OptionValueClientDto ov = (modelMapper.map(v, OptionValueClientDto.class));
 						optionValueSkuServiceImpl.save(ov.getId());
 						op.add(ov);
 					}
-					o.setOption_values(op);
+					o.setValues(op);
 					list.add(o);
 				}
 				dataRes.setCode(200);

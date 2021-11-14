@@ -77,7 +77,7 @@ public class PaymentServiceImpl implements PaymentService{
 	public PaymentDTO savePaymnet(PaymentDTO payment) {
 		Payment entity =modelMapper.map(payment, Payment.class);
 		paymentRepository.save(entity);
-		entity.setId(entity.getId());
+		entity.setPayment_id(entity.getPayment_id());
 		return modelMapper.map(entity, PaymentDTO.class);
 	}
 
@@ -86,7 +86,7 @@ public class PaymentServiceImpl implements PaymentService{
 	Optional<Payment> optional=	paymentRepository.findById(payment_id);
 		if(optional.isPresent()) {
 			paymentRepository.delete(optional.get());
-			return optional.get().getId();
+			return optional.get().getPayment_id();
 		}
 		return null;
 	}

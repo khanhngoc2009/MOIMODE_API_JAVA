@@ -1,6 +1,8 @@
 package com.it15306.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +34,9 @@ public interface ProductSkuRepository extends JpaRepository<Product_Sku, Integer
 	final String SELECT_PRODUCT_SKU_BY_ID = "SELECT P FROM Product_Sku  P WHERE P.product_sku_id=:id";
 	@Query(SELECT_PRODUCT_SKU_BY_ID)
 	Product_Sku findProductSKUById(@Param("id") Integer id);
+	
+	
+	final String SELECT_PRODUCT_SKU_BY_PRODUCT_ID = "SELECT P FROM Product_Sku  P WHERE P.product.id=:id";
+	@Query(SELECT_PRODUCT_SKU_BY_PRODUCT_ID)
+	List<Product_Sku> findByProductId(@Param("id") Integer id);
 }

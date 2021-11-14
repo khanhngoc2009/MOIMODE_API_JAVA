@@ -204,7 +204,7 @@ public class CustomerProduct {
 						OptionValue otvClient = ot_pr.getOption().getOption_values().get(j);
 						listOtvClient.add(modelMapper.map(otvClient, OptionValueClientDto.class));
 					}
-					oDto.setOption_values(listOtvClient);
+					oDto.setValues(listOtvClient);
 					op.setOption(oDto);
 					optionProductDTOs.add(op);
 				}

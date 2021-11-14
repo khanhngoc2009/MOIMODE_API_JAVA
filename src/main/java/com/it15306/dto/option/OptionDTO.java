@@ -11,15 +11,8 @@ public class OptionDTO {
 	private String name;
 	private String description;
 	private Integer type;
-	private List<OptionValueClientDto> option_values = new ArrayList<>();
+	private List<OptionValueClientDto> values = new ArrayList<>();
 	
-	public List<OptionValueClientDto> getOption_values() {
-		return option_values;
-	}
-
-	public void setOption_values(List<OptionValueClientDto> option_values) {
-		this.option_values = option_values;
-	}
 
 	public String getName() {
 		return name;
@@ -54,4 +47,12 @@ public class OptionDTO {
 		this.type = type;
 	}
 
+	public List<OptionValueClientDto> getValues() {
+		return values;
+	}
+
+	public void setValues(List<OptionValueClientDto> values) {
+		this.values = values;
+	}
+	
 }

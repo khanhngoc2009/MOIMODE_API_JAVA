@@ -139,6 +139,8 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		return skuRepository.saveAll(iterableSku);
 	}
 	
+	
+	
 	public void saveSku(Integer product_sku_id,Integer option_sku_id) {
 		 skuRepository.saveValue(product_sku_id,option_sku_id);
 	}
@@ -146,6 +148,11 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	public List<TypeOptions> getListTypeOption() {
 		return typeOptionRepository.findAll();
+	}
+	
+	
+	public List<Product_Sku> getListProductSkuByProductId(Integer product_id) {
+		return productSkuRepository.findByProductId(product_id);
 	}
 }
 

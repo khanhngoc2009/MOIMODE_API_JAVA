@@ -1,5 +1,6 @@
 package com.it15306.controller.admin;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,14 +15,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
+import com.it15306.dto.FileImageDto;
+import com.it15306.dto.MultiFileDto;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.product.DataBodyListProductDto;
@@ -33,6 +39,7 @@ import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.dto.product.ProductSkuGetBodyDto;
 import com.it15306.dto.product.UpdateProductSkuDto;
 import com.it15306.entities.Category;
+import com.it15306.entities.ImageProduct;
 import com.it15306.entities.OptionValue;
 import com.it15306.entities.Option_Product;
 import com.it15306.entities.Option_Sku_Value;
@@ -99,9 +106,9 @@ public class AdminProduct {
 		}
 	}
 
-	@RequestMapping(value = "/admin/product-sku/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-sku/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getListSku(@RequestBody ListSkuCreateDto body) {
+	public ResponseEntity<?> createProductSku(@RequestBody ListSkuCreateDto body) {
 		DataResponseList<ProductSkuGetBodyDto> res=  new DataResponseList<ProductSkuGetBodyDto>();
 		List<ProductSkuGetBodyDto> listProductDtos = new ArrayList<ProductSkuGetBodyDto>();
 		ModelMapper modelMapper = new ModelMapper();
@@ -225,6 +232,64 @@ public class AdminProduct {
 		
 	}
 	
+	@RequestMapping(value = "/admin/product-sku/list/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> getProductSku(@RequestParam Integer product_id) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<UpdateProductSkuDto> data = new DataResponseList<UpdateProductSkuDto>();
+		try {
+			List<Product_Sku>  pr_sku = productServiceImpl.getListProductSkuByProductId(product_id);
+			
+			
+			data.setCount(0);
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+		
+	}
+	
+	@PostMapping("/admin/product/upload-multi")
+	public ResponseEntity<?> upload_multi(
+		@RequestParam MultiFileDto uploadedFiles
+	) {
+		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
+		List<FileImageDto> dta = new ArrayList<FileImageDto>();
+		try {
+			int size = uploadedFiles.getUploadedFile().size();
+			for(int i=0;i<size;i++) {
+				MultipartFile uploadedFile = uploadedFiles.getUploadedFile().get(i);
+				System.out.print(uploadedFile.getResource());
+				File myUploadFolder = new File("/var/www/MOIMODE_API_JAVA/src/main/webapp/storages");
+				// Nếu folder lưu file ko tồn tại -> tạo mới
+				if (!myUploadFolder.exists()) {
+					myUploadFolder.mkdirs();
+				}
+				// Ghi file đã upload vào thư mục lưu trữ file
+				File savedFile = new File(myUploadFolder, uploadedFile.getOriginalFilename());
+				uploadedFile.transferTo(savedFile);
+				FileImageDto res = new FileImageDto();
+				ImageProduct s = new ImageProduct();
+				s.setUrl(uploadedFile.getOriginalFilename());
+				s.setType(2);
+				s.setProduct(productServiceImpl.getById(uploadedFiles.getProduct_id()));
+				ImageProduct i_p = productServiceImpl.saveImageProduct(s);
+				res.setId(i_p.getId());
+				res.setUrl(uploadedFile.getOriginalFilename());
+				dta.add(res);
+			}
+			data.setCode(200);
+			data.setListData(dta);
+			data.setMessage("Thanh cong");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
 	
 	
 	
