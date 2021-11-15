@@ -236,12 +236,17 @@ public class AdminProduct {
 	@ResponseBody
 	public ResponseEntity<?> getProductSku(@RequestParam Integer product_id) {
 		ModelMapper modelMapper = new ModelMapper();
-		DataResponseList<UpdateProductSkuDto> data = new DataResponseList<UpdateProductSkuDto>();
+		DataResponseList<ProductSkuDto> data = new DataResponseList<ProductSkuDto>();
 		try {
-			List<Product_Sku>  pr_sku = productServiceImpl.getListProductSkuByProductId(product_id);
-			
-			
+			List<Product_Sku>  pr_skus = productServiceImpl.getListProductSkuByProductId(product_id);
+			List<ProductSkuDto> skuDtos= new ArrayList<ProductSkuDto>();
+			int size = pr_skus.size();
+			for(int i=0;i<size;i++) {
+				ProductSkuDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuDto.class);
+				skuDtos.add(p);
+			}
 			data.setCount(0);
+			data.setListData(skuDtos);
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
