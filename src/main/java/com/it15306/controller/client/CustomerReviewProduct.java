@@ -39,7 +39,7 @@ public class CustomerReviewProduct {
 		return ResponseEntity.badRequest().build();	
 	}
 	
-	@RequestMapping(value = "/review-product/list/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/review-product/list/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<ReviewProductDTO>> listreview(@PathVariable("id") String idProduct) {
 		try {

@@ -232,7 +232,7 @@ public class AdminProduct {
 		
 	}
 	
-	@RequestMapping(value = "/admin/product-sku/list/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-sku/list/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getProductSku(@RequestParam Integer product_id) {
 		ModelMapper modelMapper = new ModelMapper();

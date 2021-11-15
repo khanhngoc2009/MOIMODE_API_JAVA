@@ -102,7 +102,7 @@ public class AdminOptions {
 			return new ResponseEntity<>(dataRes,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
-	@RequestMapping(value = "/admin/option-type/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/option-type/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> listOptionType() {
 		DataResponseList<TypeOptionDto> rp=  new DataResponseList<TypeOptionDto>();
@@ -181,7 +181,7 @@ public class AdminOptions {
 //		}
 //		
 //	}
-	@RequestMapping(value = "/admin/option/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/option/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> listOption() {
 		DataResponseList<OptionResponseDto> dataRes= new DataResponseList<OptionResponseDto>();

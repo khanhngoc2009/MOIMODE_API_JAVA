@@ -64,7 +64,7 @@ public class CustomerCart {
 		
 	}
 	
-	@RequestMapping(value = "/cart/list/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/cart/list/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<CartDTO> getlistByUserId(@PathVariable("id") Integer id) {
 		try {			

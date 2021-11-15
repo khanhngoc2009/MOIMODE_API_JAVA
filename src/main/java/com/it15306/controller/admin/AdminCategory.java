@@ -56,7 +56,7 @@ public class AdminCategory {
 		
 	}
 	
-	@RequestMapping(value = "/admin/category/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public DataResponse<CategoryDTO> updateCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();

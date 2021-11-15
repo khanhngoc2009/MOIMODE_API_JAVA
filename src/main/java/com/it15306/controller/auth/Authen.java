@@ -80,7 +80,7 @@ public class Authen {
 		return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/infor", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/infor", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDTO getInfor(HttpServletRequest httpServletRequest) {
 		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
