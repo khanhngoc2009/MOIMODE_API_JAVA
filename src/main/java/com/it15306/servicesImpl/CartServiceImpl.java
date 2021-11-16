@@ -122,7 +122,7 @@ public class CartServiceImpl implements CartService{
 		CartProduct carpro=new CartProduct();
 		CartProduct cartproduct =new CartProduct();
 		if(cvo == null){
-			
+			System.out.println("vo tao maoi cart ");
 			//luu cart
 			cart.setUser(user);
 			cart.setCreate_date(date);
@@ -135,6 +135,7 @@ public class CartServiceImpl implements CartService{
 			carpro.setQuantity(data.getQuantity());
 			cartProductReponsitory.save(carpro);
 			carpro.setId(carpro.getId());
+			System.out.println("id---1: "+carpro.getId());
 			CartProductDTO resp= modelMapper.map(carpro, CartProductDTO.class);
 			resp.setProductSkuDTOs(modelMapper.map(productSKU, ProductSkuDto.class));
 			System.out.println(resp);
@@ -143,20 +144,25 @@ public class CartServiceImpl implements CartService{
 			//check update			
 		cartproduct =	cartProductReponsitory.selectCheck(cvo.getId(), data.getProductSKUId());
 		if(cartproduct == null) {
-			//luu cart product	 new		
+			//luu cart product	 new
+			System.out.println("vo tao maoi cart product qlt");
 			carpro.setCarts(cvo);
 			carpro.setProductSkus(productSKU);
 			carpro.setQuantity(data.getQuantity());
 			cartProductReponsitory.save(carpro);
 			carpro.setId(carpro.getId());
+			System.out.println("id---2: "+carpro.getId());
 			CartProductDTO resp = modelMapper.map(carpro, CartProductDTO.class);
 			resp.setProductSkuDTOs(modelMapper.map(productSKU, ProductSkuDto.class));
 			return resp;
 		}else {
 			// update quantity
+			System.out.println("vo uodate qlt");
 			Integer soluong=cartproduct.getQuantity()+data.getQuantity();
 			cartProductReponsitory.updateQuantitys(soluong,cvo.getId(), data.getProductSKUId());
 			CartProductDTO resp= modelMapper.map(carpro, CartProductDTO.class);
+			resp.setId(cartproduct.getId());
+			
 			resp.setQuantity(soluong);
 			resp.setProductSkuDTOs(modelMapper.map(productSKU, ProductSkuDto.class));
 			return resp;
