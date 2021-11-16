@@ -39,7 +39,7 @@ public class AdminVoucher {
 		return ResponseEntity.ok(vo);
 	}
 	
-	@PutMapping("/admin/voucher/update")
+	@PostMapping("/admin/voucher/update")
 	@ResponseBody
 	public ResponseEntity<Voucherdto> update(@RequestBody Voucherdto data) {
 		

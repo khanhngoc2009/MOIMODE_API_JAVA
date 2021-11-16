@@ -32,13 +32,13 @@ public class Province {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "province_id")
-	private Integer province_id;
+	private Integer id;
 	
 //	@Basic
-//	@Column(name = "create_date")
+	@Column(name = "province_name")
 //	@Temporal(TemporalType.TIMESTAMP)
 //	private Date create_date;
-	private String province_name; 
+	private String name; 
 	private Integer status;
 	
 	@OneToMany(mappedBy = "province")
@@ -47,30 +47,25 @@ public class Province {
 	@OneToMany(mappedBy = "province")
 	private List<User> users = new ArrayList<>();
 
-	public Integer getProvince_id() {
-		return province_id;
-	}
-	public Province() {
-		
-	}
-	
-	public Province(Integer province_id, String province_name, Integer status) {
-		super();
-		this.province_id = province_id;
-		this.province_name = province_name;
-		this.status = status;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setProvince_id(Integer province_id) {
-		this.province_id = province_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getProvince_name() {
-		return province_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setProvince_name(String province_name) {
-		this.province_name = province_name;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Integer getStatus() {
@@ -97,5 +92,15 @@ public class Province {
 		this.users = users;
 	}
 
+	public Province(Integer id, String name, Integer status) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.status = status;
+	}
+	public Province() {
+		
+	}
+	
 	
 }

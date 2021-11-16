@@ -2,14 +2,15 @@ package com.it15306.dto.option_value;
 
 public class OptionValueAdminDto {
 
-	private String name;
+	private String value_name;
 
-	public String getName() {
-		return name;
+	public String getValue_name() {
+		return value_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setValue_name(String value_name) {
+		this.value_name = value_name;
 	}
-	
+
+
 }

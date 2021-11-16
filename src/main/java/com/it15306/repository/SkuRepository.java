@@ -31,8 +31,8 @@ public interface SkuRepository extends PagingAndSortingRepository<Sku, Integer> 
 //			+ " sk.option_sku =:option_3 "
 //			+ " group by sk.product_sku "
 //			+ " order by count(sk) desc";
-	
-	
+//	final String SELECT_BY_PRODUCT_ID = " Select p from Sku ";
+	 
 	final String SELECT_BY_OPTION_VALUES=
 			"select sku.product_sku_id,product_id,value_sku,price,quantity_remain,quantiy_rest,quantity_total,status,url_media from sku \r\n"
 			+ "join product_sku on product_sku.product_sku_id = sku.product_sku_id\r\n"

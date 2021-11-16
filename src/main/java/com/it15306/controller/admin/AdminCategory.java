@@ -39,6 +39,7 @@ public class AdminCategory {
 	@ResponseBody
 	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
+		System.out.print(body.getName());
 		try {
 			CategoryDTO dto =categoryService.CreateCategory(body);
 			if(!dto.equals(null)) {
@@ -55,7 +56,7 @@ public class AdminCategory {
 		
 	}
 	
-	@RequestMapping(value = "/admin/category/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/category/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public DataResponse<CategoryDTO> updateCategory(@RequestBody CategoryDTO body) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();

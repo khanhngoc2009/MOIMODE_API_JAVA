@@ -44,7 +44,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(list);	 
 	}
 	
-	@RequestMapping(value = "/address-order/list/{user_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/list/{user_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrderByUserID(@PathVariable("user_id")String user_id) {
 		List<AddressOrderDTO> list =addressService.getAllAddressByUserId(user_id);	
@@ -56,7 +56,7 @@ public class CustomerAddressOrder {
 	}
 	
 	
-	@RequestMapping(value = "/address-order/detail/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/detail/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<AddressOrderDTO> detailAddressOrderByID(@PathVariable("id") Integer id) {
 
@@ -90,7 +90,7 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok( resullid);
 	}
 	
-	@RequestMapping(value = "/address-order/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<BodyAddressOrder> update(@RequestBody BodyAddressOrder addressOrderDTO) {
 		try {

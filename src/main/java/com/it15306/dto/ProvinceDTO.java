@@ -24,24 +24,24 @@ import lombok.Setter;
 
 public class ProvinceDTO {
 
-	private Integer province_id;
-	private String province_name; 
+	private Integer id;
+	private String name; 
 	private Integer status;
 
-	public Integer getProvince_id() {
-		return province_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setProvince_id(Integer province_id) {
-		this.province_id = province_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getProvince_name() {
-		return province_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setProvince_name(String province_name) {
-		this.province_name = province_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getStatus() {

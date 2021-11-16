@@ -181,10 +181,10 @@ public class AddressServiceImpl implements AddressService {
 			respon.setIsActive(address.getIsactive());
 			respon.setIsDefault(address.getIsdefault());
 			respon.setPhone_persion(address.getPhone_persion());
-			respon.setProvince_id(address.getProvince().getProvince_id());
+			respon.setProvince_id(address.getProvince().getId());
 			respon.setUser_id(address.getUser().getId());
-			respon.setWard_id(address.getWard().getWard_id());
-			respon.setDistrict_id(address.getDistrict().getDistrict_id());
+			respon.setWard_id(address.getWard().getId());
+			respon.setDistrict_id(address.getDistrict().getId());
 			return  respon;
 		}
 		} catch (IllegalAccessException e) {

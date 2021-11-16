@@ -29,9 +29,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Component
 public class WardDTO {
-	private Integer ward_id;
+	private Integer id;
 	
-	private String ward_name; 
+	private String name; 
 	private Integer status;
 	private Integer district_id;
 
@@ -42,21 +42,22 @@ public class WardDTO {
 	public void setDistrict_id(Integer district_id) {
 		this.district_id = district_id;
 	}
+	
 
-	public Integer getWard_id() {
-		return ward_id;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setWard_id(Integer ward_id) {
-		this.ward_id = ward_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getWard_name() {
-		return ward_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setWard_name(String ward_name) {
-		this.ward_name = ward_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getStatus() {

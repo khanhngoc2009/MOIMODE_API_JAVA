@@ -2,11 +2,13 @@ package com.it15306.dto.option;
 
 import java.util.List;
 
+import com.it15306.dto.option_value.OptionValueAdminDto;
+
 public class CreateOptionDto {
 	private String name;
 //	private String description;
-	private List<String> value;
-	private Integer optionTypeId;
+	private List<OptionValueAdminDto> values;
+	private Integer type;
 	
 	public String getName() {
 		return name;
@@ -14,17 +16,19 @@ public class CreateOptionDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<String> getValue() {
-		return value;
+
+	public List<OptionValueAdminDto> getValues() {
+		return values;
 	}
-	public void setValue(List<String> value) {
-		this.value = value;
+	public void setValues(List<OptionValueAdminDto> values) {
+		this.values = values;
 	}
-	public Integer getOptionTypeId() {
-		return optionTypeId;
+	public Integer getType() {
+		return type;
 	}
-	public void setOptionTypeId(Integer optionTypeId) {
-		this.optionTypeId = optionTypeId;
+	public void setType(Integer type) {
+		this.type = type;
 	}
+	
 	
 }

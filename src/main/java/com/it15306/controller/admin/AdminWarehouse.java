@@ -37,7 +37,7 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(list);
 	}
 	
-	@GetMapping("/admin/warehouse/{id}")
+	@PostMapping("/admin/warehouse/{id}")
 	@ResponseBody
 	public ResponseEntity<WarehouseDTO>  getById(@PathVariable("id") Integer id) {
 	WarehouseDTO warehouseDTO =warehouseService.getByIdWarehouse(id);
@@ -59,7 +59,7 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(whDTO);
 	}
 	
-	@PutMapping("/admin/warehouse/update")
+	@PostMapping("/admin/warehouse/update")
 	@ResponseBody
 	public ResponseEntity<WarehouseDTO>  update(@RequestBody WarehouseDTO warehouseDTO) {
 	WarehouseDTO whDTO =warehouseService.updateWarehouse(warehouseDTO);

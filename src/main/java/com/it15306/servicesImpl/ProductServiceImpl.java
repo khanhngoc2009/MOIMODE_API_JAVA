@@ -19,10 +19,12 @@ import com.it15306.entities.ImageProduct;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
+import com.it15306.entities.TypeOptions;
 import com.it15306.repository.ImageProductRepository;
 import com.it15306.repository.ProductRepository;
 import com.it15306.repository.ProductSkuRepository;
 import com.it15306.repository.SkuRepository;
+import com.it15306.repository.TypeOptionRepository;
 
 @Service("ProductServiceImpl")
 public class ProductServiceImpl implements com.it15306.services.ProductService {
@@ -35,6 +37,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	
 	@Autowired
 	private ImageProductRepository imageProductRepository;
+	
+	@Autowired
+	private TypeOptionRepository typeOptionRepository;
 	
 	@Autowired
 	private ProductSkuRepository productSkuRepository;
@@ -134,8 +139,20 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		return skuRepository.saveAll(iterableSku);
 	}
 	
+	
+	
 	public void saveSku(Integer product_sku_id,Integer option_sku_id) {
 		 skuRepository.saveValue(product_sku_id,option_sku_id);
+	}
+	
+	
+	public List<TypeOptions> getListTypeOption() {
+		return typeOptionRepository.findAll();
+	}
+	
+	
+	public List<Product_Sku> getListProductSkuByProductId(Integer product_id) {
+		return productSkuRepository.findByProductId(product_id);
 	}
 }
 

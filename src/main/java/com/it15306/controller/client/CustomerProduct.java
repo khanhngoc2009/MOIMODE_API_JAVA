@@ -54,7 +54,7 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	@RequestMapping(value = "/product/list/news", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list/news", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListProductNew() {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
@@ -139,7 +139,7 @@ public class CustomerProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/product/list-selling", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list-selling", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getListProductSelling() {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
@@ -180,7 +180,7 @@ public class CustomerProduct {
 		
 	}
 
-	@RequestMapping(value = "/product/detail/{product_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/detail/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getProductDetail(@PathVariable Integer product_id) {
 		DataResponse<ProductDetailDto> response = new DataResponse<ProductDetailDto>();
@@ -204,7 +204,7 @@ public class CustomerProduct {
 						OptionValue otvClient = ot_pr.getOption().getOption_values().get(j);
 						listOtvClient.add(modelMapper.map(otvClient, OptionValueClientDto.class));
 					}
-					oDto.setOption_values(listOtvClient);
+					oDto.setValues(listOtvClient);
 					op.setOption(oDto);
 					optionProductDTOs.add(op);
 				}

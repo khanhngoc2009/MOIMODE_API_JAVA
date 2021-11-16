@@ -17,7 +17,7 @@ import com.it15306.entities.Province;
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province, Integer>  {
 	final String SELECT_ALL = "SELECT p FROM Province p";
-	final String SELECT_BY_NAME = "SELECT p FROM Province p WHERE p.province_name =:province_name";
+	final String SELECT_BY_NAME = "SELECT p FROM Province p WHERE p.name =:province_name";
 	final String SELECT_BY_STATUS = "SELECT p FROM Province p WHERE p.status =:status";
 
 	@Query(SELECT_ALL)

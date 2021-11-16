@@ -49,7 +49,7 @@ public class CustomerVoucher {
 	}
 	
 	
-	@GetMapping("/voucher/detail/{id}")
+	@PostMapping("/voucher/detail/{id}")
 	@ResponseBody
 	public ResponseEntity< Voucherdto> getByIdVoucher(@PathVariable("id") Integer id) {
 		Voucherdto voucher= voucherService.getByIdVoucher(id);

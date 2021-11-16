@@ -31,7 +31,7 @@ public class CustomerWard {
 	
 
 
-	@RequestMapping(value = "/ward/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/ward/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<WardDTO> getListWard() {
 		ModelMapper modelMapper = new ModelMapper();
@@ -47,13 +47,13 @@ public class CustomerWard {
 		return WardDTOs;
 	}
 	@PreAuthorize("hasAuthority('CUSTOMER')")
-	@RequestMapping(value = "/ward/{district_id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/ward/{district_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<WardDTO> getListWardByDistrict(@PathVariable Integer district_id) {
 		ModelMapper modelMapper = new ModelMapper();
 		List<WardDTO> WardDTOs =new ArrayList<WardDTO>();
 		District district = new District();
-		district.setDistrict_id(district_id);
+		district.setId(district_id);
 		List<Ward> entitis =  this.wardServiceImpl.getAllWardByDistrict(district);
 		if (entitis.size() > 0) {
 			

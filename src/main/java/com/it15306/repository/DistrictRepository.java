@@ -16,7 +16,7 @@ import com.it15306.entities.Province;
 @Repository
 public interface DistrictRepository extends JpaRepository<District, Integer> {
 	final String SELECT_ALL = "SELECT d FROM District d";
-	final String SELECT_BY_NAME = "SELECT d FROM District d WHERE d.district_name =:district_name";
+	final String SELECT_BY_NAME = "SELECT d FROM District d WHERE d.name =:district_name";
 	final String SELECT_BY_STATUS = "SELECT d FROM District d WHERE d.status =:status";
 	final String SELECT_BY_PROVINCE = "SELECT d FROM District d WHERE d.province =:province";
 
