@@ -30,7 +30,7 @@ import com.it15306.services.CategoryService;
 
 @Service("CategoryProductServiceImpl")
 public class CategoryProductServiceImpl implements CategoryService{
-	Long totalElement;
+	private static Long totalElement;
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
