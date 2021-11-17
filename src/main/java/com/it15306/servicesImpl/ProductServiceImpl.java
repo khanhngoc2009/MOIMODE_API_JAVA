@@ -154,6 +154,11 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	public List<Product_Sku> getListProductSkuByProductId(Integer product_id) {
 		return productSkuRepository.findByProductId(product_id);
 	}
+	
+	
+	public List<ImageProduct> getImageByProductId(Integer product_id) {
+		return imageProductRepository.getByProductId(product_id);
+	}
 }
 
 

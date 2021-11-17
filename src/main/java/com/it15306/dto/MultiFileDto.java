@@ -5,15 +5,16 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public class MultiFileDto {
-	private List<MultipartFile> uploadedFile;
+	
+	private MultipartFile[] uploadedFiles;
 	private Integer product_id;
 	
-	public List<MultipartFile> getUploadedFile() {
-		return uploadedFile;
+	public MultipartFile[] getUploadedFiles() {
+		return uploadedFiles;
 	}
 
-	public void setUploadedFile(List<MultipartFile> uploadedFile) {
-		this.uploadedFile = uploadedFile;
+	public void setUploadedFiles(MultipartFile[] uploadedFiles) {
+		this.uploadedFiles = uploadedFiles;
 	}
 
 	public Integer getProduct_id() {

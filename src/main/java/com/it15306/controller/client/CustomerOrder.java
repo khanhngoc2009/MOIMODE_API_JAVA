@@ -21,8 +21,6 @@ import com.it15306.servicesImpl.OrderServiceImpl;
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class CustomerOrder {
-//	@Autowired 
-//	private OrderServiceImpl orderServiceImpl;
 	
 	@Autowired
 	ModelMapper modelMapper;
