@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,8 @@ import com.it15306.dto.PageDto;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.product.DataBodyListProductDto;
 import com.it15306.dto.product.DataCreateProductDtos;
+import com.it15306.dto.product.DataImageProductDto;
+import com.it15306.dto.product.DataProductBodyDtos;
 import com.it15306.dto.product.ListSkuCreateDto;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductResponseAdminDto;
@@ -215,12 +218,36 @@ public class AdminProduct {
 		long count = (long) this.productServiceImpl.getCountAdmin();
 		try {
 			int size = dto.size();
+			Product s = new Product();
 			for(int i=0;i<size;i++) {
 				UpdateProductSkuDto up = dto.get(i);
-				
-				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class); 
+				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class);
+				s = p_sku.getProduct();
 				productServiceImpl.saveProductSku(p_sku);
 			}
+			Product product = productServiceImpl.getById(s.getId());
+			product.setType(2);
+			productServiceImpl.saveProduct(product);
+			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+		
+	}
+	
+	
+	@RequestMapping(value = "/admin/product/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> updateProduct(@RequestBody List<ProductDTO> dto) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<String> data = new DataResponseList<String>();
+		long count = (long) this.productServiceImpl.getCountAdmin();
+		try {
+			Product product = new Product();
 			data.setCount(Integer.parseInt(String.valueOf(count)));
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);
@@ -254,19 +281,44 @@ public class AdminProduct {
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
-		
 	}
 	
-	@PostMapping("/admin/product/upload-multi")
+	@RequestMapping(value = "/admin/image-product/list/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> getImageProduct(@RequestParam Integer product_id) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<DataImageProductDto> data = new DataResponseList<DataImageProductDto>();
+		try {
+			List<ImageProduct>  pr_skus = productServiceImpl.getImageByProductId(product_id);
+			List<DataImageProductDto> skuDtos= new ArrayList<DataImageProductDto>();
+			int size = pr_skus.size();
+			for(int i=0;i<size;i++) {
+				DataImageProductDto  p=  modelMapper.map(pr_skus.get(i), DataImageProductDto.class);
+				skuDtos.add(p);
+			}
+			data.setCount(0);
+			data.setListData(skuDtos);
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
+	
+//	@GetMapping("/admin/product/upload-multi")
+	@RequestMapping(value = "/admin/product/upload-multi", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> upload_multi(
-		@RequestParam MultiFileDto uploadedFiles
+			@RequestParam("files") MultipartFile[] uploadedFiles, @RequestParam("product_id") Integer product_id
 	) {
 		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
 		List<FileImageDto> dta = new ArrayList<FileImageDto>();
 		try {
-			int size = uploadedFiles.getUploadedFile().size();
+			int size = uploadedFiles.length;
+			Product product = productServiceImpl.getById(product_id);
 			for(int i=0;i<size;i++) {
-				MultipartFile uploadedFile = uploadedFiles.getUploadedFile().get(i);
+				MultipartFile uploadedFile = uploadedFiles[i];
 				System.out.print(uploadedFile.getResource());
 				File myUploadFolder = new File("/var/www/MOIMODE_API_JAVA/src/main/webapp/storages");
 				// Nếu folder lưu file ko tồn tại -> tạo mới
@@ -280,7 +332,7 @@ public class AdminProduct {
 				ImageProduct s = new ImageProduct();
 				s.setUrl(uploadedFile.getOriginalFilename());
 				s.setType(2);
-				s.setProduct(productServiceImpl.getById(uploadedFiles.getProduct_id()));
+				s.setProduct(product);
 				ImageProduct i_p = productServiceImpl.saveImageProduct(s);
 				res.setId(i_p.getId());
 				res.setUrl(uploadedFile.getOriginalFilename());
