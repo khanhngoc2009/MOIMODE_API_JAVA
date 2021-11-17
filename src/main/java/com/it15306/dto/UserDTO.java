@@ -24,9 +24,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
+
 @Component
 public class UserDTO {
 private Integer id;
@@ -39,97 +38,155 @@ private Integer id;
 	private String photo;
 	private String roles;
 	private Date create_date;
-	private int province_id;
-	private int district_id;
-	private int ward_id;
-	
-	
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public Integer getAdmin() {
-		return admin;
-	}
-	public void setAdmin(Integer admin) {
-		this.admin = admin;
-	}
-	public Integer getActivated() {
-		return activated;
-	}
-	public void setActivated(Integer activated) {
-		this.activated = activated;
-	}
-	public String getPhoto() {
-		return photo;
-	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
-	public String getRoles() {
-		return roles;
-	}
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-	public Date getCreate_date() {
-		return create_date;
-	}
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
-	}
-	public int getProvince_id() {
-		return province_id;
-	}
-	public void setProvince_id(int province_id) {
-		this.province_id = province_id;
-	}
-	public int getDistrict_id() {
-		return district_id;
-	}
-	public void setDistrict_id(int district_id) {
-		this.district_id = district_id;
-	}
-	public int getWard_id() {
-		return ward_id;
-	}
-	public void setWard_id(int ward_id) {
-		this.ward_id = ward_id;
-	}
+	private ProvinceDTO provincedto;
+	private DistrictDTO districtdto;
+	private WardDTO warddto;
+	/**
+	 * @return the id
+	 */
 	public Integer getId() {
 		return id;
 	}
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
-//	public UserDTO(Integer id, String email, String username, Integer activated, String photo) {
-//		super();
-//		this.id = id;
-//		this.email = email;
-//		this.username = username;
-//		this.activated = activated;
-//		this.photo = photo;
-//	}
-//	public UserDTO() {
-//		super();
-//	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	/**
+	 * @return the admin
+	 */
+	public Integer getAdmin() {
+		return admin;
+	}
+	/**
+	 * @param admin the admin to set
+	 */
+	public void setAdmin(Integer admin) {
+		this.admin = admin;
+	}
+	/**
+	 * @return the activated
+	 */
+	public Integer getActivated() {
+		return activated;
+	}
+	/**
+	 * @param activated the activated to set
+	 */
+	public void setActivated(Integer activated) {
+		this.activated = activated;
+	}
+	/**
+	 * @return the photo
+	 */
+	public String getPhoto() {
+		return photo;
+	}
+	/**
+	 * @param photo the photo to set
+	 */
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	/**
+	 * @return the roles
+	 */
+	public String getRoles() {
+		return roles;
+	}
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+	/**
+	 * @return the create_date
+	 */
+	public Date getCreate_date() {
+		return create_date;
+	}
+	/**
+	 * @param create_date the create_date to set
+	 */
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+	/**
+	 * @return the provincedto
+	 */
+	public ProvinceDTO getProvincedto() {
+		return provincedto;
+	}
+	/**
+	 * @param provincedto the provincedto to set
+	 */
+	public void setProvincedto(ProvinceDTO provincedto) {
+		this.provincedto = provincedto;
+	}
+	/**
+	 * @return the districtdto
+	 */
+	public DistrictDTO getDistrictdto() {
+		return districtdto;
+	}
+	/**
+	 * @param districtdto the districtdto to set
+	 */
+	public void setDistrictdto(DistrictDTO districtdto) {
+		this.districtdto = districtdto;
+	}
+	/**
+	 * @return the warddto
+	 */
+	public WardDTO getWarddto() {
+		return warddto;
+	}
+	/**
+	 * @param warddto the warddto to set
+	 */
+	public void setWarddto(WardDTO warddto) {
+		this.warddto = warddto;
+	}
 	
-//	public UserDTO() {
-////		super();
-//	}	
+	
+	
 	
 }

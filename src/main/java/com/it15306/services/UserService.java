@@ -2,6 +2,10 @@ package com.it15306.services;
 
 import java.util.List;
 
+import com.it15306.dto.UserDTO;
+import com.it15306.dto.user.dataBodyUser;
+import com.it15306.dto.user.datatupdateUser;
+import com.it15306.dto.user.responUser;
 //import com.it15306.entities.Category;
 import com.it15306.entities.User;
 
@@ -12,4 +16,8 @@ public interface UserService {
 	User saveUser(User user);
 	User getByUsername(String username);
 	void delete(String id);
+	List<UserDTO> getAllUsersv2(dataBodyUser data);
+	Long totalement();
+	UserDTO createUser(responUser data);
+	UserDTO updateUser(datatupdateUser data);
 }

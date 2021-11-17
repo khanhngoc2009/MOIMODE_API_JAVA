@@ -51,7 +51,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/miemode_api/v1")
 public class Authen {
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 
 	@Autowired
 	private UserMapper mapper;

@@ -21,6 +21,7 @@ import com.it15306.dto.PageDto;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.WardDTO;
+import com.it15306.dto.idBody;
 import com.it15306.dto.addressOrder.BodyAddressOrder;
 import com.it15306.entities.AddressOrder;
 import com.it15306.services.AddressService;
@@ -56,11 +57,11 @@ public class CustomerAddressOrder {
 	}
 	
 	
-	@RequestMapping(value = "/address-order/detail/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<AddressOrderDTO> detailAddressOrderByID(@PathVariable("id") Integer id) {
+	public ResponseEntity<AddressOrderDTO> detailAddressOrderByID(idBody data) {
 
-		AddressOrderDTO dto= addressService.getAddressOrderById(id);
+		AddressOrderDTO dto= addressService.getAddressOrderById(data.getId());
 
 		if(dto == null) {
 			return ResponseEntity.notFound().build();
