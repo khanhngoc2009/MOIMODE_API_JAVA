@@ -106,30 +106,30 @@ public class AdminUser {
 		UserDTO userDTO = mapper.ConvertToDTO(entity);
 		return userDTO;
 	}
-	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value = "/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<User> update(
-			@Valid @RequestBody UserDTO dto
-	) {
-		try {
-			User user = mapper.ConvertToEntity(dto);
-			User oldUser = userService.getById(String.valueOf(dto.getId()));
-			
-			if(!oldUser.getPhoto().equalsIgnoreCase(user.getPhoto())) {
-				String nameFile = user.getPhoto();
-				user.setPhoto("http://34.87.157.20:8089/storages/"+nameFile);
-			}
-			
-			user.setId(dto.getId());
-			this.userService.saveUser(user);
-			return ResponseEntity.ok(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.badRequest().build();
-		
-	}
+//	@PreAuthorize("hasAuthority('ADMIN')")
+//	@RequestMapping(value = "/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<User> update(
+//			@Valid @RequestBody UserDTO dto
+//	) {
+//		try {
+//			User user = mapper.ConvertToEntity(dto);
+//			User oldUser = userService.getById(String.valueOf(dto.getId()));
+//			
+//			if(!oldUser.getPhoto().equalsIgnoreCase(user.getPhoto())) {
+//				String nameFile = user.getPhoto();
+//				user.setPhoto("http://34.87.157.20:8089/storages/"+nameFile);
+//			}
+//			
+//			user.setId(dto.getId());
+//			this.userService.saveUser(user);
+//			return ResponseEntity.ok(user);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return ResponseEntity.badRequest().build();
+//		
+//	}
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/user/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -188,7 +188,7 @@ public class AdminUser {
 	}
 	
 
-	@RequestMapping(value = "/admin/user/update2", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<UserDTO> updateUser(@RequestBody datatupdateUser data){
 		try {
