@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
 	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
 	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
-	final String SELECT_FILTER_USER="select * from user where  username like %?1% and email like %?2% and create_date between ?3 and ?4 and activated like %?5%";
+	final String SELECT_FILTER_USER="select * from user where  username like %?1% and email like %?2% and create_date between ?3 and ?4 and activated like %?5% ORDER BY create_date desc";
 	
 
 	@Query(value = "select create_date from user order by create_date asc limit 1", nativeQuery = true)

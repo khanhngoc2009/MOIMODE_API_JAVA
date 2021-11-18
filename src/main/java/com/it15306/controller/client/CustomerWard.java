@@ -46,7 +46,7 @@ public class CustomerWard {
 		}
 		return WardDTOs;
 	}
-	@PreAuthorize("hasAuthority('CUSTOMER')")
+
 	@RequestMapping(value = "/ward/{district_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<WardDTO> getListWardByDistrict(@PathVariable Integer district_id) {
