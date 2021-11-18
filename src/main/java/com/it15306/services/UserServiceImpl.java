@@ -17,7 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.DistrictDTO;
+import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
+import com.it15306.dto.WardDTO;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.user.dataBodyUser;
 import com.it15306.dto.user.datatupdateUser;
@@ -28,7 +31,10 @@ import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.entities.Ward;
 import com.it15306.libs.HashUtil;
+import com.it15306.repository.DistrictRepository;
+import com.it15306.repository.ProvinceRepository;
 import com.it15306.repository.UserRepository;
+import com.it15306.repository.WardRepository;
 
 @Service("userService")
 public class UserServiceImpl implements UserService, IUserService, UserDetailsService{
@@ -39,6 +45,14 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	@Autowired
 	ModelMapper modelMapper;
 	
+	@Autowired
+	ProvinceRepository  provinceRepository;
+	
+	@Autowired
+	DistrictRepository  districtRepository;
+	
+	@Autowired
+	WardRepository wardRepository;
 	@Override
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -53,7 +67,8 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	public User getByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-
+	
+	
 	
 
 
@@ -132,6 +147,9 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 				{
 					UserDTO dto=new UserDTO();
 					dto  =	modelMapper.map(u, UserDTO.class);
+					dto.setDistrictdto(modelMapper.map(u.getDistrict(), DistrictDTO.class));
+					dto.setProvincedto(modelMapper.map(u.getProvince(), ProvinceDTO.class));
+					dto.setWarddto(modelMapper.map(u.getWard(), WardDTO.class));
 					listDto.add(dto);
 				}
 			);
@@ -165,6 +183,9 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			
 			dto = modelMapper.map(entity, UserDTO.class);
 			dto.setId(entity.getId());
+			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));
+			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
+			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
 			 return dto;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -205,7 +226,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		System.out.println("-----------1");
 		User entity = mapUserUpdate(data);
 		System.out.println("-----------2"+entity.getDistrict().getId());
-		
+		UserDTO dto=new UserDTO();
 		if(option.isPresent()) {
 			System.out.println("-----------3");
 			User user=option.get();
@@ -213,7 +234,11 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			System.out.println("++++++++++:"+us.toString());
 			us.setPassword(user.getPassword()== null? "": user.getPassword());
 			userRepository.save(us);
-			return modelMapper.map(us, UserDTO.class);
+			dto = modelMapper.map(us, UserDTO.class);
+			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));
+			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
+			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
+			return dto;
 		}
 		
 		return null;
