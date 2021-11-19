@@ -47,18 +47,20 @@ public class VoucherServiceImpl implements VoucherService {
 		if(data.getPage() == null || data.getPage() < 0) {
 			data.setPage(0);
 		}
-		if(data.getStart_time() == null) {
+		if(data.getStart_time() == null || data.getStart_time() == "") {
 			data.setStart_time(startDate());
 		}
-		if(data.getEnd_time() == null) {
+		if(data.getEnd_time() == null || data.getEnd_time()  == "") {
 			data.setEnd_time(endDate());
 		}
-		if(data.getTitle() == null) data.setTitle("");
-		if(data.getStatus() == null) {
+		if(data.getTitle() == null || data.getTitle() == "") data.setTitle("");
+		if(data.getStatus() == null ) {
 			status="";
 		}else {
 			status=String.valueOf(data.getStatus());
 		}
+		System.out.println(startDate());
+		System.out.println(endDate());
 		Pageable paging = PageRequest.of(data.getPage(), data.getTake());
 
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
@@ -66,6 +68,8 @@ public class VoucherServiceImpl implements VoucherService {
 		//Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
 		Page<Voucher> listenti2=voucherRepository.locVoucher(data.getTitle(), data.getStart_time(), data.getEnd_time(), status, paging);
 		totalElement = listenti2.getTotalElements();
+		System.out.println("cout size:"+listenti2.getContent().size());
+		System.out.println("total element:"+ totalElement);
 		listenti2.getContent().forEach(l -> System.out.println(l.getId()));
 		Voucherdto dto = new Voucherdto();
 		try {
