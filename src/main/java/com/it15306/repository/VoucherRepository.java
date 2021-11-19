@@ -29,7 +29,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	
 	final String SELECT_ALL_TYPE_PAGE = "SELECT v FROM Voucher v where v.status = 1";
 	
-			final String FINTER ="select * from voucher  where  title like %?1% and start_time >= ?2 and end_time <= ?3 and status like %?4%";
+			final String FINTER ="select * from voucher  where  title like %?1% and create_time >= ?2 -1 and end_time <= ?3 and status like %?4% ORDER BY start_time desc" ;
 			@Query(SELECT_ALL)
 	List<Voucher> findAllVoucher();
 	
@@ -52,7 +52,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	List<Voucher> findByBetweenTime(@Param("start_time") Date start_time, @Param("end_time") Date end_time);
 	
 	@Query(value=FINTER, nativeQuery = true )
-	Page<Voucher> locVoucher(@Param("title") String title, @Param("start_time") String start_time, @Param("end_time") String end_time,@Param("status") String status, Pageable page);
+	Page<Voucher> locVoucher(@Param("title") String title, @Param("create_time") String create_time, @Param("end_time") String end_time,@Param("status") String status, Pageable page);
 	
 	@Query(value = "select create_time from voucher order by create_time asc limit 1", nativeQuery = true)
 	String START_DATE();
