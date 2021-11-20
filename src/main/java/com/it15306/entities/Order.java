@@ -47,6 +47,10 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "voucher_id")
 	private Voucher voucher = new Voucher();
+	
+	@OneToMany(mappedBy = "order")
+	private List<ProductOrder> product_orders = new ArrayList<>();
+	
 	@ManyToOne
 	@JoinColumn(name = "address_order_id")
 	private AddressOrder address = new AddressOrder();
@@ -104,6 +108,16 @@ public class Order {
 	public void setTotal_price(Double total_price) {
 		this.total_price = total_price;
 	}
+	public List<ProductOrder> getProduct_orders() {
+		return product_orders;
+	}
+	public void setProduct_orders(List<ProductOrder> product_orders) {
+		this.product_orders = product_orders;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	
 	
 }

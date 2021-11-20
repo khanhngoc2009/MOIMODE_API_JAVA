@@ -25,4 +25,7 @@ public interface CartService {
 	
 	CartProductDTO updateProductToCart(dataBodyCart data); 
 	
+	CartProduct getByCartProductId(Integer cart_product);
+	
+	void deleteCartProductByID(Integer cart_product_id); 
 }
