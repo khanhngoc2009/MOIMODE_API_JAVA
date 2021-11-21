@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.dto.PageDto;
 import com.it15306.dto.WarehouseDTO;
+import com.it15306.dto.idBody;
 import com.it15306.services.WarehouseService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
@@ -37,10 +38,10 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(list);
 	}
 	
-	@PostMapping("/admin/warehouse/{id}")
+	@PostMapping("/admin/warehouse")
 	@ResponseBody
-	public ResponseEntity<WarehouseDTO>  getById(@PathVariable("id") Integer id) {
-	WarehouseDTO warehouseDTO =warehouseService.getByIdWarehouse(id);
+	public ResponseEntity<WarehouseDTO>  getById(@RequestBody idBody data) {
+	WarehouseDTO warehouseDTO =warehouseService.getByIdWarehouse(data.getId());
 		
 		if( warehouseDTO == null) {
 			return ResponseEntity.notFound().build();
@@ -70,10 +71,10 @@ public class AdminWarehouse {
 		return ResponseEntity.ok(whDTO);
 	}
 	
-	@DeleteMapping("/admin/warehouse/delete/{id}")
+	@PostMapping("/admin/warehouse/delete")
 	@ResponseBody
-	public ResponseEntity<Integer>  delete(@PathVariable("id") Integer id) {
-		Integer idresutl =warehouseService.deleteWarehouse(id);
+	public ResponseEntity<Integer>  delete(@RequestBody idBody data) {
+		Integer idresutl =warehouseService.deleteWarehouse(data.getId());
 		
 		if( idresutl == 0) {
 			return ResponseEntity.notFound().build();

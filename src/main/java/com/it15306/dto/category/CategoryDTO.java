@@ -2,6 +2,10 @@ package com.it15306.dto.category;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.it15306.entities.Category;
 
 
@@ -11,13 +15,15 @@ public class CategoryDTO {
 	private Integer id;
 	
 	private Date create_date;
-	
+	@NotNull
 	private Integer status;
 	private Integer category_parent_id;
-	
+	@NotNull
 	private Integer type;
+	@NotBlank
 	private String name;
 	private String description;
+	
 	private String image;
 	private CategoryDTO categoryParentDTO;
 
