@@ -309,15 +309,15 @@ public class AdminProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/product/upload-multi", method = RequestMethod.POST, produces = "multipart/form-data")
+	@RequestMapping(value = "/product/upload-multi", method = RequestMethod.POST)
 	public ResponseEntity<?> upload_multi(
-			@RequestParam("files") MultipartFile[] uploadedFiles
+			@RequestParam("files") MultipartFile[] uploadedFiles,@RequestParam("product_id") Integer product_id
 	) {
 		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
 		List<FileImageDto> dta = new ArrayList<FileImageDto>();
 		try {
 			int size = uploadedFiles.length;
-			Product product = productServiceImpl.getById(29);
+			Product product = productServiceImpl.getById(product_id);
 			for(int i=0;i<size;i++) {
 				MultipartFile uploadedFile = uploadedFiles[i];
 				System.out.print(uploadedFile.getResource());
@@ -345,6 +345,9 @@ public class AdminProduct {
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			data.setListData(dta);
+			data.setMessage("loi");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
