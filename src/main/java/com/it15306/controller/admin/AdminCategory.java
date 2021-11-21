@@ -7,9 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,16 +41,19 @@ public class AdminCategory {
 	ModelMapper modelMapper;
 	@RequestMapping(value = "/admin/category/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@RequestBody CategoryDTO body) {
+	public ResponseEntity<DataResponse<CategoryDTO>> createCategory(@Validated  @RequestBody CategoryDTO body, BindingResult bindingResult) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
-		System.out.print(body.getName());
+		boolean check = bindingResult.hasErrors();
 		try {
+			if(!check) {
+			System.out.print("-------"+body.getName());
 			CategoryDTO dto =categoryService.CreateCategory(body);
 			if(!dto.equals(null)) {
 			rp.setMessage("Success");	
 			rp.setData(dto);
 			return ResponseEntity.ok(rp);
 			}
+		}
 		} catch (Exception e) {
 
 			rp.setMessage("Fail");	
@@ -59,20 +65,27 @@ public class AdminCategory {
 	
 	@RequestMapping(value = "/admin/category/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public DataResponse<CategoryDTO> updateCategory(@RequestBody CategoryDTO body) {
+	public ResponseEntity<DataResponse<CategoryDTO>> updateCategory( @Validated  @RequestBody CategoryDTO body , BindingResult bindingResult) {
 		DataResponse<CategoryDTO> rp=  new DataResponse<CategoryDTO>();
 		try {
-			rp.setMessage("Success");	
-			rp.setData(categoryService.updateCategory(body));
-			return rp;
+			boolean check = bindingResult.hasErrors();
+			
+			if(!check) {
+				if(body.getId() != null) {
+				rp.setMessage("Success");	
+				rp.setData(categoryService.updateCategory(body));
+				return ResponseEntity.ok(rp);
+				}
+			}
+			
 		} catch (Exception e) {
 			rp.setMessage("Fail");	
-			return rp;
+			return ResponseEntity.badRequest().build();
 		}
-		
+		return ResponseEntity.badRequest().build();
 	}
 	
-	@DeleteMapping("/admin/category/delete")
+	@PostMapping("/admin/category/delete")
 	@ResponseBody
 	public ResponseEntity<DataResponse<Integer>> delete(@RequestBody idBody data) {
 		System.out.println(data.getId());

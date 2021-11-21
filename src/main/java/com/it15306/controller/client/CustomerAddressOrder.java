@@ -81,10 +81,10 @@ public class CustomerAddressOrder {
 		return ResponseEntity.ok(addressService.createAddressOrder(addressOrderDTO));
 	}
 	
-	@RequestMapping(value = "/address-order/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/address-order/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<Integer> delete(@PathVariable("id") Integer id) {
-		Integer resullid = addressService.deleteAddressOrder(id);
+	public ResponseEntity<Integer> delete(@RequestBody idBody data) {
+		Integer resullid = addressService.deleteAddressOrder(data.getId());
 		if(resullid.equals(0)) {
 			return ResponseEntity.notFound().build();
 		}
