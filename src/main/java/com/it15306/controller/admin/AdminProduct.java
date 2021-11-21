@@ -57,6 +57,8 @@ import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 
+import io.swagger.annotations.ApiOperation;
+
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
@@ -308,16 +310,15 @@ public class AdminProduct {
 		}
 	}
 	
-//	@GetMapping("/admin/product/upload-multi")
-	@RequestMapping(value = "/admin/product/upload-multi", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/upload-multi", method = RequestMethod.POST, produces = "multipart/form-data")
 	public ResponseEntity<?> upload_multi(
-			@RequestParam("files") MultipartFile[] uploadedFiles, @RequestParam("product_id") Integer product_id
+			@RequestParam("files") MultipartFile[] uploadedFiles
 	) {
 		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
 		List<FileImageDto> dta = new ArrayList<FileImageDto>();
 		try {
 			int size = uploadedFiles.length;
-			Product product = productServiceImpl.getById(product_id);
+			Product product = productServiceImpl.getById(29);
 			for(int i=0;i<size;i++) {
 				MultipartFile uploadedFile = uploadedFiles[i];
 				System.out.print(uploadedFile.getResource());

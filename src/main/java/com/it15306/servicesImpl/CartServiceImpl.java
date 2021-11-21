@@ -194,6 +194,16 @@ public class CartServiceImpl implements CartService{
 		return null;
 	}
 
+	@Override
+	public CartProduct getByCartProductId(Integer cart_product) {
+		return cartProductReponsitory.getOne(cart_product);
+	}
+
+	@Override
+	public void deleteCartProductByID(Integer cart_product_id) {
+		cartProductReponsitory.deleteById(cart_product_id);
+	}
+
 	
 
 }
