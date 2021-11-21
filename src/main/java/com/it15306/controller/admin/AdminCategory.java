@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
+import com.it15306.dto.idBody;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.category.PageCategoryDTO;
 import com.it15306.dto.category.ResponCategoryChildent;
@@ -71,11 +72,12 @@ public class AdminCategory {
 		
 	}
 	
-	@DeleteMapping("/admin/category/delete/{id}")
+	@DeleteMapping("/admin/category/delete")
 	@ResponseBody
-	public ResponseEntity<DataResponse<Integer>> delete(@PathVariable("id") Integer id) {
+	public ResponseEntity<DataResponse<Integer>> delete(@RequestBody idBody data) {
+		System.out.println(data.getId());
 		DataResponse<Integer> rp=  new DataResponse<Integer>();
-		Integer idrp =categoryService.delete(id);
+		Integer idrp =categoryService.delete(data.getId());
 		try {
 			if(idrp != null) {
 			rp.setMessage("Success");
