@@ -311,7 +311,7 @@ public class AdminProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/product/upload-multi/{product_id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/product/upload-multi/{product_id}", method = RequestMethod.POST)
 	public ResponseEntity<?> upload_multi(
 			@RequestParam("files") MultipartFile[] uploadedFiles,@PathVariable("product_id") Integer product_id
 	) {
