@@ -161,10 +161,8 @@ public class AdminCategory {
 			lisdata=categoryService.getAllCategoryPage(pagedata, 2);
 		//}
 		
-			
 		try {
 			lisdata.forEach(ct->{
-				System.out.println("-------1111-------");
 				ResponCategoryChildent cd=new ResponCategoryChildent();
 				//categoryParent parent=	modelMapper.map(categoryService.getCategoryByID(ct.getCategory_parent_id()), categoryParent.class);
 				cd.setId(ct.getId());
@@ -173,11 +171,16 @@ public class AdminCategory {
 				cd.setStatus(ct.getStatus());
 				cd.setType(ct.getType());
 				cd.setDescription(ct.getDescription());
-				cd.setCategoryParent(categoryService.getCategoryByID(ct.getCategory_parent_id()));	
+				try {
+					cd.setCategoryParent(categoryService.getCategoryByID(ct.getCategory_parent_id()));
+				} catch (Exception e) {
+					System.out.println("-------id chet-------"+ct.getCategory_parent_id());
+					e.printStackTrace();
+				}
+				
 				lisdatarespon.add(cd);
 			});
 			if(lisdatarespon.size() > 0) {
-				System.out.println("-------2222-------");
 				Long n=categoryService.totalement();
 				Integer sobanghi=n.intValue();
 				data.setCount(sobanghi);

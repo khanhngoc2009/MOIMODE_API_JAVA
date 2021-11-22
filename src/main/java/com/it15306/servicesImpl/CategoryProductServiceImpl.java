@@ -310,8 +310,8 @@ public class CategoryProductServiceImpl implements CategoryService{
 			});
 		}
 		totalElement=pc2.getTotalElements();
-		
 		return listdto;
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
