@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.idBody;
 import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.payment.RequestPaymentPage;
 import com.it15306.services.PaymentService;
@@ -50,12 +51,12 @@ public class AdminPayment {
 		}
 		return ResponseEntity.badRequest().build();
 	}
-	@RequestMapping(value = "/admin/payment/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/payment/delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<Integer> create(@PathVariable("id") Integer id) {
+	public ResponseEntity<Integer> create(@RequestBody idBody data) {
 		
 		try {
-			Integer dto=paymentService.delete(id);
+			Integer dto=paymentService.delete(data.getId());
 			if(dto != null) {
 				return ResponseEntity.ok(dto);
 			}

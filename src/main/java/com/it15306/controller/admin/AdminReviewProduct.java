@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
+import com.it15306.dto.idBody;
 import com.it15306.dto.reviewProduct.ReviewProductDTO;
 import com.it15306.services.ReviewProductService;
 
@@ -43,11 +44,11 @@ public class AdminReviewProduct {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "/admin/review-product/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/review-product/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<Integer> deletereviewProduct(@PathVariable("id") Integer id) {		
+	public ResponseEntity<Integer> deletereviewProduct(@RequestBody idBody data) {		
 		try {
-			Integer idrs =	reviewProductService.delete(id);
+			Integer idrs =	reviewProductService.delete(data.getId());
 			if(idrs == null) {
 				
 			return ResponseEntity.ok(idrs);

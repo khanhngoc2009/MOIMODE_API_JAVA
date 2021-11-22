@@ -65,7 +65,7 @@ public class CustomerCategory {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<CategoryDTO> data = new DataResponseList<CategoryDTO>();
 		try {
-			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(dto.getCategory_id(),2,dto.getPage(),dto.getTake());
+			List<Category> Category = this.categoryProductServiceImpl.getAllCategoryByCategory(dto.getParentID(),2,0,100);
 			List<CategoryDTO> categoryDTOs =new ArrayList<CategoryDTO>();
 			if (Category.size() > 0) {
 				for (int i = 0; i < Category.size(); i++) {

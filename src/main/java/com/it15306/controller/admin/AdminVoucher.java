@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
+import com.it15306.dto.idBody;
 import com.it15306.dto.voucher.RequetVoucher;
 import com.it15306.dto.voucher.ResponBodyVoucher;
 import com.it15306.dto.voucher.Voucherdto;
@@ -50,12 +51,12 @@ public class AdminVoucher {
 		return ResponseEntity.ok(vo);
 		
 	}
-	@DeleteMapping("/admin/voucher/delete/{id}")
+	@DeleteMapping("/admin/voucher/delete")
 	@ResponseBody
-	public ResponseEntity<Integer> update(@PathVariable("id") Integer id) {
+	public ResponseEntity<Integer> update(@RequestBody idBody data) {
 		
-		Integer id_voucher = 	voucherService.delete(id);
-		if(id_voucher == null || id.equals(null)) {
+		Integer id_voucher = 	voucherService.delete(data.getId());
+		if(id_voucher == null || data.getId().equals(null)) {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.ok(id_voucher);

@@ -6,6 +6,7 @@ public class CreateOrderDto {
 	private Integer voucher_id;
 	private Integer payment_id;
 	private Integer address_id;
+	private String note;
 	private List<Integer> listCartId;
 	public Integer getVoucher_id() {
 		return voucher_id;
@@ -31,5 +32,12 @@ public class CreateOrderDto {
 	public void setListCartId(List<Integer> listCartId) {
 		this.listCartId = listCartId;
 	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
 //	private Integer 
 }

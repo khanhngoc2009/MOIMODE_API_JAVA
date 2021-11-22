@@ -30,6 +30,7 @@ import com.it15306.config.DataResponseList;
 import com.it15306.dto.FileImageDto;
 import com.it15306.dto.MultiFileDto;
 import com.it15306.dto.PageDto;
+import com.it15306.dto.idBody;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.product.DataBodyListProductDto;
 import com.it15306.dto.product.DataCreateProductDtos;
@@ -55,6 +56,8 @@ import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
+
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -259,13 +262,13 @@ public class AdminProduct {
 		
 	}
 	
-	@RequestMapping(value = "/admin/product-sku/list/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-sku/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getProductSku(@RequestParam Integer product_id) {
+	public ResponseEntity<?> getProductSku(@RequestBody idBody product_id) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductSkuDto> data = new DataResponseList<ProductSkuDto>();
 		try {
-			List<Product_Sku>  pr_skus = productServiceImpl.getListProductSkuByProductId(product_id);
+			List<Product_Sku>  pr_skus = productServiceImpl.getListProductSkuByProductId(product_id.getId());
 			List<ProductSkuDto> skuDtos= new ArrayList<ProductSkuDto>();
 			int size = pr_skus.size();
 			for(int i=0;i<size;i++) {
@@ -283,13 +286,13 @@ public class AdminProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/admin/image-product/list/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/image-product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getImageProduct(@RequestParam Integer product_id) {
+	public ResponseEntity<?> getImageProduct(@RequestBody idBody product_id) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<DataImageProductDto> data = new DataResponseList<DataImageProductDto>();
 		try {
-			List<ImageProduct>  pr_skus = productServiceImpl.getImageByProductId(product_id);
+			List<ImageProduct>  pr_skus = productServiceImpl.getImageByProductId(product_id.getId());
 			List<DataImageProductDto> skuDtos= new ArrayList<DataImageProductDto>();
 			int size = pr_skus.size();
 			for(int i=0;i<size;i++) {
@@ -307,10 +310,9 @@ public class AdminProduct {
 		}
 	}
 	
-//	@GetMapping("/admin/product/upload-multi")
-	@RequestMapping(value = "/admin/product/upload-multi", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/upload-multi", method = RequestMethod.POST)
 	public ResponseEntity<?> upload_multi(
-			@RequestParam("files") MultipartFile[] uploadedFiles, @RequestParam("product_id") Integer product_id
+			@RequestParam("files") MultipartFile[] uploadedFiles,@RequestParam("product_id") Integer product_id
 	) {
 		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
 		List<FileImageDto> dta = new ArrayList<FileImageDto>();
@@ -344,6 +346,9 @@ public class AdminProduct {
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			data.setListData(dta);
+			data.setMessage("loi");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
