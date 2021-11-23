@@ -30,7 +30,8 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 	String START_DATE();
 	@Query(value = "select create_date from user order by create_date desc limit 1", nativeQuery = true)
 	String END_DATE();
-	
+	final String thongKeCountUser = "SELECT COUNT(u.id) FROM User u where u.activated= ?1";
+
 
 	@Query(SELECT_ALL)
 	List<User> findAllUser();
@@ -49,4 +50,6 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 	@Query(value = SELECT_FILTER_USER, nativeQuery=true)
 	Page<User> selectFillterUser(@Param("username") String username,@Param("email") String email,@Param("create_date") String create_date,
 			@Param("end_date") String end_date,@Param("status") String status,Pageable page);
+	@Query(thongKeCountUser)
+	Integer thongKeCountUser(@Param("activated") Integer activated);
 }
