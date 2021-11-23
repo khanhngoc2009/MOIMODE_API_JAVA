@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -310,9 +311,9 @@ public class AdminProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/product/upload-multi", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/product/upload-multi/{product_id}", method = RequestMethod.POST)
 	public ResponseEntity<?> upload_multi(
-			@RequestParam("files") MultipartFile[] uploadedFiles,@RequestParam("product_id") Integer product_id
+			@RequestParam("files") MultipartFile[] uploadedFiles,@PathVariable("product_id") Integer product_id
 	) {
 		DataResponseList<FileImageDto> data = new DataResponseList<FileImageDto>();
 		List<FileImageDto> dta = new ArrayList<FileImageDto>();

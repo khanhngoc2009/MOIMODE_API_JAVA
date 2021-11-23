@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.it15306.config.ConfigOrder;
 import com.it15306.entities.Code_Forgot_Password;
 import com.it15306.entities.Product;
 import com.it15306.repository.ForgotCodeRepository;
@@ -58,6 +59,34 @@ public class MailServiceImpl {
 		helper.setFrom("khanhpvph10443@fpt.edu.vn");
 		javaMailSender.send(mimeMessage);
 		return code;
+	}
+	
+	public void sendMailOrder(String email,Integer status) throws MailException, MessagingException {
+		ConfigOrder config = new ConfigOrder();
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+		String htmlMsg = "<div style=\"display: flex; justify-content: center;\">\n"
+				+ "        <div style=\"display: flex; justify-content: center;\">\n"
+				+ "            <img src=\"https://scontent.fhan3-4.fna.fbcdn.net/v/t1.6435-9/187504051_1217782755359416_5142020989699695036_n.jpg?_nc_cat=106&ccb=1-						5&_nc_sid=174925&_nc_ohc=VKTLxdgzF0AAX9bczEi&tn=8S6VBRg10QN5-									hNs&_nc_ht=scontent.fhan3-4.fna&oh=6422040dcbb57d63c44a3fe505f24b31&oe=61C159F1\"\n"
+				+ "                alt=\"Girl in a jacket\" width=\"250\" height=\"250\" style=\"border-radius: 25px;\">\n"
+				+ "        </div>\n"
+				+ "        <div style=\"width: 100;padding-left: 50px\">\n"
+				+ "            <h2 style=\"justify-content: flex-start;color: black;\">Thông báo đơn hàng</h2>\n"
+				+ "            <h4 style=\"color: red\">Đơn hàng của bạn " + config.renderStatusOrder(status) + "</h4>\n"
+				+ "            <p style=\"color: black;\">Mọi thắc mắc vui lòng liên hệ:</p>\n"
+				+ "            <p style=\"color: black;\">\n"
+				+ "                Facebook:\n"
+				+ "                <a href=\"https://www.facebook.com/mie.quynh.568\"\n"
+				+ "                    style=\"color: blue\">https://www.facebook.com/mie.quynh.568</a>\n"
+				+ "            </p>\n"
+				+ "            <p style=\"color: black;\">Số điện thoại: 0983141636</p>\n"
+				+ "        </div>\n"
+				+ "    </div>";
+		helper.setText(htmlMsg, true); // Use this or above line.
+		helper.setTo(email);
+		helper.setSubject("This is the test message for testing gmail smtp server using spring mail");
+		helper.setFrom("khanhpvph10443@fpt.edu.vn");
+		javaMailSender.send(mimeMessage);
 	}
 	
 	public Code_Forgot_Password findByEmail(String email,Integer code) {

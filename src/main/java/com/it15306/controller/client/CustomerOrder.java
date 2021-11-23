@@ -40,6 +40,7 @@ import com.it15306.services.CartService;
 import com.it15306.services.UserService;
 import com.it15306.services.VoucherService;
 import com.it15306.servicesImpl.CartServiceImpl;
+import com.it15306.servicesImpl.MailServiceImpl;
 import com.it15306.servicesImpl.OrderServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 
@@ -68,7 +69,9 @@ public class CustomerOrder {
 	
 	@Autowired
 	ModelMapper modelMapper;
-	
+
+	@Autowired 
+	private MailServiceImpl mailServiceImpl;
 	@RequestMapping(value = "/order/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> createOrder(@RequestBody CreateOrderDto dto,HttpServletRequest httpServletRequest) {
@@ -160,15 +163,26 @@ public class CustomerOrder {
 	@RequestMapping(value = "/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
-		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
+		
+		String token = httpServletRequest.getHeader("Authorization").substring(7);
+		String username = tokenProvider.getUserNameFromJWT(token);
+		User user = userservice.getByUsername(username);
 		try {
-			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-			order.setStatus(dto.getStatus());
-			Order order_after_update = orderServiceImpl.saveOrder(order);
-			data.setData(modelMapper.map(order_after_update, OrderDto.class));
-			data.setCode(HttpStatus.OK.value());
-			data.setMessage("SUCCESS");
-			return new ResponseEntity<>(data,HttpStatus.OK);
+			if(user != null) {
+				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
+				order.setStatus(dto.getStatus());
+				mailServiceImpl.sendMailOrder(user.getEmail(), dto.getStatus());
+				Order order_after_update = orderServiceImpl.saveOrder(order);
+				data.setData(modelMapper.map(order_after_update, OrderDto.class));
+				data.setCode(HttpStatus.OK.value());
+				data.setMessage("SUCCESS");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+			}else {
+				data.setCode(HttpStatus.UNAUTHORIZED.value());
+				data.setMessage("Fail");
+				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
+			}
 		} catch (Exception e) {
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
@@ -239,4 +253,6 @@ public class CustomerOrder {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+	
+	
 }

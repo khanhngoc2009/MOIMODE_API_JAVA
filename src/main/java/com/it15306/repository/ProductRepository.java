@@ -44,24 +44,24 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	final String SELECT_PRODUCTS ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku "
-			+ " where p.status = 1 "
+			+ " where p.status = 1 and p.type = 2  "
 			+ " group by sku.product"
 			+ " order by p.create_date asc";
 	final String SELECT_PRODUCT_BY_CATEGORY ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku "
-			+ " where p.status = 1 AND p.category =:category"
+			+ " where p.status = 1 and p.type = 2  AND p.category =:category"
 			+ " group by sku.product"
 			+ " order by p.create_date asc";
 	
 	final String SELECT_PRODUCT_SELLING ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku "
-			+ " where p.status = 1 "
+			+ " where p.status = 1 and p.type = 2 "
 			+ " group by sku.product"
 			+ " order by max(sku.quantiy_rest) desc";
 	
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
-			+ " where p.id =:product_id AND p.status = 1  group by sku.product ";
+			+ " where p.id =:product_id AND p.status = 1 and p.type = 2  group by sku.product ";
 
 	
 //	select * from product 
