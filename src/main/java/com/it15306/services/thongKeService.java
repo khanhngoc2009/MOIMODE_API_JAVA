@@ -2,6 +2,8 @@ package com.it15306.services;
 
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.dashboard.TongHopDonHang;
+
 @Service
 public interface thongKeService {
 //	Thống kê doanh thu
@@ -14,7 +16,7 @@ public interface thongKeService {
 //	Thống kê sản phẩm
 	public Integer thongKeSanPham();
 //	Tổng hợp đơn hàng
-	
+	public TongHopDonHang thongKetTongHopDonHang();
 //	Biên độ doanh thu
 //	Biên độ đơn hàng
 //	Thêm một mục

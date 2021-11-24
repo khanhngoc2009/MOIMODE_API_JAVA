@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.dashboard.TongHopDonHang;
 import com.it15306.services.thongKeService;
+
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -56,6 +59,17 @@ public class AdminDashboard {
 		 return ResponseEntity.badRequest().build();
 	}
 //	Tổng hợp đơn hàng
+	@ApiOperation(value = "API dếm tổng số lượng đơn hàng theo trạng thái")
+	@PostMapping("/admin/dashboard/tong-hop/don-hang")
+	@ResponseBody
+	public ResponseEntity<TongHopDonHang> tonghopdonhang() {
+		TongHopDonHang thop =keService.thongKetTongHopDonHang();
+		if(thop != null) {
+			return  ResponseEntity.ok(thop);
+		}
+		 return ResponseEntity.badRequest().build();
+	}
+	
 //	Biên độ doanh thu
 //	Biên độ đơn hàng
 //	Thêm một mục
