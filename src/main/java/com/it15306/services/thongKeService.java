@@ -3,6 +3,7 @@ package com.it15306.services;
 import org.springframework.stereotype.Service;
 
 import com.it15306.dto.dashboard.BienDoDHang;
+import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.TongHopDonHang;
 
 @Service
@@ -19,6 +20,7 @@ public interface thongKeService {
 //	Tổng hợp đơn hàng
 	public TongHopDonHang thongKetTongHopDonHang();
 //	Biên độ doanh thu
+	public BienDoDThu thongKetBienDoDoanhThu();
 //	Biên độ đơn hàng
 	public BienDoDHang thongKetBienDoDonHang();
 //	Thêm một mục
