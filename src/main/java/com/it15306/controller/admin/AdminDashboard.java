@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.dto.dashboard.BienDoDHang;
+import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.TongHopDonHang;
 import com.it15306.services.thongKeService;
 
@@ -72,14 +73,38 @@ public class AdminDashboard {
 	}
 	
 //	Biên độ doanh thu
-//	Biên độ đơn hàng
-	@ApiOperation(value = "API bien độ đơn hàng theo tuần")
+	@ApiOperation(value = "API bien độ doanh thu đơn hàng theo tuần")
 	@PostMapping("/admin/dashboard/bien-do/don-hang")
 	@ResponseBody
-	public ResponseEntity<BienDoDHang> biendodonhang() {
-		keService.thongKetBienDoDonHang();
+	public ResponseEntity<BienDoDThu> biendodoanhthudh() {
+		try {
+			BienDoDThu bDo= keService.thongKetBienDoDoanhThu();
+			if(bDo != null) {
+				return ResponseEntity.ok(bDo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return	ResponseEntity.badRequest().build();
+		}
 		
-		 return null;
+		 return ResponseEntity.noContent().build();
+	}
+//	Biên độ đơn hàng
+	@ApiOperation(value = "API bien độ đơn hàng theo tuần")
+	@PostMapping("/admin/dashboard/bien-do/doanh-thu")
+	@ResponseBody
+	public ResponseEntity<BienDoDHang> biendodonhang() {
+		try {
+			BienDoDHang bDo= keService.thongKetBienDoDonHang();
+			if(bDo != null) {
+				return ResponseEntity.ok(bDo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return	ResponseEntity.badRequest().build();
+		}
+		
+		 return ResponseEntity.noContent().build();
 	}
 //	Thêm một mục
 	
