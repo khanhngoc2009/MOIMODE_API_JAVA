@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.TongHopDonHang;
 import com.it15306.services.thongKeService;
 
@@ -72,6 +73,14 @@ public class AdminDashboard {
 	
 //	Biên độ doanh thu
 //	Biên độ đơn hàng
+	@ApiOperation(value = "API bien độ đơn hàng theo tuần")
+	@PostMapping("/admin/dashboard/bien-do/don-hang")
+	@ResponseBody
+	public ResponseEntity<BienDoDHang> biendodonhang() {
+		keService.thongKetBienDoDonHang();
+		
+		 return null;
+	}
 //	Thêm một mục
 	
 

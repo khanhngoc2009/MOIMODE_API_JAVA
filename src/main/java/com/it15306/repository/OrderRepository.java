@@ -28,9 +28,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 
 	final String thongKeOrderCount = "SELECT count(o.order_id) FROM Order o where o.status= ?1";
 	final String thongKeOrderDoanhThu = "SELECT sum(o.total_price)  FROM Order o where o.status= ?1";
-	
+	final String thongKeBienDoDoanhThu = "select count(o.order_id) from Order o where o.status= ?1 and create_date between ?2 and ?3";
 
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
+
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
 	
 	@Query(SELECT_ORDER)
@@ -41,4 +42,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	@Query(thongKeOrderDoanhThu)
 	Float thongKeOrderDoanhThu(@Param("status") Integer status);
+	
+	@Query(thongKeBienDoDoanhThu)
+	Integer thongKeBienDoDoanhThu(@Param("status") Integer status, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }
