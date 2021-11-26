@@ -68,6 +68,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 //	where category_id like '%1%' and create_date between '2021-10-26' and '2021-11-02' and product_name like '%%'
 	final String SELECT_CATEGORY_ID ="select c from Product c where c.category.category_parent_id=:id";
 	
+	final String thongKeCountProduct ="select COUNT(p.id) from Product p where p.status= ?1";
 	
 	
 	@Query( value = SELECT_ALL,
@@ -111,4 +112,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	@Query(SELECT_CATEGORY_ID)
 	List<Product> findByCategoryIds(@Param("id")Integer id);
+	
+	@Query(thongKeCountProduct)
+	Integer thongKeCountProduct(@Param("status") Integer status);
 }
