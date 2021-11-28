@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.it15306.dto.AddressOrderDTO;
+import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.voucher.Voucherdto;
 
 public class OrderDto {
@@ -22,6 +23,7 @@ public class OrderDto {
 	private List<ProductOrderDto> listProduct;
 	private Voucherdto voucher;
 	private AddressOrderDTO addressOrder;
+	private PaymentDTO paymentType;
 	public Integer getOrder_id() {
 		return order_id;
 	}
@@ -64,5 +66,12 @@ public class OrderDto {
 	public void setAddressOrder(AddressOrderDTO addressOrder) {
 		this.addressOrder = addressOrder;
 	}
+	public PaymentDTO getPaymentType() {
+		return paymentType;
+	}
+	public void setPaymentType(PaymentDTO paymentType) {
+		this.paymentType = paymentType;
+	}
+	
 	
 }

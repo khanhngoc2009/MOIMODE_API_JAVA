@@ -7,6 +7,7 @@ import com.it15306.dto.auth.CheckCodeDto;
 import com.it15306.dto.auth.Email;
 import com.it15306.dto.auth.EmailDto;
 import com.it15306.dto.auth.RegisterDto;
+import com.it15306.dto.user.ChangePassworDto;
 import com.it15306.entities.Code_Forgot_Password;
 import com.it15306.entities.District;
 import com.it15306.entities.Province;
@@ -89,6 +90,44 @@ public class Authen {
 		ModelMapper modelMapper = new ModelMapper();
 		User user = userservice.getByUsername(username);
 		return modelMapper.map(user, UserDTO.class);
+	}
+	
+	@RequestMapping(value = "change-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> changePassword(@RequestBody ChangePassworDto dto, HttpServletRequest httpServletRequest) {
+//		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
+		DataResponse<String> data = new DataResponse<String>();
+		try {
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			ModelMapper modelMapper = new ModelMapper();
+			User user = userservice.getByUsername(username);
+//			User user = userservice.getById("32");
+			if(user!= null) {
+				Boolean s = HashUtil.plain(dto.getOld_pass(), user.getPassword());
+				if(s==true) {
+					data.setData("Da ton tai");
+					data.setCode(HttpStatus.FOUND.value());
+					return new ResponseEntity<>(data,HttpStatus.FOUND);
+				}else {
+					String hashPass = HashUtil.hash(dto.getNew_pass());
+					user.setPassword(hashPass);
+					userservice.saveUser(user);
+					data.setData("SUCCESS");
+					data.setCode(HttpStatus.OK.value());
+					return new ResponseEntity<>(data,HttpStatus.OK);
+				}
+			}else {
+				data.setCode(HttpStatus.NOT_FOUND.value());
+				data.setData("NOT_FOUND");
+				return new ResponseEntity<>(data,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setData("FAIL");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 	
 	

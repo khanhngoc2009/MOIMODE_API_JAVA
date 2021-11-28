@@ -20,13 +20,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it15306.config.DataResponse;
+import com.it15306.config.DataResponseList;
 import com.it15306.dto.AddressOrderDTO;
+import com.it15306.dto.DistrictDTO;
+import com.it15306.dto.ProvinceDTO;
+import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
 import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.dto.order.ProductOrderDto;
+import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.AddressOrder;
 import com.it15306.entities.CartProduct;
@@ -213,17 +218,18 @@ public class CustomerOrder {
 	
 	@RequestMapping(value = "/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
-		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
+		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
 		try {
 			// ly thong tin user
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
-			if(username!= null && user != null) {
+			if( user != null) {
 				// lay danh dach order (phan trang) 
 				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus(),user.getId());
 				int size= list_order.size();
+				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus(),user.getId()));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -235,10 +241,18 @@ public class CustomerOrder {
 						list_pro_o_dtos.add(modelMapper.map(listProductOrders.get(j), ProductOrderDto.class));
 					}
 					orderDto.setListProduct(list_pro_o_dtos);
-					orderDto.setAddressOrder(modelMapper.map(order.getAddress(), AddressOrderDTO.class));
+					AddressOrder ad = order.getAddress();
+					AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+					ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+					ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+					ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+					orderDto.setAddressOrder(ad_dto);
 					orderDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
+					orderDto.setPaymentType(modelMapper.map(order.getPayment(), PaymentDTO.class));
 					listOrders.add(orderDto);
+					data.setListData(listOrders);
 				}
+				
 				data.setCode(HttpStatus.OK.value());
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
@@ -253,6 +267,50 @@ public class CustomerOrder {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+	
+//	@RequestMapping(value = "/order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<DataResponse<OrderDto>> orderDetail(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
+//		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+//		try {
+//			// ly thong tin user
+////			String token = httpServletRequest.getHeader("Authorization").substring(7);
+////			String username = tokenProvider.getUserNameFromJWT(token);
+//			User user = userservice.getById("32");
+//			if( user != null) {
+//				// lay danh dach order (phan trang) 
+//				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus(),user.getId());
+//				int size= list_order.size();
+//				List<OrderDto> listOrders= new ArrayList<OrderDto>();
+//				for(int i= 0;i< size;i++) {
+//					Order order = list_order.get(i);
+//					OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+//					List<ProductOrder> listProductOrders =  order.getProduct_orders();
+//					List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
+//					int size_p_os = listProductOrders.size();
+//					for(int j=0;j<size_p_os;j++) {
+//						list_pro_o_dtos.add(modelMapper.map(listProductOrders.get(j), ProductOrderDto.class));
+//					}
+//					orderDto.setListProduct(list_pro_o_dtos);
+//					orderDto.setAddressOrder(modelMapper.map(order.getAddress(), AddressOrderDTO.class));
+//					orderDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
+//					listOrders.add(orderDto);
+//					
+//				}
+//				data.setCode(HttpStatus.OK.value());
+//				data.setMessage("SUCCESS");
+//				return new ResponseEntity<>(data,HttpStatus.OK);
+//			}else {
+//				data.setCode(HttpStatus.UNAUTHORIZED.value());
+//				data.setMessage("AUTHEN");
+//				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
+//			}
+//		} catch (Exception e) {
+//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			data.setMessage("Fail");
+//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+//		}
+//	}
 	
 	
 }
