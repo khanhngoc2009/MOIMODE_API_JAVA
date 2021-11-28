@@ -25,10 +25,28 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " WHERE o.status =:status "
 			+ " and o.user.id = :user_id "
 			+ " order by create_date desc";
+
+	final String thongKeOrderCount = "SELECT count(o.order_id) FROM Order o where o.status= ?1";
+	final String thongKeOrderDoanhThu = "SELECT sum(o.total_price)  FROM Order o where o.status= ?1";
+	final String thongKeBienDoDonHang = "select count(order_id) from orders  where status= ?1 and create_date between ?2 and ?3";
+	final String thongKeBienDoDoanhThu = "select sum(total_price) from orders  where status= ?1 and create_date between ?2 and ?3";
 	
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
+
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
 	
 	@Query(SELECT_ORDER)
 	Page<Order> getListOrders( Pageable paging,@Param("status") Integer status,@Param("user_id") Integer user_id);
+	
+	@Query(thongKeOrderCount)
+	Integer thongKeOrderCount(@Param("status") Integer status);
+	
+	@Query(thongKeOrderDoanhThu)
+	Float thongKeOrderDoanhThu(@Param("status") Integer status);
+	
+	@Query(value = thongKeBienDoDonHang, nativeQuery = true)
+	Integer thongKeBienDoDonHang(@Param("status") Integer status, @Param("startDate") String startDate, @Param("endDate") String endDate);
+	
+	@Query(value = thongKeBienDoDoanhThu, nativeQuery = true)
+	Float thongKeBienDoDoanhThu(@Param("status") Integer status, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }
