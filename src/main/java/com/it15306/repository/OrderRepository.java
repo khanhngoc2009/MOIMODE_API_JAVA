@@ -25,6 +25,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " WHERE o.status =:status "
 			+ " and o.user.id = :user_id "
 			+ " order by create_date desc";
+	final String COUNT_ORDER_CLIENT = "SELECT count(o.order_id) FROM Order o"
+			+ " WHERE o.status =?1 "
+			+ " and o.user.id = ?2 "
+			+ " order by create_date desc";
 
 	final String thongKeOrderCount = "SELECT count(o.order_id) FROM Order o where o.status= ?1";
 	final String thongKeOrderDoanhThu = "SELECT sum(o.total_price)  FROM Order o where o.status= ?1";
@@ -34,6 +38,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
 
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
+	
+	@Query(COUNT_ORDER_CLIENT)
+	Integer getCountClient(@Param("status") Integer status,@Param("user_id") Integer user_id);
 	
 	@Query(SELECT_ORDER)
 	Page<Order> getListOrders( Pageable paging,@Param("status") Integer status,@Param("user_id") Integer user_id);

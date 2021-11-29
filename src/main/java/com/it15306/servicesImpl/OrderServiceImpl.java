@@ -72,4 +72,7 @@ public class OrderServiceImpl implements OrderService{
         	return new ArrayList<Order>();
 		}
 	}
+	public Integer countOrderClient(Integer status,Integer user_id) {
+		return orderRepository.getCountClient(status, user_id);
+	}
 }
