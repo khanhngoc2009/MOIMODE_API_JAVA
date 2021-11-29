@@ -13,12 +13,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
+import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
+import com.it15306.dto.order.OrderDto;
+import com.it15306.entities.Order;
 import com.it15306.repository.CategoryRepository;
 import com.it15306.repository.OrderRepository;
 import com.it15306.repository.ProductRepository;
@@ -26,6 +33,8 @@ import com.it15306.repository.UserRepository;
 import com.it15306.services.thongKeService;
 @Service
 public class thongKeServiceImpl implements thongKeService{
+	private static Long totalElement;
+	
 	@Autowired
 	CategoryRepository categoryRepository;
 	
@@ -37,6 +46,10 @@ public class thongKeServiceImpl implements thongKeService{
 	
 	@Autowired
 	OrderRepository  orderRepository;
+	
+	@Autowired
+	ModelMapper modelMapper;
+	
 	@Override
 	public Float thongKeDoanhThu() {
 		
@@ -274,6 +287,122 @@ public class thongKeServiceImpl implements thongKeService{
 	        bienDoDThu.setSumDoanhThu(countday);
        
 		return bienDoDThu;
+	}
+
+	@Override
+	public List<OrderDto> thongKeDoanhThu(ThongKeBody data) {
+		
+		
+		if(data.getPage() == null || data.getPage() < 0 || data.getPage().equals(""))
+			data.setPage(0);
+		if(data.getTake() == null || data.getTake() <= 0)
+			data.setTake(10);
+		if(data.getStartDate() == null || data.getStartDate() == "")
+			data.setStartDate(orderRepository.START_DATE());
+		if(data.getEndDate() == null || data.getEndDate() == "")
+			data.setEndDate(orderRepository.END_DATE());
+		
+		System.out.println(4+ data.getStartDate().toString()+ data.getEndDate().toString());
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());	
+		Page<Order> page=orderRepository.thongKeDoanhThu("4", data.getStartDate(), data.getEndDate(), paging);
+		List<OrderDto> listOr=new ArrayList<OrderDto>();
+		page.getContent().forEach(o ->{
+			OrderDto or=new OrderDto();
+			or=modelMapper.map(o, OrderDto.class);
+			or.setVoucher(null);
+			or.setAddressOrder(null);
+			or.setListProduct(null);
+			or.setPaymentType(null);
+			
+			listOr.add(or);
+		});
+		this.totalElement=page.getTotalElements();
+		return listOr;
+	}
+
+	@Override
+	public Float sumDoanhThu(ThongKeBody data) {
+		if(data.getPage() == null || data.getPage() < 0 || data.getPage().equals(""))
+			data.setPage(0);
+		if(data.getTake() == null || data.getTake() <= 0)
+			data.setTake(10);
+		if(data.getStartDate() == null || data.getStartDate() == "")
+			data.setStartDate(orderRepository.START_DATE());
+		if(data.getEndDate() == null || data.getEndDate() == "")
+			data.setEndDate(orderRepository.END_DATE());
+		
+		return orderRepository.sumDoanhThu("4", data.getStartDate(), data.getEndDate());
+		//return null;
+	}
+
+	@Override
+	public List<OrderDto> thongKeDonHang(ThongKeBody data) {
+		String status="";
+		if(data.getPage() == null || data.getPage() < 0 || data.getPage().equals(""))
+			data.setPage(0);
+		if(data.getTake() == null || data.getTake() < 0 || data.getTake().equals(""))
+			data.setTake(10);
+		if(data.getStartDate() == null || data.getStartDate() == "")
+			data.setStartDate(orderRepository.START_DATE());
+		if(data.getEndDate() == null || data.getEndDate() == "")
+			data.setEndDate(orderRepository.END_DATE());
+		if(data.getStatus() == null || data.getStatus().equals("")) {
+			status="";
+		}else {
+			status=String.valueOf(data.getStatus());
+		}
+		System.out.println(status+"----" +data.getStartDate().toString()+"----" +data.getEndDate().toString()+"----" +data.getTake()+"----" +data.getPage());
+		Pageable paging =  PageRequest.of(data.getPage(), data.getTake());	
+		try {
+			Page<Order> page=orderRepository.thongKeDonHang(status, data.getStartDate(), data.getEndDate(), paging);
+		
+		
+		List<OrderDto> listOr=new ArrayList<OrderDto>();
+		page.getContent().forEach(o ->{
+			OrderDto or=new OrderDto();
+			or=modelMapper.map(o, OrderDto.class);
+			or.setVoucher(null);
+			or.setAddressOrder(null);
+			or.setListProduct(null);
+			or.setPaymentType(null);
+			
+			listOr.add(or);
+		});
+		System.out.println("+++++++++++++");
+		this.totalElement=page.getTotalElements();
+		return listOr;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Integer countDonHang(ThongKeBody data) {
+		String status="";
+		if(data.getPage() == null || data.getPage() < 0 || data.getPage().equals(""))
+			data.setPage(0);
+		if(data.getTake() == null || data.getTake() < 0 || data.getTake().equals(""))
+			data.setTake(10);
+		if(data.getStartDate() == null || data.getStartDate() == "")
+			data.setStartDate(orderRepository.START_DATE());
+		if(data.getEndDate() == null || data.getEndDate() == "")
+			data.setEndDate(orderRepository.END_DATE());
+		if(data.getStatus() == null || data.getStatus().equals("")) {
+			status="";
+		}else {
+			status=String.valueOf(data.getStatus());
+		}
+		
+		return orderRepository.countDonHang(status, data.getStartDate(), data.getEndDate());
+	}
+
+	@Override
+	public Integer countTotalElement() {
+		Long n=this.totalElement;
+		Integer sobanghi=n.intValue();
+		return sobanghi;
 	}
 	
 //	Thứ hai – Monday. Viết tắt: Mon.

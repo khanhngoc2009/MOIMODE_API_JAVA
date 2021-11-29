@@ -36,6 +36,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	final String thongKeBienDoDonHang = "select count(order_id) from orders  where status= ?1 and create_date between ?2 and ?3";
 	final String thongKeBienDoDoanhThu = "select sum(total_price) from orders  where status= ?1 and create_date between ?2 and ?3";
 	
+	final String thongKeDoanhThu = "SELECT * from orders where status like %?1% and  create_date between ?2 and ?3 ";
+	final String sumDoanhThu ="select sum(total_price) from orders where status like %?1% and create_date between ?2 and ?3";
+	final String thongKeDonHang = "SELECT * from orders where status like %?1% and  create_date between ?2 and ?3";
+	final String countDonHang ="select count(order_id) from orders where status like %?1%  and create_date between ?2 and ?3";
+	
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
 
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
@@ -60,4 +65,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	@Query(value = thongKeBienDoDoanhThu, nativeQuery = true)
 	Float thongKeBienDoDoanhThu(@Param("status") Integer status, @Param("startDate") String startDate, @Param("endDate") String endDate);
+	
+	@Query(value = thongKeDoanhThu, nativeQuery = true)
+	Page<Order> thongKeDoanhThu(@Param("status") String status, @Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging);
+	
+	@Query(value = sumDoanhThu, nativeQuery = true)
+	Float sumDoanhThu(@Param("status") String status, @Param("startDate") String startDate, @Param("endDate") String endDate);
+	
+	@Query(value = thongKeDonHang, nativeQuery = true)
+	Page<Order> thongKeDonHang(@Param("status") String status, @Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging);
+	
+	@Query(value = countDonHang, nativeQuery = true)
+	Integer countDonHang(@Param("status") String status, @Param("startDate") String startDate, @Param("endDate") String endDate);
+	
+	@Query(value = "select create_date from orders order by create_date asc limit 1", nativeQuery = true)
+	String START_DATE();
+	@Query(value = "select create_date from orders order by create_date desc limit 1", nativeQuery = true)
+	String END_DATE();
 }
