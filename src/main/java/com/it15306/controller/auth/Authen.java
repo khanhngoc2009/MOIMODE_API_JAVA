@@ -89,7 +89,8 @@ public class Authen {
 		String username = tokenProvider.getUserNameFromJWT(token);
 		ModelMapper modelMapper = new ModelMapper();
 		User user = userservice.getByUsername(username);
-		return modelMapper.map(user, UserDTO.class);
+		UserDTO userDto = modelMapper.map(user, UserDTO.class);
+		return userDto;
 	}
 	
 	@RequestMapping(value = "change-password", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -115,6 +116,41 @@ public class Authen {
 					userservice.saveUser(user);
 					data.setData("SUCCESS");
 					data.setCode(HttpStatus.OK.value());
+					return new ResponseEntity<>(data,HttpStatus.OK);
+				}
+			}else {
+				data.setCode(HttpStatus.NOT_FOUND.value());
+				data.setData("NOT_FOUND");
+				return new ResponseEntity<>(data,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setData("FAIL");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
+	
+	@RequestMapping(value = "check-old-password-exist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> checkExistPassword(@RequestBody ChangePassworDto dto, HttpServletRequest httpServletRequest) {
+//		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
+		DataResponse<String> data = new DataResponse<String>();
+		try {
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			ModelMapper modelMapper = new ModelMapper();
+			User user = userservice.getByUsername(username);
+			if(user!= null) {
+				Boolean s = HashUtil.plain(dto.getOld_pass(), user.getPassword());
+				if(s==true) {
+					data.setData("Da ton tai");
+					data.setCode(HttpStatus.FOUND.value());
+					return new ResponseEntity<>(data,HttpStatus.FOUND);
+				}else {
+					data.setCode(200);
+					data.setMessage("Success");
+					data.setData("SUCCESS");
 					return new ResponseEntity<>(data,HttpStatus.OK);
 				}
 			}else {
