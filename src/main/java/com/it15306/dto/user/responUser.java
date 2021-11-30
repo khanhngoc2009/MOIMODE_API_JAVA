@@ -2,20 +2,43 @@ package com.it15306.dto.user;
 
 import java.util.Date;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
+
 
 
 public class responUser {
 	private Integer id;
+	@NotNull
+	@Email
 	private String email;
+	@NotBlank
 	private String username;
 	private String password;
-	private Integer admin;
+	@NotNull
+	@NumberFormat
+	private Integer admin;	
 	private Integer activated;
+
 	private String photo;
+	@NotBlank
+	@Length(min = 10,max = 15)
 	private String phone;
+	@NotBlank
 	private String roles;
+	@NotNull
+	@NumberFormat
 	private Integer province_id;
+	@NotNull
+	@NumberFormat
 	private Integer district_id;
+	@NotNull
+	@NumberFormat
 	private Integer ward_id;
 	/**
 	 * @return the id

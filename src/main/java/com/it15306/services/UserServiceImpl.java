@@ -176,9 +176,12 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 
 	@Override
 	public UserDTO createUser(responUser data) {
-		User entity = mapToUser(data);
-		UserDTO dto=new UserDTO();
+		
 		try {
+			List<User> us=userRepository.SELECT_CHECK_USER(data.getUsername(),data.getEmail(), data.getPhone());
+			if(us.size() <= 0) {
+			User entity = mapToUser(data);
+			UserDTO dto=new UserDTO();
 			userRepository.save(entity);
 			
 			dto = modelMapper.map(entity, UserDTO.class);
@@ -187,6 +190,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
 			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
 			 return dto;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -201,19 +205,21 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		province.setId(data.getProvince_id());
 		Ward ward=new Ward();
 		ward.setId(data.getWard_id());
-		String hashPass = HashUtil.hash(data.getPassword());
+		//set password mặc định
+		String hashPass = HashUtil.hash("Miemode@1234");
 		user.setPassword(hashPass);
 		
 		user.setId(data.getId());
 		user.setEmail(data.getEmail());
-		user.setActivated(data.getActivated());
+		//set mặc định hoạt động
+		user.setActivated(1);
 		user.setAdmin(data.getAdmin());
 		user.setDistrict(district);
 		user.setWard(ward);
 		user.setRoles(data.getRoles());
-		user.setUsername(data.getUsername());
+		user.setUsername(data.getUsername().trim());
 		user.setProvince(province);
-		user.setPhoto("http://34.87.157.20:8089/storages/"+data.getPhoto());
+		user.setPhoto(data.getPhoto());
 		user.setPhone(data.getPhone());
 		user.setCreate_date(new Date());
 		return user;
@@ -265,9 +271,9 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		user.setDistrict(district);
 		user.setWard(ward);
 		user.setRoles(data.getRoles());
-		user.setUsername(data.getUsername());
+		user.setUsername(data.getUsername().trim());
 	
-		user.setPhoto("http://34.87.157.20:8089/storages/"+data.getPhoto());
+		user.setPhoto(data.getPhoto());
 		user.setPhone(data.getPhone());
 		//user.setCreate_date(new Date());
 		return user;
