@@ -16,6 +16,7 @@ public class UpdateProductSkuDto {
 	private String url_media;
 	private int id_image;
 	private int status;
+	private ProductDTO product;
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
 	}
@@ -76,4 +77,11 @@ public class UpdateProductSkuDto {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public ProductDTO getProduct() {
+		return product;
+	}
+	public void setProduct(ProductDTO product) {
+		this.product = product;
+	}
+	
 }

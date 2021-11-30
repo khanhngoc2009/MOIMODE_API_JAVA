@@ -75,4 +75,8 @@ public class OrderServiceImpl implements OrderService{
 	public Integer countOrderClient(Integer status,Integer user_id) {
 		return orderRepository.getCountClient(status, user_id);
 	}
+	
+	public Order getDetailById(Integer order_id) {
+		return orderRepository.getDetailOrderId(order_id);
+	}
 }

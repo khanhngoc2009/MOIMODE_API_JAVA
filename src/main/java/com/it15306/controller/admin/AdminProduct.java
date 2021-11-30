@@ -219,20 +219,22 @@ public class AdminProduct {
 	public ResponseEntity<?> updateListSku(@RequestBody List<UpdateProductSkuDto> dto) {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<String> data = new DataResponseList<String>();
-		long count = (long) this.productServiceImpl.getCountAdmin();
+//		long count = (long) this.productServiceImpl.getCountAdmin();
 		try {
 			int size = dto.size();
-			Product s = new Product();
+//			Product s = new Product();
 			for(int i=0;i<size;i++) {
 				UpdateProductSkuDto up = dto.get(i);
 				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class);
-				s = p_sku.getProduct();
+//				s = p_sku.getProduct();
 				productServiceImpl.saveProductSku(p_sku);
 			}
-			Product product = productServiceImpl.getById(s.getId());
+			System.out.print(dto.get(0).getProduct().getId());
+			Product product = productServiceImpl.getById(dto.get(0).getProduct().getId());
 			product.setType(2);
 			productServiceImpl.saveProduct(product);
-			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setCount(size);
+			data.setCode(200);
 			data.setMessage("Success");
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {

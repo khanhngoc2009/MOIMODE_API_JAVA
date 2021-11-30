@@ -19,5 +19,47 @@ public class OrderDetailDto {
 	private List<ProductOrderDto> listProduct;
 	private PaymentDTO payment;
 	private Voucherdto vocuher;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Date getCreate_date() {
+		return create_date;
+	}
+	public void setCreate_date(Date create_date) {
+		this.create_date = create_date;
+	}
+	public Double getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(Double total_price) {
+		this.total_price = total_price;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public List<ProductOrderDto> getListProduct() {
+		return listProduct;
+	}
+	public void setListProduct(List<ProductOrderDto> listProduct) {
+		this.listProduct = listProduct;
+	}
+	public PaymentDTO getPayment() {
+		return payment;
+	}
+	public void setPayment(PaymentDTO payment) {
+		this.payment = payment;
+	}
+	public Voucherdto getVocuher() {
+		return vocuher;
+	}
+	public void setVocuher(Voucherdto vocuher) {
+		this.vocuher = vocuher;
+	}
 	
 }

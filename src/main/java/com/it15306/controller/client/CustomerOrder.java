@@ -28,7 +28,9 @@ import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
 import com.it15306.dto.order.DataChangeTypePaymentDto;
+import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderDto;
+import com.it15306.dto.order.OrderDetailDto;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.payment.PaymentDTO;
@@ -268,49 +270,35 @@ public class CustomerOrder {
 		}
 	}
 	
-//	@RequestMapping(value = "/order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public ResponseEntity<DataResponse<OrderDto>> orderDetail(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
-//		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
-//		try {
-//			// ly thong tin user
-////			String token = httpServletRequest.getHeader("Authorization").substring(7);
-////			String username = tokenProvider.getUserNameFromJWT(token);
-//			User user = userservice.getById("32");
-//			if( user != null) {
-//				// lay danh dach order (phan trang) 
-//				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus(),user.getId());
-//				int size= list_order.size();
-//				List<OrderDto> listOrders= new ArrayList<OrderDto>();
-//				for(int i= 0;i< size;i++) {
-//					Order order = list_order.get(i);
-//					OrderDto orderDto = modelMapper.map(order, OrderDto.class);
-//					List<ProductOrder> listProductOrders =  order.getProduct_orders();
-//					List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
-//					int size_p_os = listProductOrders.size();
-//					for(int j=0;j<size_p_os;j++) {
-//						list_pro_o_dtos.add(modelMapper.map(listProductOrders.get(j), ProductOrderDto.class));
-//					}
-//					orderDto.setListProduct(list_pro_o_dtos);
-//					orderDto.setAddressOrder(modelMapper.map(order.getAddress(), AddressOrderDTO.class));
-//					orderDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
-//					listOrders.add(orderDto);
-//					
-//				}
-//				data.setCode(HttpStatus.OK.value());
-//				data.setMessage("SUCCESS");
-//				return new ResponseEntity<>(data,HttpStatus.OK);
-//			}else {
-//				data.setCode(HttpStatus.UNAUTHORIZED.value());
-//				data.setMessage("AUTHEN");
-//				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
-//			}
-//		} catch (Exception e) {
-//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-//			data.setMessage("Fail");
-//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-//		}
-//	}
+	@RequestMapping(value = "/order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<DataResponse<OrderDto>> orderDetail(@RequestBody DataDetailDto dto) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+		try {
+				Order order = orderServiceImpl.getDetailById(dto.getId());
+				OrderDto detailDto = modelMapper.map(order, OrderDto.class);
+				List<ProductOrderDto> list_product = new ArrayList<ProductOrderDto>();
+				for(int i= 0;i< order.getProduct_orders().size();i++) {
+					list_product.add(modelMapper.map(order.getProduct_orders().get(i), ProductOrderDto.class));
+				}
+				AddressOrder ad = order.getAddress();
+				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+				detailDto.setAddressOrder(ad_dto);
+				detailDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
+				detailDto.setPaymentType(modelMapper.map(order.getPayment(), PaymentDTO.class));
+				data.setData(detailDto);
+				data.setCode(HttpStatus.OK.value());
+				data.setMessage("SUCCESS");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
 	
 	
 }
