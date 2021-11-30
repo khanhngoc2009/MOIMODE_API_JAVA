@@ -37,7 +37,16 @@ public class ProductDTO {
 	private Integer status;
 	private Integer type;
 	private Integer category_id;
-//	private Integer ware_house_id;
+	private String image;
+public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	//	private Integer ware_house_id;
 	private Double min_price;
 	private Double max_price;
 	public Integer getId() {
