@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,14 +85,19 @@ public class AdminUser {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<UserDTO> create(@RequestBody responUser data) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody responUser data,  BindingResult bindingResult) {
 		try {
+			boolean check = bindingResult.hasErrors();
+			System.out.println(check);
+			System.out.println(data.toString());
+			if(!check) {
+			System.out.println("check ok");
 			UserDTO dto = 	userService2.createUser(data);
-			if(dto != null) {
-				
-				return ResponseEntity.ok(dto);
+				if(dto != null) {
+					return ResponseEntity.ok(dto);
+				}
+				System.out.println("check trung user");
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
