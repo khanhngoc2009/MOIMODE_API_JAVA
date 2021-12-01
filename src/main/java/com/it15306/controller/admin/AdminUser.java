@@ -48,6 +48,8 @@ import com.it15306.services.UserService;
 //import com.it15306.services.ProductService;
 import com.it15306.services.UserServiceImpl;
 
+import lombok.val;
+
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
 @RequestMapping("/miemode_api/v1")
@@ -196,15 +198,18 @@ public class AdminUser {
 
 	@RequestMapping(value = "/admin/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<UserDTO> updateUser(@RequestBody datatupdateUser data){
+	public ResponseEntity<UserDTO> updateUser(@Validated @RequestBody datatupdateUser data,  BindingResult bindingResult){
 		try {
+			boolean check = bindingResult.hasErrors();
+			if(!check) {
 			UserDTO dto = userService2.updateUser(data);
 			if(dto != null) {
 				return ResponseEntity.ok(dto);
 			}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return ResponseEntity.badRequest().build();
 	}
 }
