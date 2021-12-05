@@ -17,6 +17,7 @@ import com.it15306.entities.Code_Forgot_Password;
 import com.it15306.entities.Product;
 import com.it15306.repository.ForgotCodeRepository;
 import com.it15306.repository.SkuRepository;
+import com.it15306.utils.Const;
 
 @Service
 public class MailServiceImpl {
@@ -89,6 +90,37 @@ public class MailServiceImpl {
 		javaMailSender.send(mimeMessage);
 	}
 	
+	
+public void SendEmailCreateAcc(String email, String username) throws MailException, MessagingException {
+		
+		
+		
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+		String htmlMsg = "<div>\n"
+				+ "<div style=\"display: flex; justify-content: center;\">\n"
+				+ "<img src=\"https://scontent-sin6-3.xx.fbcdn.net/v/t1.6435-9/187504051_1217782755359416_5142020989699695036_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=0jXSz-5PUf0AX8p-Fr0&tn=8S6VBRg10QN5-hNs&_nc_ht=scontent-sin6-3.xx&oh=ed0548faf5af1220e28ee61870db5d78&oe=6189FAF1\" alt=\"Girl in a jacket\" width=\"250\" height=\"250\" style=\"border-radius: 25px;\">\n"
+				+ "<div/>\n"
+				+ "<div style=\"width: 100;padding-left: 50px\">\n"
+				+ "<h3 style=\"justify-content: flex-start;color: black;\">Tài khoản của bạn đã được tạo thành công trên website MeimodeShop</h3>\n"
+				+ "<p style=\"color: black\">Bạn vui lòng sử dụng tài khoản này để thao tác với trang web</p>\n"
+				+ "<p style=\"color: black\">Thông tin tài khoản của bạn:</p>\n"
+				+ "Username: <h4 style=\"text-decoration-line: underline;color: red\">"+username+"</h4>"				
+				+ "Password: <h4 style=\"text-decoration-line: underline;color: red\">" + Const.passwordDefault +"</h4>"				
+				+ "<p style=\"color: black;\">Chú ý: (Vui lòng đổi password ngay sau khi nhận được thông báo này)<p/>\n"
+				+ "<p style=\"color: black;\">Mọi thắc mắc vui lòng liên hệ:</p>\n"
+				+ "<p style=\"color: black;\">Facebook: <a href=\"https://www.facebook.com/mie.quynh.568\" style=\"color: blue\">https://www.facebook.com/mie.quynh.568</a><p/>\n"
+				+ "<p style=\"color: black;\">Số điện thoại: 0983141636<p/>\n"
+				+ "<div/>\n"
+				+ "<div/>";
+		//mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
+		helper.setText(htmlMsg, true); // Use this or above line.
+		helper.setTo(email);
+		helper.setSubject("Email xác nhận tạo tài khoản trên website MeimodeShop!");
+		helper.setFrom("khanhpvph10443@fpt.edu.vn");
+		javaMailSender.send(mimeMessage);
+		
+	}
 	public Code_Forgot_Password findByEmail(String email,Integer code) {
 //		forgotCodeRepository.findByEmail(email);
 		return forgotCodeRepository.findByEmail(email,code);
