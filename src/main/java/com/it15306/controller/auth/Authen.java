@@ -7,6 +7,7 @@ import com.it15306.dto.auth.CheckCodeDto;
 import com.it15306.dto.auth.Email;
 import com.it15306.dto.auth.EmailDto;
 import com.it15306.dto.auth.RegisterDto;
+import com.it15306.dto.order.CheckExistDto;
 import com.it15306.dto.user.ChangePassworDto;
 import com.it15306.entities.Code_Forgot_Password;
 import com.it15306.entities.District;
@@ -108,8 +109,8 @@ public class Authen {
 				Boolean s = HashUtil.plain(dto.getOld_pass(), user.getPassword());
 				if(s==true) {
 					data.setData("Da ton tai");
-					data.setCode(HttpStatus.FOUND.value());
-					return new ResponseEntity<>(data,HttpStatus.FOUND);
+					data.setCode(HttpStatus.OK.value());
+					return new ResponseEntity<>(data,HttpStatus.OK);
 				}else {
 					String hashPass = HashUtil.hash(dto.getNew_pass());
 					user.setPassword(hashPass);
@@ -133,24 +134,23 @@ public class Authen {
 	
 	@RequestMapping(value = "check-old-password-exist", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> checkExistPassword(@RequestBody ChangePassworDto dto, HttpServletRequest httpServletRequest) {
-//		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
+	public ResponseEntity<?> checkExistPassword(@RequestBody CheckExistDto dto, HttpServletRequest httpServletRequest) {
 		DataResponse<String> data = new DataResponse<String>();
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
-			ModelMapper modelMapper = new ModelMapper();
 			User user = userservice.getByUsername(username);
 			if(user!= null) {
 				Boolean s = HashUtil.plain(dto.getOld_pass(), user.getPassword());
 				if(s==true) {
-					data.setData("Da ton tai");
-					data.setCode(HttpStatus.FOUND.value());
-					return new ResponseEntity<>(data,HttpStatus.FOUND);
+					data.setData("true");
+					data.setCode(HttpStatus.OK.value());
+					data.setMessage("Success");
+					return new ResponseEntity<>(data,HttpStatus.OK);
 				}else {
 					data.setCode(200);
 					data.setMessage("Success");
-					data.setData("SUCCESS");
+					data.setData("false");
 					return new ResponseEntity<>(data,HttpStatus.OK);
 				}
 			}else {
@@ -204,7 +204,7 @@ public class Authen {
 				user.setWard(w);
 				user.setRoles("CUSTOMER");
 				user.setActivated(1);
-				user.setPhoto("http://http://34.87.157.20:8089/storages/https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
+				user.setPhoto("https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
 				this.userService.saveUser(user);
 				resgister.setCode(200);
 				resgister.setMessage("Đăng kí thành công!");

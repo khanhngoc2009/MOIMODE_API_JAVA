@@ -156,26 +156,42 @@ public class CategoryProductServiceImpl implements CategoryService{
 		System.out.println("-----------CreateCategory2----------");
 		String URI="http://34.87.157.20:8089/storages/";
 		try {
+			if(checkcate(data)) {
 				if(data.getCategory_parent_id() != null) {
-					data.setType(2);
+					if(data.getType()==1) {
+						data.setCategory_parent_id(null);
+					}else {
+						data.setType(2);
+					}
+
 				}else {				
-								
+					data.setCategory_parent_id(null);			
 					data.setType(1);
 				}
 				if(data.getImage() != null) {
-					data.setImage(URI+data.getImage());
+					data.setImage(data.getImage());
 				}
+				if(data.getType() == 1) data.setCategory_parent_id(null);
 				Category enti = modelMapper.map(data, Category.class);
 				categoryRepository.save(enti);
 				data.setId(enti.getId());
 				return data;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		
+		return null;
 	}
-
+	private Boolean checkcate(CategoryDTO data) {
+		System.out.println("check ---");
+		if(data.getType() == 2) {
+			Category 	 category = categoryRepository.SELECT_CATEGORY_BY_ID_AND_TYPE(data.getCategory_parent_id(), 1);
+			if(category == null ||  !(category.getType() == 1)) return false;
+			System.out.println("check co cha false");
+		}
+		return true;
+	}
 	@Override
 	public CategoryDTO updateCategory(CategoryDTO data) {
 		System.out.println("-----------updateCategory2----------");

@@ -1,16 +1,35 @@
 package com.it15306.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
+
 public class datatupdateUser {
+	@NotNull
 	private Integer id;
+	@Email
+	@NotBlank
 	private String email;
+	@NotBlank
 	private String username;
 	private Integer admin;
 	private Integer activated;
 	private String photo;
+	@NotBlank
+	@Length(min = 10, max = 15)
 	private String phone;
 	private String roles;
+	@NotNull
+	@NumberFormat
 	private Integer province_id;
+	@NotNull
+	@NumberFormat
 	private Integer district_id;
+	@NotNull
+	@NumberFormat
 	private Integer ward_id;
 	/**
 	 * @return the id

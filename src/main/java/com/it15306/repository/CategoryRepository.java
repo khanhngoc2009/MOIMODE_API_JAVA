@@ -42,6 +42,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 			+ "and ?4 and status like %?5% and c.type like %?6% ORDER BY c.create_date desc";
 	
 	final String test="SELECT * FROM category c where c.category_name like  %?1% ";
+	
+	final String SELECT_CATEGORY_BY_ID_AND_TYPE ="SELECT * FROM category where category_id =  ?1 and type = ?2 ";
 //	final String SELECT_ALL_FILTER ="SELECT * FROM category c where c.category_name like '%:name%' and "
 //			+ "c.category_id like '%:parentID' and c.create_date  between :startDate "
 //			+ "and :endDate and status like '%:status%' and c.type like '%:type%'";
@@ -100,7 +102,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 //											@Param("startDate") String startDate,@Param("endDate") String endDate,
 //											@Param("status") Integer status,@Param("type") Integer type, Pageable page );
 	
-	
+	@Query(value =SELECT_CATEGORY_BY_ID_AND_TYPE, nativeQuery=true)
+	Category SELECT_CATEGORY_BY_ID_AND_TYPE(@Param("id") Integer ID, @Param("type") Integer type);
 	
 	@Query(value = "select create_date from category order by create_date asc limit 1", nativeQuery = true)
 	String START_DATE();
