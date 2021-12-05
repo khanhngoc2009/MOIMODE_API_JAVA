@@ -3,20 +3,32 @@ package com.it15306.dto.voucher;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 
 public class Voucherdto {
 	
-	
+	@NotNull
 	private Integer id;
+	@NotBlank
 	private String codeVoucher;
+
 	private Date create_time;
+	@NotNull
 	private Date start_time;
+	@NotNull
 	private Date end_time;
+	@NotBlank
 	private String title;
 	private String description;
 	private String url;
+	@NotNull
 	private Integer discount;
+	@NotNull
 	private Integer type_discount;
+	@NotNull
 	private Integer status;
 	public Integer getId() {
 		return id;

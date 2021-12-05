@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.dto.reviewProduct.ResponReviewProduct;
 import com.it15306.dto.reviewProduct.ReviewProductDTO;
 import com.it15306.services.ReviewProductService;
 
@@ -25,9 +26,9 @@ public class CustomerReviewProduct {
 	ReviewProductService reviewProductService;
 
 
-	@RequestMapping(value = "/review-product/create/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/review-product/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<ReviewProductDTO> createReviewProduct(@RequestBody ReviewProductDTO data) {
+	public ResponseEntity<ReviewProductDTO> createReviewProduct(@RequestBody ResponReviewProduct data) {
 		try {
 			ReviewProductDTO dto=reviewProductService.create(data);
 			return ResponseEntity.ok(dto);

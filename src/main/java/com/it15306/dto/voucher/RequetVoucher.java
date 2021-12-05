@@ -2,16 +2,32 @@ package com.it15306.dto.voucher;
 
 import java.util.Date;
 
-public class RequetVoucher {
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
+
+public class RequetVoucher {
+	@NotBlank
 	private String codeVoucher;
+	@NotNull
 	private Date start_time;
+	@NotNull
 	private Date end_time;
+	@NotBlank
+	@Length(max = 200, min = 5)
 	private String title;
 	private String description;
 	private String url;
+	@NotNull
+	@NumberFormat
 	private Integer discount;
+	@NotNull
+	@NumberFormat
 	private Integer type_discount;
+	@NotNull
+	@NumberFormat
 	private Integer status;
 	/**
 	 * @return the codeVoucher

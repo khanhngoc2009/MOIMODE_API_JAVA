@@ -35,13 +35,15 @@ import com.it15306.repository.DistrictRepository;
 import com.it15306.repository.ProvinceRepository;
 import com.it15306.repository.UserRepository;
 import com.it15306.repository.WardRepository;
+import com.it15306.servicesImpl.MailServiceImpl;
 
 @Service("userService")
 public class UserServiceImpl implements UserService, IUserService, UserDetailsService{
 	 Long totalElement;
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	MailServiceImpl mailServiceImpl;
 	@Autowired
 	ModelMapper modelMapper;
 	
@@ -183,7 +185,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			User entity = mapToUser(data);
 			UserDTO dto=new UserDTO();
 			userRepository.save(entity);
-			
+			mailServiceImpl.SendEmailCreateAcc(entity.getEmail(), entity.getUsername());
 			dto = modelMapper.map(entity, UserDTO.class);
 			dto.setId(entity.getId());
 			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));

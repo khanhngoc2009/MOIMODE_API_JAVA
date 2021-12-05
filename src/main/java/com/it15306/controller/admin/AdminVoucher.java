@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,24 +33,39 @@ public class AdminVoucher {
 	
 	@PostMapping("/admin/voucher/create")
 	@ResponseBody
-	public ResponseEntity<Voucherdto>  create(@RequestBody RequetVoucher data) {
-		
-		Voucherdto vo = 	voucherService.create(data);
-		if(vo == null || data.equals(null)) {
-			return ResponseEntity.noContent().build();
+	public ResponseEntity<Voucherdto>  create(@Validated @RequestBody RequetVoucher data, BindingResult bindingResult) {
+		boolean check = bindingResult.hasErrors();
+		try {
+			if(!check) {
+				Voucherdto vo = 	voucherService.create(data);
+				if(vo == null || data.equals(null)) {
+					return ResponseEntity.noContent().build();
+				}
+				return ResponseEntity.ok(vo);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return ResponseEntity.ok(vo);
+		return 	ResponseEntity.badRequest().build();
 	}
 	
 	@PostMapping("/admin/voucher/update")
 	@ResponseBody
-	public ResponseEntity<Voucherdto> update(@RequestBody Voucherdto data) {
-		
-		Voucherdto vo = 	voucherService.update(data);
-		if(vo == null || data.equals(null)) {
-			return ResponseEntity.noContent().build();
+	public ResponseEntity<Voucherdto> update(@Validated @RequestBody Voucherdto data, BindingResult bindingResult) {
+		boolean check = bindingResult.hasErrors();
+		try {
+			if(!check) {
+			Voucherdto vo = 	voucherService.update(data);
+			if(vo == null || data.equals(null)) {
+				return ResponseEntity.noContent().build();
+			}
+			return ResponseEntity.ok(vo);
 		}
-		return ResponseEntity.ok(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 	ResponseEntity.badRequest().build();
+		
 		
 	}
 	@DeleteMapping("/admin/voucher/delete")
