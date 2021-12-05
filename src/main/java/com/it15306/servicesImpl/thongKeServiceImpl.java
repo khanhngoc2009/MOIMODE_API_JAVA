@@ -117,7 +117,8 @@ public class thongKeServiceImpl implements thongKeService {
 		thus.add("Sunday");
 		return thus;
 	}
-
+	Boolean checkDate = true;
+	Integer teamDate= null;
 	@Override
 	public BienDoDHang thongKetBienDoDonHang() {
 		String thuNow;
@@ -177,7 +178,15 @@ public class thongKeServiceImpl implements thongKeService {
 				// //data test tang ngay
 				// c1.roll(Calendar.DATE, +6);
 //				---------
-				c1.roll(Calendar.DATE, -(i + 1));
+				if(checkDate) {
+					c1.roll(Calendar.DATE, -(i + 1));
+					teamDate=Integer.valueOf(fmY.format(c1.getTime()).substring(8, 10));
+					if(teamDate <= 1 )
+						checkDate = false;
+				}else {
+					c1.roll(Calendar.MONTH, -(1));
+					c1.roll(Calendar.DATE, -(i + 1));
+				}
 				ngayNow.add(fmY.format(c1.getTime()));
 			} catch (ParseException e) {
 
@@ -269,7 +278,15 @@ public class thongKeServiceImpl implements thongKeService {
 				// //data test tang ngay
 				// c1.roll(Calendar.DATE, +6);
 //				---------
-				c1.roll(Calendar.DATE, -(i + 1));
+				if(checkDate) {
+					c1.roll(Calendar.DATE, -(i + 1));
+					teamDate=Integer.valueOf(fmY.format(c1.getTime()).substring(8, 10));
+					if(teamDate <= 1 )
+						checkDate = false;
+				}else {
+					c1.roll(Calendar.MONTH, -(1));
+					c1.roll(Calendar.DATE, -(i + 1));
+				}
 				ngayNow.add(fmY.format(c1.getTime()));
 			} catch (ParseException e) {
 
