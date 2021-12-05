@@ -1,18 +1,32 @@
 package com.it15306.dto;
 
 public class PageDto {
-	private int page;
-	private int take;
-	public int getPage() {
+	private Integer page = null;
+	private Integer take = null;
+	/**
+	 * @return the page
+	 */
+	public Integer getPage() {
 		return page;
 	}
-	public void setPage(int page) {
+	/**
+	 * @param page the page to set
+	 */
+	public void setPage(Integer page) {
 		this.page = page;
 	}
-	public int getTake() {
+	/**
+	 * @return the take
+	 */
+	public Integer getTake() {
 		return take;
 	}
-	public void setTake(int take) {
+	/**
+	 * @param take the take to set
+	 */
+	public void setTake(Integer take) {
 		this.take = take;
 	}
+	
+	
 }
