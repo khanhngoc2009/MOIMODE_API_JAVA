@@ -23,6 +23,7 @@ import com.it15306.entities.User;
 import com.it15306.repository.CartProductReponsitory;
 import com.it15306.repository.CartRepository;
 import com.it15306.repository.ProductSkuRepository;
+import com.it15306.repository.SkuRepository;
 import com.it15306.repository.UserRepository;
 import com.it15306.services.CartService;
 @Service
@@ -43,6 +44,9 @@ public class CartServiceImpl implements CartService{
 	@Autowired
 	CartProductReponsitory cartProductReponsitory;
 	
+	@Autowired
+	SkuRepository skuRepository;
+	
 	@Override
 	public CartDTO getCartByUser(Integer user_id) {
 		System.out.println("-------------------------------------------------1");
@@ -53,7 +57,7 @@ public class CartServiceImpl implements CartService{
 		Cart cvo = cartRepository.findUserID(user_id);
 		System.out.println("-------------------------------------------------2: "+cvo.getUser().getId());
 		System.out.println("-------------------------------------------------2: "+cvo.getCartproduct().size());
-
+		
 		if(cvo != null) {
 			System.out.println("-------------------------------------------------3");
 			entity=modelMapper.map(cvo, CartDTO.class);
@@ -61,7 +65,18 @@ public class CartServiceImpl implements CartService{
 			cvo.getCartproduct().forEach(l -> {
 				CartProductDTO dto=new CartProductDTO();
 				dto=modelMapper.map(l, CartProductDTO.class);
-				dto.setProductSkuDTOs(modelMapper.map(l.getProductSkus(), ProductSkuDto.class));
+				ProductSkuDto p_dto = modelMapper.map(l.getProductSkus(), ProductSkuDto.class);
+				List<Object> obj =  skuRepository.getInfoBySku(p_dto.getProduct_sku_id());
+				String optionValueProducts = "";
+				String name_product = "";
+				for(int k =  0;k<obj.size();k++) {
+					Object[] row = (Object[]) obj.get(k);
+					optionValueProducts = optionValueProducts + (k != 0 ? ", " : "") + (String) row[0];
+					name_product = (String) row[1];
+				}
+				dto.setProductSkuDTOs(p_dto);
+				dto.setProduct_name(name_product);
+				dto.setOption_value(optionValueProducts);
 				listdto.add(dto);
 				});
 			entity.setCartProductsDTO(listdto);

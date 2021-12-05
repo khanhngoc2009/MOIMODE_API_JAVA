@@ -24,6 +24,15 @@ private Integer product_sku_id;
 	private String url_media;
 	private int status;
 	private int id_image;
+	private ProductDTO product;
+
+	public ProductDTO getProduct() {
+		return product;
+	}
+	public void setProduct(ProductDTO product) {
+		this.product = product;
+	}
+	
 	public Integer getProduct_sku_id() {
 		return product_sku_id;
 	}

@@ -230,6 +230,7 @@ public class CustomerProduct {
 	@ResponseBody
 	public ResponseEntity<?> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();
+		ModelMapper modelMapper = new ModelMapper();
 		try {
 			Object[] sku_obj = (Object[]) productServiceImpl.findBySku(dto.getProduct_id(), dto.getOption_value_1(), dto.getOption_value_2(), dto.getOption_value_3());
 			ProductSkuDto p = new ProductSkuDto();
@@ -242,6 +243,7 @@ public class CustomerProduct {
 			p.setQuantiy_rest((Integer) sku_obj[5]);
 			p.setStatus((Integer) sku_obj[7]);
 			p.setUrl_media((String) sku_obj[8]);
+			p.setProduct(modelMapper.map(productServiceImpl.getById(dto.getProduct_id()),ProductDTO.class));
 			response.setCode(200);
 			response.setMessage("Success");
 			response.setData(p);

@@ -90,7 +90,7 @@ public class CustomerOrder {
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
 			
-			if(username!= null && dto.getAddress_id()!=null) {
+			if(username!= null && dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
 				int size = dto.getListCartId().size();
 				double voucher_discount = 0;
 				double total_order = 0;
@@ -106,7 +106,7 @@ public class CustomerOrder {
 							list_cart_product.add(cart_product);
 						}
 						
-						if(dto.getVoucher_id()!= null) {
+						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {
 							Voucherdto voucher = voucherService.getByIdVoucher(dto.getVoucher_id());
 							int type_discount =  voucher.getType_discount();
 //							
@@ -127,7 +127,7 @@ public class CustomerOrder {
 						Voucher voucher  = new Voucher();
 						voucher.setId(dto.getVoucher_id()!=null ? dto.getVoucher_id(): null );
 						order.setVoucher(voucher);
-						order.setTotal_price(total_order - voucher_discount);
+						order.setTotal_price(total_order - voucher_discount + 30000);
 						
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {

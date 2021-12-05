@@ -31,7 +31,18 @@ public interface SkuRepository extends PagingAndSortingRepository<Sku, Integer> 
 //			+ " sk.option_sku =:option_3 "
 //			+ " group by sk.product_sku "
 //			+ " order by count(sk) desc";
-//	final String SELECT_BY_PRODUCT_ID = " Select p from Sku ";
+	final String SELECT_INFO_BY_PRODUCT_SKU_ID = "	select value_name,product.product_name from sku \r\n"
+			+ "	join product_sku on product_sku.product_sku_id = sku.product_sku_id \r\n"
+			+ "	join product on product.product_id = product_sku.product_id\r\n"
+			+ "	join option_sku_value on sku.option_sku_id = option_sku_value.option_sku_id\r\n"
+			+ "	join option_value on option_value.value_id = option_sku_value.option_value_id\r\n"
+			+ "	where sku.product_sku_id = :product_sku_id";
+//	select value_name,product.product_name from sku 
+//	join product_sku on product_sku.product_sku_id = sku.product_sku_id 
+//	join product on product.product_id = product_sku.product_id
+//	join option_sku_value on sku.option_sku_id = option_sku_value.option_sku_id
+//	join option_value on option_value.value_id = option_sku_value.option_value_id
+//	where sku.product_sku_id = 1;
 	 
 	final String SELECT_BY_OPTION_VALUES=
 			"select sku.product_sku_id,product_id,value_sku,price,quantity_remain,quantiy_rest,quantity_total,status,url_media from sku \r\n"
@@ -44,6 +55,11 @@ public interface SkuRepository extends PagingAndSortingRepository<Sku, Integer> 
      @Query(value = "insert into sku (product_sku_id,option_sku_id) VALUES (:product_sku_id,:option_sku_id)", nativeQuery = true)
      @Transactional
      void saveValue(@Param("product_sku_id") Integer product_sku_id, @Param("option_sku_id") Integer option_sku_id);
+	 
+	 @Modifying
+     @Query(value = SELECT_INFO_BY_PRODUCT_SKU_ID , nativeQuery = true)
+     @Transactional
+     List<Object> getInfoBySku(@Param("product_sku_id") Integer product_sku_id);
 	 
 	 
 //	@Query(SELECT_BY_OPTION_VALUE)
