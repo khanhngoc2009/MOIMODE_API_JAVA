@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,10 @@ import com.it15306.dto.WardDTO;
 import com.it15306.dto.idBody;
 import com.it15306.dto.addressOrder.BodyAddressOrder;
 import com.it15306.entities.AddressOrder;
+import com.it15306.entities.User;
+import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.AddressService;
+import com.it15306.services.UserService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -33,27 +38,39 @@ public class CustomerAddressOrder {
 	
 	@Autowired
 	AddressService addressService;
+	@Autowired
+	private JwtTokenProvider tokenProvider;
 	
+	@Autowired
+	private UserService userservice;
+	
+	
+//	@RequestMapping(value = "/address-order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrder(@RequestBody PageDto data) {
+//		List<AddressOrderDTO> list =addressService.getAllAddressOrder();
+//		if(list.isEmpty()) {
+//			return ResponseEntity.noContent().build();
+//		}
+//		return ResponseEntity.ok(list);	 
+//	}
 	
 	@RequestMapping(value = "/address-order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrder(@RequestBody PageDto data) {
-		List<AddressOrderDTO> list =addressService.getAllAddressOrder();
-		if(list.isEmpty()) {
-			return ResponseEntity.noContent().build();
+	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrderByUserID(HttpServletRequest httpServletRequest) {
+		System.out.print("khoong laas dc ," + httpServletRequest.getHeader("Authorization"));
+		String token = httpServletRequest.getHeader("Authorization").substring(7);
+		String username = tokenProvider.getUserNameFromJWT(token);
+		User user = userservice.getByUsername(username);
+		if(user!= null) {
+			List<AddressOrderDTO> list =addressService.getAllAddressByUserId(String.valueOf(user.getId()));
+			if(list.isEmpty()) {
+				return ResponseEntity.noContent().build();
+			}
+			return ResponseEntity.ok(list);	 
+		}else {
+			return ResponseEntity.accepted().build();
 		}
-		return ResponseEntity.ok(list);	 
-	}
-	
-	@RequestMapping(value = "/address-order/list/{user_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<List<AddressOrderDTO>> getListAddressOrderByUserID(@PathVariable("user_id")String user_id) {
-		List<AddressOrderDTO> list =addressService.getAllAddressByUserId(user_id);	
-		
-		if(list.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.ok(list);	 
 	}
 	
 	

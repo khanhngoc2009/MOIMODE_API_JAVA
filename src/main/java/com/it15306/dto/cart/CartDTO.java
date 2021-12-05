@@ -17,6 +17,8 @@ public class CartDTO {
 
 	private UserDTO user;
 	
+//	private 
+	
 	private List<CartProductDTO> cartProductsDTO;
 
 	/**

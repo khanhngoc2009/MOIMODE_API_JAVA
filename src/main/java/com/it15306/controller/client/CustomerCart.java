@@ -2,6 +2,8 @@ package com.it15306.controller.client;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,10 @@ import com.it15306.dto.cart.CartProductDTO;
 import com.it15306.dto.cart.dataBodyCart;
 import com.it15306.dto.cart.dataDeleteCart;
 import com.it15306.entities.CartProduct;
+import com.it15306.entities.User;
+import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.CartService;
+import com.it15306.services.UserService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
@@ -26,6 +31,12 @@ import com.it15306.services.CartService;
 public class CustomerCart {
 	@Autowired
 	CartService cartService;
+	
+	@Autowired
+	private JwtTokenProvider tokenProvider;
+	
+	@Autowired
+	private UserService userservice;
 	
 	@RequestMapping(value = "/cart/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -64,15 +75,24 @@ public class CustomerCart {
 		
 	}
 	
-	@RequestMapping(value = "/cart/list/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/cart/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<CartDTO> getlistByUserId(@PathVariable("id") Integer id) {
-		try {			
-		CartDTO cart= cartService.getCartByUser(id);
-		if(cart != null) {
-			return ResponseEntity.ok(cart);
+	public ResponseEntity<CartDTO> getlistByUserId(HttpServletRequest httpServletRequest) {
+		
+		try {		
+		String token = httpServletRequest.getHeader("Authorization").substring(7);
+		String username = tokenProvider.getUserNameFromJWT(token);
+		User user = userservice.getByUsername(username);
+		if( user != null) {
+			CartDTO cart= cartService.getCartByUser(user.getId());
+			if(cart != null) {
+				return ResponseEntity.ok(cart);
+			}
+			return  ResponseEntity.noContent().build();
+			
+		}else {
+			return  ResponseEntity.noContent().build();
 		}
-		return  ResponseEntity.noContent().build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().build();

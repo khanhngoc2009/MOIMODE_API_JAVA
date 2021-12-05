@@ -76,7 +76,22 @@ public class OrderServiceImpl implements OrderService{
 		return orderRepository.getCountClient(status, user_id);
 	}
 	
+	public List<Order> getListOrdersAdmin(int page,int take,Integer status,String email, String user_name, String phone, String start_date,String end_date ) {
+		Pageable paging =  PageRequest.of(page, take); 
+        Page<Order> pagedResult = orderRepository.getOrdersAdmin(paging, status, email, user_name, phone, start_date, end_date);
+       
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+        	return new ArrayList<Order>();
+		}
+	}
+	public Integer countOrderAdmin(Integer status,String email, String user_name, String phone, String start_date,String end_date ) {
+		return orderRepository.getCountAdmin(status, email, user_name, phone, start_date, end_date);
+	}
+	
 	public Order getDetailById(Integer order_id) {
 		return orderRepository.getDetailOrderId(order_id);
 	}
+	
 }
