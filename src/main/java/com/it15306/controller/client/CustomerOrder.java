@@ -201,12 +201,12 @@ public class CustomerOrder {
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
-//		try {
-			// ly thong tin user
-//			String token = httpServletRequest.getHeader("Authorization").substring(7);
-//			String username = tokenProvider.getUserNameFromJWT(token);
-//			User user = userservice.getByUsername(username);
-			User u = userservice.getById(String.valueOf(32));
+		try {
+//			 ly thong tin user
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			User u = userservice.getByUsername(username);
+//			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
 				
 				// lay danh dach order (phan trang) 
@@ -246,11 +246,11 @@ public class CustomerOrder {
 				data.setMessage("AUTHEN");
 				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
 			}
-//		} catch (Exception e) {
-//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-//			data.setMessage("Fail");
-//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-//		}
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 	
 	@RequestMapping(value = "/order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
