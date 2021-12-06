@@ -240,7 +240,7 @@ public class VoucherServiceImpl implements VoucherService {
 		List<Voucherdto> list = new ArrayList<Voucherdto>();
 		Date date = new Date();
 		//Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
-		SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd");
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
 		Pageable paging = PageRequest.of(0, 100);
 		Page<Voucher> listenti2=voucherRepository.locVoucherCustomer(dt.format(date),paging);
 		totalElement = listenti2.getTotalElements();
