@@ -63,9 +63,9 @@ public class OrderServiceImpl implements OrderService{
 		return productOrderRepository.save(product_order);
 	}
 	
-	public List<Order> getListOrders(int page,int take,Integer status,Integer user_id,String start_date,String end_date) {
+	public List<Order> getListOrders(int page,int take,String status,Integer user_id,String start_date,String end_date) {
 		Pageable paging =  PageRequest.of(page, take); 
-        Page<Order> pagedResult = orderRepository.getListOrders(paging,status,user_id,start_date,end_date);
+        Page<Order> pagedResult = orderRepository.getListOrders(status,user_id,start_date,end_date,paging);
        
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
@@ -73,11 +73,11 @@ public class OrderServiceImpl implements OrderService{
         	return new ArrayList<Order>();
 		}
 	}
-	public Integer countOrderClient(Integer status,Integer user_id,String start_date,String end_date) {
+	public Integer countOrderClient(String status,Integer user_id,String start_date,String end_date) {
 		return orderRepository.getCountClient(status, user_id,start_date,end_date);
 	}
 	
-	public List<Order> getListOrdersAdmin(int page,int take,Integer status,String email, String user_name, String phone, String start_date,String end_date ) {
+	public List<Order> getListOrdersAdmin(int page,int take,String status,String email, String user_name, String phone, String start_date,String end_date ) {
 		Pageable paging =  PageRequest.of(page, take); 
         Page<Order> pagedResult = orderRepository.getOrdersAdmin(status, email, user_name, phone, start_date, end_date,paging);
         List<Order> list =  pagedResult.getContent();
@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService{
         	return new ArrayList<Order>();
 		}
 	}
-	public Integer countOrderAdmin(Integer status,String email, String user_name, String phone, String start_date,String end_date ) {
+	public Integer countOrderAdmin(String status,String email, String user_name, String phone, String start_date,String end_date ) {
 		return orderRepository.getCountAdmin(status, email, user_name, phone, start_date, end_date);
 	}
 	

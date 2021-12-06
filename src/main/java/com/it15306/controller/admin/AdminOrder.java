@@ -81,8 +81,10 @@ public class AdminOrder {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
 //		try {
 				// lay danh dach order (phan trang)
-				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(dto.getPage(), dto.getTake(), 
-						dto.getStatus()!=null ?dto.getStatus() : null,
+				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
+						dto.getPage(), 
+						dto.getTake(), 
+						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null ?dto.getEmail() : "",
 						dto.getUser_name() !=null ?dto.getEmail() : "",
 						dto.getPhone()!=null ?dto.getPhone() : "",
@@ -90,10 +92,11 @@ public class AdminOrder {
 						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
 				System.out.print(size);
-				data.setCount(orderServiceImpl.countOrderAdmin(dto.getStatus()!=null ?dto.getStatus() : null,
+				data.setCount(orderServiceImpl.countOrderAdmin(
+						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null ?dto.getEmail() : "",
 						dto.getUser_name() !=null ?dto.getEmail() : "",
-						dto.getPhone()!=null ?dto.getPhone() : "",
+						dto.getPhone()!=null ? dto.getPhone() : "",
 						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();

@@ -208,12 +208,11 @@ public class CustomerOrder {
 			User u = userservice.getByUsername(username);
 //			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
-				
 				// lay danh dach order (phan trang) 
-				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus(),u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus(),u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {

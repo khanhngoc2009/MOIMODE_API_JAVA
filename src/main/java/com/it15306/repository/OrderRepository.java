@@ -39,17 +39,17 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " and orders.create_date >= ?3 and orders.create_date <= ?4 "
 			+ " order by orders.create_date desc";
 	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status = ?1 "
-			+ " and email=?2 "
-			+ " and username = ?3 "
-			+ " and phone = ?4 "
+			+ " WHERE orders.status like %?1% "
+			+ " and email like %?2%"
+			+ " and username  like %?3%  "
+			+ " and phone like %?4% "
 			+ " and orders.create_date >= ?5 and orders.create_date <= ?6 "
 			+ " order by orders.create_date desc";
 	final String COUNT_ORDER_ADMIN = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status = ?1 "
-			+ " and email = ?2"
-			+ " and username = ?3  "
-			+ " and phone = ?4 "
+			+ " WHERE orders.status like %?1% "
+			+ " and email like %?2%"
+			+ " and username like %?3% "
+			+ " and phone like %?4% "
 			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
 			+" order by orders.create_date desc";
 	final String ORDER_DETAIL = "SELECT o FROM Order o where o.order_id =:order_id ";
@@ -72,10 +72,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	Order getDetailOrderId(@Param("order_id") Integer order_id);
 	
 	@Query(value = COUNT_ORDER_CLIENT, nativeQuery = true)
-	Integer getCountClient(@Param("status") Integer status,@Param("user_id") Integer user_id,@Param("startDate") String startDate, @Param("endDate") String endDate );
+	Integer getCountClient(@Param("status") String status,@Param("user_id") Integer user_id,@Param("startDate") String startDate, @Param("endDate") String endDate );
 	
 	@Query(value = SELECT_ORDER, nativeQuery = true)
-	Page<Order> getListOrders( Pageable paging,@Param("status") Integer status,@Param("user_id") Integer user_id, @Param("startDate") String startDate, @Param("endDate") String endDate );
+	Page<Order> getListOrders(@Param("status") String status,@Param("user_id") Integer user_id, @Param("startDate") String startDate, @Param("endDate") String endDate , Pageable paging);
 	
 	@Query(thongKeOrderCount)
 	Integer thongKeOrderCount(@Param("status") Integer status);
@@ -109,10 +109,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	// admin
 	@Query(value = COUNT_ORDER_ADMIN, nativeQuery = true)
-	Integer getCountAdmin(@Param("status") Integer status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
+	Integer getCountAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
 	
 	@Query(value = SELECT_ORDER_ADMIN, nativeQuery = true)
-	Page<Order> getOrdersAdmin(@Param("status") Integer status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
+	Page<Order> getOrdersAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
 	
 	
 }
