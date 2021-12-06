@@ -82,7 +82,7 @@ public class AdminOrder {
 //		try {
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(dto.getPage(), dto.getTake(), 
-						dto.getStatus()!=null ?dto.getStatus() : 1,
+						dto.getStatus()!=null ?dto.getStatus() : null,
 						dto.getEmail()!=null ?dto.getEmail() : "",
 						dto.getUser_name() !=null ?dto.getEmail() : "",
 						dto.getPhone()!=null ?dto.getPhone() : "",
@@ -90,7 +90,7 @@ public class AdminOrder {
 						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
 				System.out.print(size);
-				data.setCount(orderServiceImpl.countOrderAdmin(dto.getStatus()!=null ?dto.getStatus() : 1,
+				data.setCount(orderServiceImpl.countOrderAdmin(dto.getStatus()!=null ?dto.getStatus() : null,
 						dto.getEmail()!=null ?dto.getEmail() : "",
 						dto.getUser_name() !=null ?dto.getEmail() : "",
 						dto.getPhone()!=null ?dto.getPhone() : "",

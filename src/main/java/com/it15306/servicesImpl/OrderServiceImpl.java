@@ -63,9 +63,9 @@ public class OrderServiceImpl implements OrderService{
 		return productOrderRepository.save(product_order);
 	}
 	
-	public List<Order> getListOrders(int page,int take,Integer status,Integer user_id) {
+	public List<Order> getListOrders(int page,int take,Integer status,Integer user_id,String start_date,String end_date) {
 		Pageable paging =  PageRequest.of(page, take); 
-        Page<Order> pagedResult = orderRepository.getListOrders(paging,status,user_id);
+        Page<Order> pagedResult = orderRepository.getListOrders(paging,status,user_id,start_date,end_date);
        
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
@@ -73,8 +73,8 @@ public class OrderServiceImpl implements OrderService{
         	return new ArrayList<Order>();
 		}
 	}
-	public Integer countOrderClient(Integer status,Integer user_id) {
-		return orderRepository.getCountClient(status, user_id);
+	public Integer countOrderClient(Integer status,Integer user_id,String start_date,String end_date) {
+		return orderRepository.getCountClient(status, user_id,start_date,end_date);
 	}
 	
 	public List<Order> getListOrdersAdmin(int page,int take,Integer status,String email, String user_name, String phone, String start_date,String end_date ) {

@@ -28,26 +28,28 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 //	private String photo;
 //	private String phone;
 	final String SELECT_ORDER_BY_ID_VOUCHER = "SELECT o FROM Order o WHERE o.voucher.id =:id";
-	final String SELECT_ORDER = "SELECT o FROM Order o"
-			+ " WHERE o.status =:status "
-			+ " and o.user.id = :user_id "
-			+ " order by create_date desc";
-	final String COUNT_ORDER_CLIENT = "SELECT count(o.order_id) FROM Order o"
-			+ " WHERE o.status =?1 "
-			+ " and o.user.id = ?2 "
-			+ " order by create_date desc";
+	final String SELECT_ORDER = "SELECT * FROM orders join user on user.user_id = orders.user_id"
+			+ " WHERE orders.status = ?1 "
+			+ " and orders.user_id = ?2 "
+			+" and orders.create_date >= ?3 and orders.create_date <= ?4"
+			+ " order by orders.create_date desc";
+	final String COUNT_ORDER_CLIENT = "SELECT count(orders.order_id) FROM orders join user on user.user_id = orders.user_id "
+			+ " WHERE orders.status = ?1 "
+			+ " and orders.user_id = ?2 "
+			+ " and orders.create_date >= ?3 and orders.create_date <= ?4 "
+			+ " order by orders.create_date desc";
 	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
 			+ " WHERE orders.status = ?1 "
-			+ " and email like %?2%"
-			+ " and username like %?3%  "
-			+ " and phone like %?4% "
-			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
-			+" order by orders.create_date desc";
+			+ " and email=?2 "
+			+ " and username = ?3 "
+			+ " and phone = ?4 "
+			+ " and orders.create_date >= ?5 and orders.create_date <= ?6 "
+			+ " order by orders.create_date desc";
 	final String COUNT_ORDER_ADMIN = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
 			+ " WHERE orders.status = ?1 "
-			+ " and email like %?2%"
-			+ " and username like %?3%  "
-			+ " and phone like %?4% "
+			+ " and email = ?2"
+			+ " and username = ?3  "
+			+ " and phone = ?4 "
 			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
 			+" order by orders.create_date desc";
 	final String ORDER_DETAIL = "SELECT o FROM Order o where o.order_id =:order_id ";
@@ -69,11 +71,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	@Query(ORDER_DETAIL)
 	Order getDetailOrderId(@Param("order_id") Integer order_id);
 	
-	@Query(COUNT_ORDER_CLIENT)
-	Integer getCountClient(@Param("status") Integer status,@Param("user_id") Integer user_id);
+	@Query(value = COUNT_ORDER_CLIENT, nativeQuery = true)
+	Integer getCountClient(@Param("status") Integer status,@Param("user_id") Integer user_id,@Param("startDate") String startDate, @Param("endDate") String endDate );
 	
-	@Query(SELECT_ORDER)
-	Page<Order> getListOrders( Pageable paging,@Param("status") Integer status,@Param("user_id") Integer user_id);
+	@Query(value = SELECT_ORDER, nativeQuery = true)
+	Page<Order> getListOrders( Pageable paging,@Param("status") Integer status,@Param("user_id") Integer user_id, @Param("startDate") String startDate, @Param("endDate") String endDate );
 	
 	@Query(thongKeOrderCount)
 	Integer thongKeOrderCount(@Param("status") Integer status);
