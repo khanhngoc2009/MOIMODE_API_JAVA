@@ -37,18 +37,18 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " and o.user.id = ?2 "
 			+ " order by create_date desc";
 	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status like %?1% "
+			+ " WHERE orders.status = ?1 "
 			+ " and email like %?2%"
 			+ " and username like %?3%  "
 			+ " and phone like %?4% "
-			+" and orders.create_date between ?5 and ?6 "
+			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
 			+" order by orders.create_date desc";
 	final String COUNT_ORDER_ADMIN = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
 			+ " WHERE orders.status = ?1 "
-//			+ " and email like %?2%"
-//			+ " and username like %?3%  "
-//			+ " and phone like %?4% "
-//			+" and orders.create_date between ?5 and ?6 "
+			+ " and email like %?2%"
+			+ " and username like %?3%  "
+			+ " and phone like %?4% "
+			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
 			+" order by orders.create_date desc";
 	final String ORDER_DETAIL = "SELECT o FROM Order o where o.order_id =:order_id ";
 

@@ -26,6 +26,7 @@ import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
+import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataListOrderAdminDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.OrderDto;
@@ -126,5 +127,46 @@ public class AdminOrder {
 //			data.setMessage("Fail");
 //			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 //		}
+	}
+	@RequestMapping(value = "/admin/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
+		try {
+				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
+				order.setStatus(dto.getStatus());
+				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
+				Order order_after_update = orderServiceImpl.saveOrder(order);
+				data.setData(modelMapper.map(order_after_update, OrderDto.class));
+				data.setCode(HttpStatus.OK.value());
+				data.setMessage("SUCCESS");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+			
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
+
+	
+	@RequestMapping(value = "/admin/order/change-type-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> changeTypePayment(@RequestBody DataChangeTypePaymentDto dto,HttpServletRequest httpServletRequest) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+		try {
+			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
+			order.setStatus(dto.getType());
+			Order order_after_update = orderServiceImpl.saveOrder(order);
+			data.setData(modelMapper.map(order_after_update, OrderDto.class));
+			data.setCode(HttpStatus.OK.value());
+			data.setMessage("SUCCESS");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 }

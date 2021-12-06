@@ -26,6 +26,7 @@ import com.it15306.dto.DistrictDTO;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
+import com.it15306.dto.order.DataCancelOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
 import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataDetailDto;
@@ -166,9 +167,9 @@ public class CustomerOrder {
 		}
 		
 	}
-	@RequestMapping(value = "/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/order/cancel-order", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
+	public ResponseEntity<?> changeCancelOrder(@RequestBody DataCancelOrderDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
 		
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
@@ -177,8 +178,8 @@ public class CustomerOrder {
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-				order.setStatus(dto.getStatus());
-				mailServiceImpl.sendMailOrder(user.getEmail(), dto.getStatus());
+				order.setStatus(1);
+				mailServiceImpl.sendMailOrder(user.getEmail(), 1);
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				data.setData(modelMapper.map(order_after_update, OrderDto.class));
 				data.setCode(HttpStatus.OK.value());
@@ -196,27 +197,6 @@ public class CustomerOrder {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
-	
-	@RequestMapping(value = "/order/change-type-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<?> changeTypePayment(@RequestBody DataChangeTypePaymentDto dto,HttpServletRequest httpServletRequest) {
-		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
-		try {
-			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-			order.setStatus(dto.getType());
-			Order order_after_update = orderServiceImpl.saveOrder(order);
-			data.setData(modelMapper.map(order_after_update, OrderDto.class));
-			data.setCode(HttpStatus.OK.value());
-			data.setMessage("SUCCESS");
-			return new ResponseEntity<>(data,HttpStatus.OK);
-		} catch (Exception e) {
-			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-			data.setMessage("Fail");
-			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-		}
-	}
-	
-	
 	@RequestMapping(value = "/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
