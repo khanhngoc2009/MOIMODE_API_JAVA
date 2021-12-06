@@ -99,7 +99,6 @@ public class CustomerOrder {
 					if(size>0) {
 						for(int i=0;i<size;i++) {
 							CartProduct cart_product = cartService.getByCartProductId(dto.getListCartId().get(i));
-							
 							Product_Sku product_sku =  cart_product.getProductSkus();
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
 							list_product_sku.add(product_sku);

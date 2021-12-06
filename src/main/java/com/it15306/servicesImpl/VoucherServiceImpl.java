@@ -85,6 +85,8 @@ public class VoucherServiceImpl implements VoucherService {
 
 		return null;
 	}
+	
+	
 
 	@Override
 	public Voucherdto getByIdVoucher(Integer voucher_id) {
@@ -229,5 +231,33 @@ public class VoucherServiceImpl implements VoucherService {
 	}
 	public String endDate() {
 		return voucherRepository.END_DATE();
+	}
+
+
+
+	@Override
+	public List<Voucherdto> listVoucherCustomer() {
+		List<Voucherdto> list = new ArrayList<Voucherdto>();
+		Date date = new Date();
+		//Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
+		SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd");
+		Pageable paging = PageRequest.of(0, 100);
+		Page<Voucher> listenti2=voucherRepository.locVoucherCustomer(dt.format(date),paging);
+		totalElement = listenti2.getTotalElements();
+		System.out.println("cout size:"+listenti2.getContent().size());
+		System.out.println("total element:"+ totalElement);
+		listenti2.getContent().forEach(l -> System.out.println(l.getId()));
+		Voucherdto dto = new Voucherdto();
+		try {
+			for (Voucher voucher : listenti2.getContent()) {
+				dto = mapToModel(voucher, null);
+				System.out.println("22222: " + dto.toString());
+				list.add(dto);
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

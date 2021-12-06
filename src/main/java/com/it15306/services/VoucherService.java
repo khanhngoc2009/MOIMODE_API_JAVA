@@ -35,4 +35,6 @@ public interface VoucherService {
 
 	Long totalement();
 	
+	List<Voucherdto> listVoucherCustomer();
+	
 }

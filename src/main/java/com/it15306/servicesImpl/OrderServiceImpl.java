@@ -2,6 +2,7 @@ package com.it15306.servicesImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +79,11 @@ public class OrderServiceImpl implements OrderService{
 	
 	public List<Order> getListOrdersAdmin(int page,int take,Integer status,String email, String user_name, String phone, String start_date,String end_date ) {
 		Pageable paging =  PageRequest.of(page, take); 
-        Page<Order> pagedResult = orderRepository.getOrdersAdmin(paging, status, email, user_name, phone, start_date, end_date);
-       
+        Page<Order> pagedResult = orderRepository.getOrdersAdmin(status, email, user_name, phone, start_date, end_date,paging);
+        List<Order> list =  pagedResult.getContent();
+        for(int i = 0;i <list.size();i++) {
+        	System.out.print(list.get(i).getCreate_date());
+        }
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
         } else {

@@ -36,19 +36,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " WHERE o.status =?1 "
 			+ " and o.user.id = ?2 "
 			+ " order by create_date desc";
-	final String SELECT_ORDER_ADMIN = "SELECT o FROM Order o join o.user u"
-			+ " WHERE o.status like %?1% "
-			+ " and u.email like %?2%"
-			+ " and u.username like %?3%  "
-			+ " and u.phone like %?4% "
-			+" and o.create_date between ?5 and ?6 "
-			+" order by o.create_date desc";
-	final String COUNT_ORDER_ADMIN = "SELECT count(o.order_id) FROM Order o join o.user u"
-			+ " WHERE o.status like %?1% "
-			+ " and u.email like %?2%"
-			+ " and u.username like %?3%  "
-			+ " and u.phone like %?4% "
-			+" and o.create_date between ?5 and ?6 ";
+	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
+			+ " WHERE orders.status like %?1% "
+			+ " and email like %?2%"
+			+ " and username like %?3%  "
+			+ " and phone like %?4% "
+			+" and orders.create_date between ?5 and ?6 "
+			+" order by orders.create_date desc";
+	final String COUNT_ORDER_ADMIN = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
+			+ " WHERE orders.status = ?1 "
+//			+ " and email like %?2%"
+//			+ " and username like %?3%  "
+//			+ " and phone like %?4% "
+//			+" and orders.create_date between ?5 and ?6 "
+			+" order by orders.create_date desc";
 	final String ORDER_DETAIL = "SELECT o FROM Order o where o.order_id =:order_id ";
 
 	final String thongKeOrderCount = "SELECT count(o.order_id) FROM Order o where o.status= ?1";
@@ -105,11 +106,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	
 	// admin
-	@Query(COUNT_ORDER_ADMIN)
+	@Query(value = COUNT_ORDER_ADMIN, nativeQuery = true)
 	Integer getCountAdmin(@Param("status") Integer status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
 	
-	@Query(SELECT_ORDER_ADMIN)
-	Page<Order> getOrdersAdmin( Pageable paging,@Param("status") Integer status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
+	@Query(value = SELECT_ORDER_ADMIN, nativeQuery = true)
+	Page<Order> getOrdersAdmin(@Param("status") Integer status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
 	
 	
 }
