@@ -33,6 +33,7 @@ private Integer id;
 	private String email;
 	private String password;
 	private String username;
+	private String phone;
 	private Integer admin;
 	private Integer activated;
 	private String photo;
@@ -41,6 +42,20 @@ private Integer id;
 	private ProvinceDTO provincedto;
 	private DistrictDTO districtdto;
 	private WardDTO warddto;
+	
+	
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	/**
 	 * @return the id
 	 */

@@ -146,7 +146,8 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			
 		
 			list.forEach(u -> 
-				{
+				{	
+					System.out.println("phone:"+u.getPhone());
 					UserDTO dto=new UserDTO();
 					dto  =	modelMapper.map(u, UserDTO.class);
 					dto.setDistrictdto(modelMapper.map(u.getDistrict(), DistrictDTO.class));

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
+import com.it15306.dto.dashboard.DataResponseListTKe;
 import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
 import com.it15306.dto.order.OrderDto;
@@ -173,6 +174,45 @@ public class AdminDashboard {
 				List<OrderDto> list=keService.thongKeDonHang(data);
 				datarp.setListData(list);
 				datarp.setCount(keService.countTotalElement());
+				return ResponseEntity.ok(datarp);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}		
+		 return ResponseEntity.badRequest().build();
+	}
+	
+	
+	@ApiOperation(value = "API thống kê theo doanh thu V2.0.0")
+	@PostMapping("/admin/thong-ke/doanh-thu")
+	@ResponseBody
+	public ResponseEntity<DataResponseListTKe<OrderDto>>  thongKeDoanhThusv2(@RequestBody ThongKeBody data) {
+		DataResponseListTKe<OrderDto> datarp=new DataResponseListTKe<OrderDto>();
+		try {
+				List<OrderDto> list=keService.thongKeDoanhThu(data);
+				datarp.setListData(list);
+				datarp.setCountTotalElement(keService.countTotalElement());
+				datarp.setTong(keService.sumDoanhThu(data));
+				return ResponseEntity.ok(datarp);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}		
+		 return ResponseEntity.badRequest().build();
+	}
+	
+	@ApiOperation(value = "API thống kê list đơn hàng V2.0.0")
+	@PostMapping("/admin/thong-ke-don-hang/list")
+	@ResponseBody
+	public ResponseEntity<DataResponseListTKe<OrderDto>>  thongKeDonHang2(@RequestBody ThongKeBody data) {
+		DataResponseListTKe<OrderDto> datarp=new DataResponseListTKe<OrderDto>();
+		try {
+				List<OrderDto> list=keService.thongKeDonHang(data);
+				datarp.setListData(list);
+				datarp.setCountTotalElement(keService.countTotalElement());
+				datarp.setTong(Float.valueOf(keService.countDonHang(data)));
 				return ResponseEntity.ok(datarp);
 		
 		} catch (Exception e) {
