@@ -39,6 +39,7 @@ import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.AddressOrder;
 import com.it15306.entities.CartProduct;
 import com.it15306.entities.Order;
+import com.it15306.entities.Payment;
 import com.it15306.entities.ProductOrder;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.User;
@@ -90,6 +91,8 @@ public class CustomerOrder {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
+//			User user = userservice.getById("32");
+//			String username = "khanh";
 			if(username!= null && dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
 				int size = dto.getListCartId().size();
 				double voucher_discount = 0;
@@ -103,11 +106,26 @@ public class CustomerOrder {
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
-							cartService.deleteCartProductByID(cart_product.getId());
+							
 						}
 						
+						AddressOrder addressOrder = new AddressOrder();
+						addressOrder.setid(dto.getAddress_id());
+						dto.getAddress_id();
+						Order order = new Order();
+						order.setCreate_date(new Date());
+						order.setStatus(1); // chờ xác nhan
+						order.setUser(user);
+						Payment payment = new Payment();
+						payment.setPayment_id(dto.getPayment_id());
+						order.setPayment(payment);
+						order.setAddress(addressOrder);
+						order.setType_payment(0);
+						Voucher vou  = new Voucher();
 						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {
+							
 							Voucherdto voucher = voucherService.getByIdVoucher(dto.getVoucher_id());
+							vou.setId(voucher.getId());
 							int type_discount =  voucher.getType_discount();
 //							
 							if(type_discount == 1 ) {
@@ -115,20 +133,13 @@ public class CustomerOrder {
 							}else if(type_discount == 2) {
 								voucher_discount = voucher.getDiscount()/total_order * 100;
 							}
+							order.setVoucher(vou);
+						}else {
+							vou.setId(10000);
+							order.setVoucher(vou);
 						}
-						AddressOrder addressOrder = new AddressOrder();
-						addressOrder.setid(dto.getAddress_id());
-						dto.getAddress_id();
-						Order order = new Order();
-						order.setCreate_date(new Date());
-						order.setStatus(1); // chờ xác nhan
-						order.setUser(user); 
-						order.setAddress(addressOrder);
-						Voucher voucher  = new Voucher();
-						voucher.setId(dto.getVoucher_id()!=null ? dto.getVoucher_id(): null );
-						order.setVoucher(voucher);
-						order.setTotal_price(total_order - voucher_discount + 30000);
 						
+						order.setTotal_price(total_order - voucher_discount + 30000);
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
 							Product_Sku p_sku = list_product_sku.get(i);
@@ -139,13 +150,14 @@ public class CustomerOrder {
 							product_order.setPrice(p_sku.getPrice());
 							product_order.setProperties(dto.getNote());
 							product_order.setStatus(1);
-							product_order.setQuantity(list_cart_product.get(i).getId()); // lay so luong cua san pham
+							product_order.setQuantity(list_cart_product.get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
 							orderServiceImpl.saveProductOrder(product_order);
 							cartService.deleteCartProductByID(list_cart_product.get(i).getId());
 						}
 						data.setCode(200);
 						data.setMessage("Success");
+						data.setData("Success");
 						return new ResponseEntity<>(data,HttpStatus.OK);
 				
 				}else {

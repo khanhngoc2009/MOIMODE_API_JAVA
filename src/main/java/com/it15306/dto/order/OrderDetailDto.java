@@ -16,12 +16,22 @@ public class OrderDetailDto {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
+	private Integer type_payment;
 	private List<ProductOrderDto> listProduct;
 	private PaymentDTO payment;
 	private Voucherdto vocuher;
 	public Integer getId() {
 		return id;
 	}
+	
+	public Integer getType_payment() {
+		return type_payment;
+	}
+
+	public void setType_payment(Integer type_payment) {
+		this.type_payment = type_payment;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
