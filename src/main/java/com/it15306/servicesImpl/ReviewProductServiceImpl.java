@@ -45,11 +45,11 @@ public class ReviewProductServiceImpl implements ReviewProductService{
 		if(data.getTake() == null || data.getTake() == 0) {
 			data.setTake(10);
 		}
-		if(data.getStatus() == "")
+		if(data.getStatus() == "" || data.getStatus() == null)
 			data.setStatus("");
-		if(data.getStartDate() == "")
+		if(data.getStartDate() == "" || data.getStartDate() == null)
 			data.setStartDate(reviewProductRepository.START_DATE().substring(0, 10));
-		if(data.getEndDate() == "")
+		if(data.getEndDate() == "" || data.getEndDate() == null)
 			data.setEndDate(reviewProductRepository.END_DATE().substring(0, 10));
 		System.out.println("check date: "+data.getStartDate());
 		System.out.println("check date: "+data.getEndDate());
