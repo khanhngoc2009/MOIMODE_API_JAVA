@@ -138,8 +138,8 @@ public class CustomerOrder {
 							vou.setId(10000);
 							order.setVoucher(vou);
 						}
-						
-						order.setTotal_price(total_order - voucher_discount + 30000);
+						double total_payment = total_order - voucher_discount + 30000;
+						order.setTotal_price(total_payment>=0 ? total_payment:0);
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
 							Product_Sku p_sku = list_product_sku.get(i);
