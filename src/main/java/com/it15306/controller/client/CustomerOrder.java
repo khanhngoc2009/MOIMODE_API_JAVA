@@ -26,6 +26,7 @@ import com.it15306.dto.DistrictDTO;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
+import com.it15306.dto.order.DataCancelOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
 import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataDetailDto;
@@ -99,7 +100,6 @@ public class CustomerOrder {
 					if(size>0) {
 						for(int i=0;i<size;i++) {
 							CartProduct cart_product = cartService.getByCartProductId(dto.getListCartId().get(i));
-							
 							Product_Sku product_sku =  cart_product.getProductSkus();
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
 							list_product_sku.add(product_sku);
@@ -167,9 +167,9 @@ public class CustomerOrder {
 		}
 		
 	}
-	@RequestMapping(value = "/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/order/cancel-order", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
+	public ResponseEntity<?> changeCancelOrder(@RequestBody DataCancelOrderDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
 		
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
@@ -178,8 +178,8 @@ public class CustomerOrder {
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-				order.setStatus(dto.getStatus());
-				mailServiceImpl.sendMailOrder(user.getEmail(), dto.getStatus());
+				order.setStatus(1);
+				mailServiceImpl.sendMailOrder(user.getEmail(), 1);
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				data.setData(modelMapper.map(order_after_update, OrderDto.class));
 				data.setCode(HttpStatus.OK.value());
@@ -197,41 +197,23 @@ public class CustomerOrder {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
-	
-	@RequestMapping(value = "/order/change-type-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<?> changeTypePayment(@RequestBody DataChangeTypePaymentDto dto,HttpServletRequest httpServletRequest) {
-		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
-		try {
-			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-			order.setStatus(dto.getType());
-			Order order_after_update = orderServiceImpl.saveOrder(order);
-			data.setData(modelMapper.map(order_after_update, OrderDto.class));
-			data.setCode(HttpStatus.OK.value());
-			data.setMessage("SUCCESS");
-			return new ResponseEntity<>(data,HttpStatus.OK);
-		} catch (Exception e) {
-			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-			data.setMessage("Fail");
-			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-		}
-	}
-	
-	
 	@RequestMapping(value = "/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
 		try {
-			// ly thong tin user
+//			 ly thong tin user
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
-			User user = userservice.getByUsername(username);
-			if( user != null) {
+			User u = userservice.getByUsername(username);
+//			User u = userservice.getById(String.valueOf(32));
+			if( u != null) {
 				// lay danh dach order (phan trang) 
-				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus(),user.getId());
+				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus(),user.getId()));
+				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);

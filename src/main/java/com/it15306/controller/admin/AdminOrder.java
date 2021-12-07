@@ -26,6 +26,7 @@ import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
+import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataListOrderAdminDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.OrderDto;
@@ -80,20 +81,24 @@ public class AdminOrder {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
 //		try {
 				// lay danh dach order (phan trang)
-				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(dto.getPage(), dto.getTake(), 
-						dto.getStatus()!=null ?dto.getStatus() : null,
-								dto.getEmail()!=null ?dto.getEmail() : "",
-										dto.getUser_name() !=null ?dto.getEmail() : "",
-										dto.getPhone()!=null ?dto.getPhone() : "",
-										dto.getStart_date()!=null ?dto.getStart_date() : "01-01-2000",
-										dto.getEnd_date()!=null ? dto.getEnd_date() : "01-01-2100");
-				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderAdmin(dto.getStatus()!=null ?dto.getStatus() : null,
+				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
+						dto.getPage(), 
+						dto.getTake(), 
+						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null ?dto.getEmail() : "",
-								dto.getUser_name() !=null ?dto.getEmail() : "",
-								dto.getPhone()!=null ?dto.getPhone() : "",
-								dto.getStart_date()!=null ?dto.getStart_date() : "01-01-1900",
-								dto.getEnd_date()!=null ? dto.getEnd_date() : "01-01-2100"));
+						dto.getUser_name() !=null ?dto.getEmail() : "",
+						dto.getPhone()!=null ?dto.getPhone() : "",
+						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
+				int size= list_order.size();
+				System.out.print(size);
+				data.setCount(orderServiceImpl.countOrderAdmin(
+						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
+						dto.getEmail()!=null ?dto.getEmail() : "",
+						dto.getUser_name() !=null ?dto.getEmail() : "",
+						dto.getPhone()!=null ? dto.getPhone() : "",
+						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -116,8 +121,8 @@ public class AdminOrder {
 					listOrders.add(orderDto);
 					data.setListData(listOrders);
 				}
-				
 				data.setCode(HttpStatus.OK.value());
+				data.setListData(listOrders);
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
 //		} catch (Exception e) {
@@ -125,5 +130,46 @@ public class AdminOrder {
 //			data.setMessage("Fail");
 //			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 //		}
+	}
+	@RequestMapping(value = "/admin/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
+		try {
+				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
+				order.setStatus(dto.getStatus());
+				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
+				Order order_after_update = orderServiceImpl.saveOrder(order);
+				data.setData(modelMapper.map(order_after_update, OrderDto.class));
+				data.setCode(HttpStatus.OK.value());
+				data.setMessage("SUCCESS");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+			
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
+
+	
+	@RequestMapping(value = "/admin/order/change-type-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> changeTypePayment(@RequestBody DataChangeTypePaymentDto dto,HttpServletRequest httpServletRequest) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+		try {
+			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
+			order.setStatus(dto.getType());
+			Order order_after_update = orderServiceImpl.saveOrder(order);
+			data.setData(modelMapper.map(order_after_update, OrderDto.class));
+			data.setCode(HttpStatus.OK.value());
+			data.setMessage("SUCCESS");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 }

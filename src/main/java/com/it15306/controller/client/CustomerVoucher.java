@@ -29,12 +29,11 @@ public class CustomerVoucher {
 	
 	@PostMapping("/voucher/list")
 	@ResponseBody
-	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody ResponBodyVoucher data) {
-		try {
-			
+	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers() {
 		
+		try {
 		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
-		List<Voucherdto> list= voucherService.getAllVouchers(data);
+		List<Voucherdto> list= voucherService.listVoucherCustomer();
 		if(list.size() > 0) {
 			rp.setListData(list);
 			rp.setCount(voucherService.count());
