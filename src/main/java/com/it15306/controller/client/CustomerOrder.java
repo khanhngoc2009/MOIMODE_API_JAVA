@@ -90,7 +90,6 @@ public class CustomerOrder {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
-			
 			if(username!= null && dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
 				int size = dto.getListCartId().size();
 				double voucher_discount = 0;
@@ -99,11 +98,12 @@ public class CustomerOrder {
 				List<CartProduct> list_cart_product =  new ArrayList<CartProduct>();
 					if(size>0) {
 						for(int i=0;i<size;i++) {
-							CartProduct cart_product = cartService.getByCartProductId(dto.getListCartId().get(i));
+							CartProduct cart_product = cartService.getByCartProductId(dto.getListCartId().get(i).getId());
 							Product_Sku product_sku =  cart_product.getProductSkus();
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
+							cartService.deleteCartProductByID(cart_product.getId());
 						}
 						
 						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {

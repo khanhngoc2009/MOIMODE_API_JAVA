@@ -2,12 +2,14 @@ package com.it15306.dto.order;
 
 import java.util.List;
 
+import com.it15306.dto.cart.CartProductDTO;
+
 public class CreateOrderDto {
 	private Integer voucher_id;
 	private Integer payment_id;
 	private Integer address_id;
 	private String note;
-	private List<Integer> listCartId;
+	private List<CartProductDTO> listCartId;
 	public Integer getVoucher_id() {
 		return voucher_id;
 	}
@@ -26,10 +28,11 @@ public class CreateOrderDto {
 	public void setAddress_id(Integer address_id) {
 		this.address_id = address_id;
 	}
-	public List<Integer> getListCartId() {
+	
+	public List<CartProductDTO> getListCartId() {
 		return listCartId;
 	}
-	public void setListCartId(List<Integer> listCartId) {
+	public void setListCartId(List<CartProductDTO> listCartId) {
 		this.listCartId = listCartId;
 	}
 	public String getNote() {
