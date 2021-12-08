@@ -108,16 +108,24 @@ public class Authen {
 			if(user!= null) {
 				Boolean s = HashUtil.plain(dto.getOld_pass(), user.getPassword());
 				if(s==true) {
-					data.setData("Da ton tai");
-					data.setCode(HttpStatus.OK.value());
-					return new ResponseEntity<>(data,HttpStatus.OK);
+					Boolean new_pass = HashUtil.plain(dto.getNew_pass(), user.getPassword());
+					if(new_pass!=true) {
+						String hashPass = HashUtil.hash(dto.getNew_pass());
+						user.setPassword(hashPass);
+						userservice.saveUser(user);
+						data.setData("Doi mat khau thanh cong");
+						data.setCode(HttpStatus.OK.value());
+						return new ResponseEntity<>(data,HttpStatus.OK);
+					}else {
+						data.setData("Mat khau moi khong duoc trung");
+						data.setCode(HttpStatus.FOUND.value());
+						return new ResponseEntity<>(data,HttpStatus.FOUND);
+					}
+					
 				}else {
-					String hashPass = HashUtil.hash(dto.getNew_pass());
-					user.setPassword(hashPass);
-					userservice.saveUser(user);
-					data.setData("SUCCESS");
-					data.setCode(HttpStatus.OK.value());
-					return new ResponseEntity<>(data,HttpStatus.OK);
+					data.setCode(HttpStatus.NOT_FOUND.value());
+					data.setData("NOT_FOUND");
+					return new ResponseEntity<>(data,HttpStatus.NOT_FOUND);
 				}
 			}else {
 				data.setCode(HttpStatus.NOT_FOUND.value());

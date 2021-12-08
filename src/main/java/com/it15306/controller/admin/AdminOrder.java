@@ -107,8 +107,15 @@ public class AdminOrder {
 					List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
 					int size_p_os = listProductOrders.size();
 					for(int j=0;j<size_p_os;j++) {
-						list_pro_o_dtos.add(modelMapper.map(listProductOrders.get(j), ProductOrderDto.class));
+						ProductOrderDto pro_o =  modelMapper.map(listProductOrders.get(j), ProductOrderDto.class);
+						pro_o.setProductName(listProductOrders.get(j).getProduct_name());
+						pro_o.setCreateDate(listProductOrders.get(j).getCreate_date());
+						list_pro_o_dtos.add(pro_o);
 					}
+					orderDto.setCreateDate(order.getCreate_date());
+					orderDto.setId(order.getOrder_id());
+					orderDto.setTotalPrice(order.getTotal_price());
+					orderDto.setPaymentStatus(order.getType_payment());
 					orderDto.setListProduct(list_pro_o_dtos);
 					AddressOrder ad = order.getAddress();
 					AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
@@ -140,7 +147,27 @@ public class AdminOrder {
 				order.setStatus(dto.getStatus());
 				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
 				Order order_after_update = orderServiceImpl.saveOrder(order);
-				data.setData(modelMapper.map(order_after_update, OrderDto.class));
+				
+				OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
+				List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
+				int size_p_os = order_after_update.getProduct_orders().size();
+				for(int j=0;j<size_p_os;j++) {
+					list_pro_o_dtos.add(modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class));
+				}
+				orderDto.setCreateDate(order_after_update.getCreate_date());
+				orderDto.setId(order_after_update.getOrder_id());
+				orderDto.setTotalPrice(order_after_update.getTotal_price());
+				orderDto.setPaymentStatus(order_after_update.getType_payment());
+				orderDto.setListProduct(list_pro_o_dtos);
+				AddressOrder ad = order_after_update.getAddress();
+				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+				orderDto.setAddressOrder(ad_dto);
+				orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
+				orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
+				data.setData(orderDto);
 				data.setCode(HttpStatus.OK.value());
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
@@ -162,7 +189,26 @@ public class AdminOrder {
 			Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
 			order.setStatus(dto.getType());
 			Order order_after_update = orderServiceImpl.saveOrder(order);
-			data.setData(modelMapper.map(order_after_update, OrderDto.class));
+			OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
+			List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
+			int size_p_os = order_after_update.getProduct_orders().size();
+			for(int j=0;j<size_p_os;j++) {
+				list_pro_o_dtos.add(modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class));
+			}
+			orderDto.setCreateDate(order_after_update.getCreate_date());
+			orderDto.setId(order_after_update.getOrder_id());
+			orderDto.setTotalPrice(order_after_update.getTotal_price());
+			orderDto.setPaymentStatus(order_after_update.getType_payment());
+			orderDto.setListProduct(list_pro_o_dtos);
+			AddressOrder ad = order_after_update.getAddress();
+			AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+			ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+			ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+			ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+			orderDto.setAddressOrder(ad_dto);
+			orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
+			orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
+			data.setData(orderDto);
 			data.setCode(HttpStatus.OK.value());
 			data.setMessage("SUCCESS");
 			return new ResponseEntity<>(data,HttpStatus.OK);

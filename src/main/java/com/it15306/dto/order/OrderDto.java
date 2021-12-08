@@ -16,38 +16,39 @@ import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.voucher.Voucherdto;
 
 public class OrderDto {
-	private Integer order_id;
-	private Date create_date;
-	private Double total_price;
+	private Integer id;
+	private Date createDate;
+	private Double totalPrice;
 	private Integer status;
-	private Integer type_payment;
-	public Integer getType_payment() {
-		return type_payment;
-	}
-	public void setType_payment(Integer type_payment) {
-		this.type_payment = type_payment;
-	}
+	private Integer paymentStatus;
+	
 	private List<ProductOrderDto> listProduct;
 	private Voucherdto voucher;
 	private AddressOrderDTO addressOrder;
 	private PaymentDTO paymentType;
-	public Integer getOrder_id() {
-		return order_id;
+	public Integer getId() {
+		return id;
 	}
-	public void setOrder_id(Integer order_id) {
-		this.order_id = order_id;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public Date getCreate_date() {
-		return create_date;
+	public Date getCreateDate() {
+		return createDate;
 	}
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
-	public Double getTotal_price() {
-		return total_price;
+	public Double getTotalPrice() {
+		return totalPrice;
 	}
-	public void setTotal_price(Double total_price) {
-		this.total_price = total_price;
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	public Integer getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(Integer paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 	public Integer getStatus() {
 		return status;

@@ -163,6 +163,11 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	public Product_Sku getProductSkuById(Integer id) {
 		return productSkuRepository.getOne(id);
 	}
+	
+	public List<Object> getSkuOption(Integer id) {
+		return skuRepository.getInfoBySku(id);
+	}
+	
 }
 
 
