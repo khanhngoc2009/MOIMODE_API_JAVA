@@ -20,6 +20,13 @@ public class OrderDto {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
+	private Integer type_payment;
+	public Integer getType_payment() {
+		return type_payment;
+	}
+	public void setType_payment(Integer type_payment) {
+		this.type_payment = type_payment;
+	}
 	private List<ProductOrderDto> listProduct;
 	private Voucherdto voucher;
 	private AddressOrderDTO addressOrder;

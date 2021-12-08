@@ -75,30 +75,30 @@ public class AdminOrder {
 
 	@Autowired 
 	private MailServiceImpl mailServiceImpl;
-	@RequestMapping(value = "/order-admin/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
-//		try {
+		try {
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
 						dto.getPage(), 
 						dto.getTake(), 
 						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null ?dto.getEmail() : "",
-						dto.getUser_name() !=null ?dto.getEmail() : "",
+						dto.getUserName() !=null ?dto.getUserName() : "",
 						dto.getPhone()!=null ?dto.getPhone() : "",
-						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
+						dto.getStartTime()!=null ?dto.getStartTime() : "2000-01-01",
+						dto.getEndTime()!=null ? dto.getEndTime() : "2099-01-01");
 				int size= list_order.size();
 				System.out.print(size);
 				data.setCount(orderServiceImpl.countOrderAdmin(
 						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
-						dto.getEmail()!=null ?dto.getEmail() : "",
-						dto.getUser_name() !=null ?dto.getEmail() : "",
-						dto.getPhone()!=null ? dto.getPhone() : "",
-						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
+								dto.getEmail()!=null ?dto.getEmail() : "",
+										dto.getUserName() !=null ?dto.getUserName() : "",
+										dto.getPhone()!=null ?dto.getPhone() : "",
+										dto.getStartTime()!=null ?dto.getStartTime() : "2000-01-01",
+										dto.getEndTime()!=null ? dto.getEndTime() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -125,11 +125,11 @@ public class AdminOrder {
 				data.setListData(listOrders);
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
-//		} catch (Exception e) {
-//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-//			data.setMessage("Fail");
-//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-//		}
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 	@RequestMapping(value = "/admin/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -154,7 +154,7 @@ public class AdminOrder {
 	}
 
 	
-	@RequestMapping(value = "/admin/order/change-type-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/order/change-status-payment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> changeTypePayment(@RequestBody DataChangeTypePaymentDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 

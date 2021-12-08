@@ -3,11 +3,12 @@ package com.it15306.dto.order;
 public class DataListOrderAdminDto {
 	Integer status;
 	String email; 
-	String user_name;
+	String userName;
 	String phone;
-	String start_date;
-	String end_date;
-	int page;int take;
+	String startTime;
+	String endTime;
+	int page;
+	int take;
 
 	public int getPage() {
 		return page;
@@ -19,6 +20,30 @@ public class DataListOrderAdminDto {
 
 	public int getTake() {
 		return take;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 	public void setTake(int take) {
@@ -42,13 +67,6 @@ public class DataListOrderAdminDto {
 		this.email = email;
 	}
 
-	public String getUser_name() {
-		return user_name;
-	}
-
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
-	}
 
 	public String getPhone() {
 		return phone;
@@ -56,22 +74,6 @@ public class DataListOrderAdminDto {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getStart_date() {
-		return start_date;
-	}
-
-	public void setStart_date(String start_date) {
-		this.start_date = start_date;
-	}
-
-	public String getEnd_date() {
-		return end_date;
-	}
-
-	public void setEnd_date(String end_date) {
-		this.end_date = end_date;
 	}
 	
 }

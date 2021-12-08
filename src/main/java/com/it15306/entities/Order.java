@@ -36,11 +36,17 @@ public class Order {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
-
+	private Integer type_payment;
 	
 	@ManyToOne
 	@JoinColumn(name = "payment_id")
 	private Payment payment = new Payment();
+	public Integer getType_payment() {
+		return type_payment;
+	}
+	public void setType_payment(Integer type_payment) {
+		this.type_payment = type_payment;
+	}
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user = new User();
