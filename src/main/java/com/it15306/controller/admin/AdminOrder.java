@@ -86,19 +86,19 @@ public class AdminOrder {
 						dto.getTake(), 
 						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null ?dto.getEmail() : "",
-						dto.getUser_name() !=null ?dto.getEmail() : "",
+						dto.getUserName() !=null ?dto.getUserName() : "",
 						dto.getPhone()!=null ?dto.getPhone() : "",
-						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
+						dto.getStartTime()!=null ?dto.getStartTime() : "2000-01-01",
+						dto.getEndTime()!=null ? dto.getEndTime() : "2099-01-01");
 				int size= list_order.size();
 				System.out.print(size);
 				data.setCount(orderServiceImpl.countOrderAdmin(
 						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
-						dto.getEmail()!=null ?dto.getEmail() : "",
-						dto.getUser_name() !=null ?dto.getEmail() : "",
-						dto.getPhone()!=null ? dto.getPhone() : "",
-						dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
+								dto.getEmail()!=null ?dto.getEmail() : "",
+										dto.getUserName() !=null ?dto.getUserName() : "",
+										dto.getPhone()!=null ?dto.getPhone() : "",
+										dto.getStartTime()!=null ?dto.getStartTime() : "2000-01-01",
+										dto.getEndTime()!=null ? dto.getEndTime() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
