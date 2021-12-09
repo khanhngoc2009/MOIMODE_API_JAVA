@@ -27,6 +27,7 @@ import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataChangeStatusDto;
 import com.it15306.dto.order.DataChangeTypePaymentDto;
+import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderAdminDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.OrderDto;
@@ -152,7 +153,10 @@ public class AdminOrder {
 				List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
 				int size_p_os = order_after_update.getProduct_orders().size();
 				for(int j=0;j<size_p_os;j++) {
-					list_pro_o_dtos.add(modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class));
+					ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
+					pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
+					pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
+					list_pro_o_dtos.add(pro_o);
 				}
 				orderDto.setCreateDate(order_after_update.getCreate_date());
 				orderDto.setId(order_after_update.getOrder_id());
@@ -193,7 +197,10 @@ public class AdminOrder {
 			List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
 			int size_p_os = order_after_update.getProduct_orders().size();
 			for(int j=0;j<size_p_os;j++) {
-				list_pro_o_dtos.add(modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class));
+				ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
+				pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
+				pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
+				list_pro_o_dtos.add(pro_o);
 			}
 			orderDto.setCreateDate(order_after_update.getCreate_date());
 			orderDto.setId(order_after_update.getOrder_id());
@@ -218,4 +225,42 @@ public class AdminOrder {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+	@RequestMapping(value = "/admin/order/detail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<DataResponse<OrderDto>> orderDetail(@RequestBody DataDetailDto dto) {
+		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
+		try {
+				Order order_after_update = orderServiceImpl.getDetailById(dto.getId());
+				OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
+				List<ProductOrderDto> list_product = new ArrayList<ProductOrderDto>();
+				for(int i= 0;i< order_after_update.getProduct_orders().size();i++) {
+					ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(i), ProductOrderDto.class);
+					pro_o.setProductName(order_after_update.getProduct_orders().get(i).getProduct_name());
+					pro_o.setCreateDate(order_after_update.getProduct_orders().get(i).getCreate_date());
+					list_product.add(pro_o);
+				}
+				orderDto.setCreateDate(order_after_update.getCreate_date());
+				orderDto.setId(order_after_update.getOrder_id());
+				orderDto.setTotalPrice(order_after_update.getTotal_price());
+				orderDto.setPaymentStatus(order_after_update.getType_payment());
+				orderDto.setListProduct(list_product);
+				AddressOrder ad = order_after_update.getAddress();
+				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+				orderDto.setAddressOrder(ad_dto);
+				orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
+				orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
+				data.setData(orderDto);
+				data.setCode(HttpStatus.OK.value());
+				data.setMessage("SUCCESS");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
+	
 }
