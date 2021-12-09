@@ -106,9 +106,7 @@ public class CustomerOrder {
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
-							
 						}
-						
 						AddressOrder addressOrder = new AddressOrder();
 						addressOrder.setid(dto.getAddress_id());
 						dto.getAddress_id();
@@ -148,7 +146,13 @@ public class CustomerOrder {
 							product_order.setImage(p_sku.getUrl_media());
 							product_order.setOrder(order_after_save);
 							product_order.setPrice(p_sku.getPrice());
-							product_order.setProperties(dto.getNote());
+							List<Object> obj = productServiceImpl.getSkuOption(p_sku.getProduct_sku_id());
+							String optionValueProducts = "";
+							for(int k =  0;k<obj.size();k++) {
+								Object[] row = (Object[]) obj.get(k);
+								optionValueProducts = optionValueProducts + (k != 0 ? ", " : "") + (String) row[0];
+							}
+							product_order.setProperties(optionValueProducts);
 							product_order.setStatus(1);
 							product_order.setQuantity(list_cart_product.get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product

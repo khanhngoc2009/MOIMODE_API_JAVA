@@ -9,9 +9,9 @@ import javax.persistence.TemporalType;
 
 public class ProductOrderDto {
 	private Integer id;
-	private Date create_date;
+	private Date createDate;
 	
-	private String product_name;
+	private String productName;
 	private String properties;
 	private Integer status;
 	private Double price;
@@ -22,18 +22,6 @@ public class ProductOrderDto {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public Date getCreate_date() {
-		return create_date;
-	}
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
-	}
-	public String getProduct_name() {
-		return product_name;
-	}
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
 	}
 	public String getProperties() {
 		return properties;
@@ -64,6 +52,18 @@ public class ProductOrderDto {
 	}
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 	
 	
