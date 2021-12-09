@@ -79,7 +79,6 @@ public class AddressServiceImpl implements AddressService {
 		List<AddressOrder> enti = addressOrderRepository.findAddressOrderByUserID(user_id);
 
 		if (enti.size() > 0) {
-
 			for (int i = 0; i < enti.size(); i++) {
 				AddressOrderDTO vo =modelMapper.map(enti.get(i), AddressOrderDTO.class);
 				vo.setProvincedto(modelMapper.map(enti.get(i).getProvince(), ProvinceDTO.class));
@@ -110,6 +109,9 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public BodyAddressOrder createAddressOrder(BodyAddressOrder data) {
+		if(data.getIsDefault() == 1) {
+			addressOrderRepository.UPDATE_ISDEFAULT(String.valueOf(0),String.valueOf(data.getUser_id()) );
+		}
 		AddressOrder entity=new AddressOrder();
 		AddressOrderDTO dto=new AddressOrderDTO();
 		User user= userRepository.getOne(data.getUser_id());
@@ -150,6 +152,9 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public BodyAddressOrder updateAddressOrder(BodyAddressOrder data) {
 		try {
+			if(data.getIsDefault() == 1) {
+				addressOrderRepository.UPDATE_ISDEFAULT(String.valueOf(0),String.valueOf(data.getUser_id()) );
+			}
 			BodyAddressOrder respon=new BodyAddressOrder();
 			AddressOrderDTO dto=new AddressOrderDTO();
 			User user= userRepository.getOne(data.getUser_id());
