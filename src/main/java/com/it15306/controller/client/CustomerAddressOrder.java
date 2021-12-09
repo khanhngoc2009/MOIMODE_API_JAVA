@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,14 +90,17 @@ public class CustomerAddressOrder {
 	
 	@RequestMapping(value = "/address-order/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<BodyAddressOrder> create(@RequestBody BodyAddressOrder addressOrderDTO) {
-		
+	public ResponseEntity<BodyAddressOrder> create(@Validated @RequestBody BodyAddressOrder addressOrderDTO, BindingResult bindingResult) {
+		boolean check = bindingResult.hasErrors();
+		if(!check) {
 		if(addressOrderDTO.equals(null)) {
 			System.out.println("vao vung loi null");
 			return ResponseEntity.noContent().build();
 		}
 		
 		return ResponseEntity.ok(addressService.createAddressOrder(addressOrderDTO));
+		}
+		return ResponseEntity.badRequest().build();
 	}
 	
 	@RequestMapping(value = "/address-order/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -110,11 +115,17 @@ public class CustomerAddressOrder {
 	
 	@RequestMapping(value = "/address-order/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<BodyAddressOrder> update(@RequestBody BodyAddressOrder addressOrderDTO) {
+	public ResponseEntity<BodyAddressOrder> update(@Validated @RequestBody BodyAddressOrder addressOrderDTO, BindingResult bindingResult) {
 		try {
+			boolean check = bindingResult.hasErrors();
+			if(addressOrderDTO.getId() == null)
+				return ResponseEntity.badRequest().build();
+			
+			if(!check) {
 			BodyAddressOrder addressOrder =	addressService.updateAddressOrder(addressOrderDTO);
 			if(addressOrder != null) {
 				return ResponseEntity.ok(addressOrder);
+			}
 			}
 			
 		} catch (Exception e) {

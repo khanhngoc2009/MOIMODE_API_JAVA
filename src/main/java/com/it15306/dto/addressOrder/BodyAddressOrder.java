@@ -1,15 +1,29 @@
 package com.it15306.dto.addressOrder;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+
 public class BodyAddressOrder {
 	private Integer id;
+	@NotBlank
 	private String name_persion;
+	@NotBlank
+	@Length(max = 15, min = 10)
 	private String phone_persion;
 	private String address_detail;
 	private Integer isActive;
+	@NotNull
 	private Integer isDefault;
+	@NotNull
 	private Integer district_id;
+	@NotNull
 	private Integer province_id;
+	@NotNull
 	private Integer ward_id;
+	@NotNull
 	private Integer user_id;
 	
 	/**
