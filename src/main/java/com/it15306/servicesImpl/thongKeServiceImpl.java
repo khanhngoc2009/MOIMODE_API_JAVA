@@ -337,7 +337,11 @@ public class thongKeServiceImpl implements thongKeService {
 		List<OrderDto> listOr = new ArrayList<OrderDto>();
 		page.getContent().forEach(o -> {
 			OrderDto or = new OrderDto();
-			or = modelMapper.map(o, OrderDto.class);
+			//or = modelMapper.map(o, OrderDto.class);
+			or.setId(o.getOrder_id());
+			or.setTotalPrice(o.getTotal_price());
+			or.setStatus(o.getStatus());
+			or.setCreateDate(o.getCreate_date());
 			or.setVoucher(null);
 			or.setAddressOrder(null);
 			or.setListProduct(null);
@@ -389,7 +393,11 @@ public class thongKeServiceImpl implements thongKeService {
 			List<OrderDto> listOr = new ArrayList<OrderDto>();
 			page.getContent().forEach(o -> {
 				OrderDto or = new OrderDto();
-				or = modelMapper.map(o, OrderDto.class);
+				//or = modelMapper.map(o, OrderDto.class);
+				or.setId(o.getOrder_id());
+				or.setTotalPrice(o.getTotal_price());
+				or.setStatus(o.getStatus());
+				or.setCreateDate(o.getCreate_date());
 				or.setVoucher(null);
 				or.setAddressOrder(null);
 				or.setListProduct(null);
