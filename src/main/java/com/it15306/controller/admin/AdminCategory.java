@@ -27,6 +27,7 @@ import com.it15306.dto.category.PageCategoryDTO;
 import com.it15306.dto.category.ResponCategoryChildent;
 import com.it15306.dto.category.ResponCategoryParent;
 import com.it15306.dto.category.categoryParent;
+import com.it15306.repository.ProductRepository;
 import com.it15306.services.CategoryService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
@@ -36,6 +37,9 @@ public class AdminCategory {
 	
 	@Autowired 
 	CategoryService categoryService;
+	
+	@Autowired
+	ProductRepository  productRepository;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -172,6 +176,7 @@ public class AdminCategory {
 				cd.setType(ct.getType());
 				cd.setDescription(ct.getDescription());
 				try {
+					cd.setNumberOfProduct(productRepository.countProductByCategory(ct.getId()));
 					cd.setCategoryParent(categoryService.getCategoryByID(ct.getCategory_parent_id()));
 				} catch (Exception e) {
 					System.out.println("-------id chet-------"+ct.getCategory_parent_id());

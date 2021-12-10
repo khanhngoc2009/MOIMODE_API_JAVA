@@ -115,4 +115,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	@Query(thongKeCountProduct)
 	Integer thongKeCountProduct(@Param("status") Integer status);
+	
+	@Query(value="select count(product_id) from product  where category_id= ?1", nativeQuery = true)
+	Integer countProductByCategory(@Param("category_id") Integer category_id);
 }
