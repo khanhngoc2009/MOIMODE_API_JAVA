@@ -8,11 +8,26 @@ public class ResponCategoryChildent {
 	private Date create_date;
 	private Integer category_parent_id;
 	private Integer status;	
+	private Integer numberOfProduct;	
 	private Integer type;
 	private String name;
 	private String description;
 	private String image;
 	private categoryParent categoryParent;
+	
+	
+	/**
+	 * @return the numberOfProduct
+	 */
+	public Integer getNumberOfProduct() {
+		return numberOfProduct;
+	}
+	/**
+	 * @param numberOfProduct the numberOfProduct to set
+	 */
+	public void setNumberOfProduct(Integer numberOfProduct) {
+		this.numberOfProduct = numberOfProduct;
+	}
 	/**
 	 * @return the id
 	 */
