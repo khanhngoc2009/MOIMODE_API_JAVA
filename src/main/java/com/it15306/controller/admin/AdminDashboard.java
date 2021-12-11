@@ -192,7 +192,7 @@ public class AdminDashboard {
 		try {
 				List<OrderDto> list=keService.thongKeDoanhThu(data);
 				datarp.setListData(list);
-				datarp.setCountTotalElement(keService.countTotalElement());
+				datarp.setCount(keService.countTotalElement());
 				datarp.setTong(keService.sumDoanhThu(data));
 				return ResponseEntity.ok(datarp);
 		
@@ -211,7 +211,7 @@ public class AdminDashboard {
 		try {
 				List<OrderDto> list=keService.thongKeDonHang(data);
 				datarp.setListData(list);
-				datarp.setCountTotalElement(keService.countTotalElement());
+				datarp.setCount(keService.countTotalElement());
 				datarp.setTong(Float.valueOf(keService.countDonHang(data)));
 				return ResponseEntity.ok(datarp);
 		

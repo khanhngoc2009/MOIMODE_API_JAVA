@@ -39,6 +39,9 @@ private Integer id;
 	private String photo;
 	private String roles;
 	private Date create_date;
+	private String full_name;
+	private Integer gender;
+	private String birthday;
 	private ProvinceDTO provincedto;
 	private DistrictDTO districtdto;
 	private WardDTO warddto;
@@ -199,6 +202,42 @@ private Integer id;
 	 */
 	public void setWarddto(WardDTO warddto) {
 		this.warddto = warddto;
+	}
+	/**
+	 * @return the full_name
+	 */
+	public String getFull_name() {
+		return full_name;
+	}
+	/**
+	 * @param full_name the full_name to set
+	 */
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+	/**
+	 * @return the gender
+	 */
+	public Integer getGender() {
+		return gender;
+	}
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+	/**
+	 * @return the birthday
+	 */
+	public String getBirthday() {
+		return birthday;
+	}
+	/**
+	 * @param birthday the birthday to set
+	 */
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 	
 	
