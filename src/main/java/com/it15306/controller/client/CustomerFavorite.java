@@ -46,8 +46,16 @@ public class CustomerFavorite {
 	
 	@PostMapping("/favorite/list")
 	@ResponseBody
-	public ResponseEntity<DataResponseList<FavoriteDto>> getFavoriteList(@RequestBody PayloadList payload) {
-			return favoriteService.listFavoriteByProduct(payload);
+	public ResponseEntity<DataResponseList<FavoriteDto>> getFavoriteList(@RequestBody PayloadList payload,HttpServletRequest httpServletRequest) {
+		try {
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			User user = userservice.getByUsername(username);
+			return favoriteService.listFavoriteByProduct(payload,user);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+			
 	}
 	@PostMapping("/favorite/unfollow")
 	@ResponseBody

@@ -21,6 +21,7 @@ import com.it15306.dto.favorite.PayloadList;
 import com.it15306.entities.District;
 import com.it15306.entities.Favorite;
 import com.it15306.entities.Order;
+import com.it15306.entities.User;
 import com.it15306.entities.Ward;
 import com.it15306.repository.FavoriteRepository;
 import com.it15306.repository.WardRepository;
@@ -41,12 +42,12 @@ public class FavoriteServiceIpml implements FavoriteService{
 	ModelMapper modelMapper;
 	
 	@Override
-	public ResponseEntity<DataResponseList<FavoriteDto>> listFavoriteByProduct(PayloadList payload) {
+	public ResponseEntity<DataResponseList<FavoriteDto>> listFavoriteByProduct(PayloadList payload,User user) {
 		// TODO Auto-generated method stub
 		DataResponseList<FavoriteDto> data = new DataResponseList<FavoriteDto>();
 		try {
 			Pageable paging =  PageRequest.of(payload.getPage(),payload.getTake()); 
-	        Page<Favorite> pagedResult = favoriteRepository.listFavoriteByProduct(paging,payload.getProduct_id());
+	        Page<Favorite> pagedResult = favoriteRepository.listFavorite(paging,user.getId());
 	       
 	        if(pagedResult.hasContent()) {
 	            List<Favorite> list =  pagedResult.getContent();

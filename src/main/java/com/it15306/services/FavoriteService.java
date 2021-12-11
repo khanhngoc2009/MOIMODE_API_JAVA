@@ -14,9 +14,10 @@ import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.payment.RequestPaymentPage;
 import com.it15306.entities.Favorite;
 import com.it15306.entities.Payment;
+import com.it15306.entities.User;
 @Service
 public interface FavoriteService {
-	ResponseEntity<DataResponseList<FavoriteDto>> listFavoriteByProduct(PayloadList payload);
+	ResponseEntity<DataResponseList<FavoriteDto>> listFavoriteByProduct(PayloadList payload,User user);
 	ResponseEntity<DataResponse<String>> disableFavorite(PayloadFavorite payload);
 	ResponseEntity<DataResponse<FavoriteDto>> enableFavorite(PayloadFavorite payload);
 	FavoriteDto checkFavorite(PayloadFavorite payload);
