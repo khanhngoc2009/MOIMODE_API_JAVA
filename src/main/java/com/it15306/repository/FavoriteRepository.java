@@ -21,7 +21,7 @@ import com.it15306.entities.Ward;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
 
-	final String FIND_BY_USER = "select f from Favorite f where f.product.product_id =:product_id and f.status=1 order by f.create_time desc";
+	final String FIND_BY_USER = "select f from Favorite f where f.product.id =:product_id and f.status=1 order by f.create_time desc";
 	
 	@Query(FIND_BY_USER)
 	Page<Favorite> listFavoriteByProduct(Pageable page,@Param("product_id") Integer product_id);

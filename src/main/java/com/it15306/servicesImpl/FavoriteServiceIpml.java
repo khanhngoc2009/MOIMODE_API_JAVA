@@ -28,7 +28,7 @@ import com.it15306.services.FavoriteService;
 import com.it15306.services.WardService;
 
 
-@Service("WardServiceIpml")
+@Service("FavoriteServiceIpml")
 public class FavoriteServiceIpml implements FavoriteService{
 	
 	@Autowired
