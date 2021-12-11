@@ -20,7 +20,7 @@ public interface WardRepository extends JpaRepository<Ward, Integer> {
 	final String SELECT_ALL = "SELECT w FROM Ward w";
 	final String SELECT_BY_NAME = "SELECT w FROM Ward w WHERE w.name =:Ward_name";
 	final String SELECT_BY_STATUS = "SELECT w FROM Ward w WHERE w.status =:status";
-	final String SELECT_BY_DISTRICT = "SELECT w FROM Ward w WHERE w.district =:district";
+	final String SELECT_BY_DISTRICT = "SELECT w FROM Ward w WHERE w.district =:district and w.status = 1";
 
 	@Query(SELECT_ALL)
 	List<Ward> findAllWard();

@@ -38,8 +38,18 @@ public class ProductDTO {
 	private Integer type;
 	private Integer category_id;
 	private String image;
-public String getImage() {
+	public String getImage() {
 		return image;
+	}
+	private Integer isFavorite = 0;
+	
+
+	public Integer getIsFavorite() {
+		return isFavorite;
+	}
+
+	public void setIsFavorite(Integer isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 
 	public void setImage(String image) {

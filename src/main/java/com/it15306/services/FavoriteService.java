@@ -19,4 +19,5 @@ public interface FavoriteService {
 	ResponseEntity<DataResponseList<FavoriteDto>> listFavoriteByProduct(PayloadList payload);
 	ResponseEntity<DataResponse<String>> disableFavorite(PayloadFavorite payload);
 	ResponseEntity<DataResponse<FavoriteDto>> enableFavorite(PayloadFavorite payload);
+	FavoriteDto checkFavorite(PayloadFavorite payload);
 }

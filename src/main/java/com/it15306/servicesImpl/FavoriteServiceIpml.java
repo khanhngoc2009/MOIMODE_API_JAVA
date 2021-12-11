@@ -77,8 +77,6 @@ public class FavoriteServiceIpml implements FavoriteService{
 	@Override
 	public ResponseEntity<DataResponse<String>> disableFavorite(PayloadFavorite payload) {
 		// TODO Auto-generated method stub
-//		favoriteRepository.
-		
 		DataResponse<String> data = new DataResponse<String>();
 		try {
 			favoriteRepository.deleteById(payload.getId_product());
@@ -114,6 +112,20 @@ public class FavoriteServiceIpml implements FavoriteService{
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
+	}
+
+	@Override
+	public FavoriteDto checkFavorite(PayloadFavorite payload) {
+		DataResponse<FavoriteDto> data= new DataResponse<FavoriteDto>();
+		try {
+			Favorite favorite = favoriteRepository.checkFavorite(payload.getId_product(), payload.getUser().getId());
+			
+			return modelMapper.map(favorite,FavoriteDto.class);
+		} catch (Exception e) {
+			return null;
+		}
+		
+//		return null;
 	}
 	
 	

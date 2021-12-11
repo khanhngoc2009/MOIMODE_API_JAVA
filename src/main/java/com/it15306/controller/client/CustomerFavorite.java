@@ -46,17 +46,11 @@ public class CustomerFavorite {
 	@PostMapping("/favorite/list")
 	@ResponseBody
 	public ResponseEntity<DataResponseList<FavoriteDto>> getFavoriteList(@RequestBody PayloadList payload) {
-		try {
 			return favoriteService.listFavoriteByProduct(payload);
-		
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
 	}
 	@PostMapping("/favorite/unfollow")
 	@ResponseBody
 	public ResponseEntity<DataResponse<String>> unFollow(@RequestBody PayloadFavorite payload,HttpServletRequest httpServletRequest) {
-	
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
@@ -64,7 +58,6 @@ public class CustomerFavorite {
 			PayloadFavorite pl= payload;
 			pl.setUser(user);
 			return favoriteService.disableFavorite(pl);
-		
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -72,7 +65,6 @@ public class CustomerFavorite {
 	@PostMapping("/favorite/follow")
 	@ResponseBody
 	public ResponseEntity<DataResponse<FavoriteDto>> follow(@RequestBody PayloadFavorite payload,HttpServletRequest httpServletRequest) {
-	
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);

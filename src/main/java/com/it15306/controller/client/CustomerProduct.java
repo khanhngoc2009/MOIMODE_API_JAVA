@@ -5,6 +5,8 @@ import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.type.TimestampType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import com.it15306.dto.DistrictDTO;
 import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.favorite.FavoriteDto;
+import com.it15306.dto.favorite.PayloadFavorite;
 import com.it15306.dto.option.OptionClientDto;
 import com.it15306.dto.option.OptionDTO;
 import com.it15306.dto.option.OptionProductDto;
@@ -45,6 +49,9 @@ import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
+import com.it15306.jwt.JwtTokenProvider;
+import com.it15306.services.FavoriteService;
+import com.it15306.services.UserService;
 import com.it15306.servicesImpl.ProductServiceImpl;
 import com.it15306.servicesImpl.ProvinceServiceImpl;
 
@@ -54,11 +61,25 @@ import com.it15306.servicesImpl.ProvinceServiceImpl;
 public class CustomerProduct {
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
+	@Autowired
+	private FavoriteService favoriteService;
+	@Autowired
+	private JwtTokenProvider tokenProvider;
+	
+	@Autowired
+	private UserService userservice;
 	@RequestMapping(value = "/product/list/news", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getListProductNew() {
+	public ResponseEntity<?> getListProductNew(HttpServletRequest httpServletRequest) {
 		DataResponseList<ProductDTO> l=  new DataResponseList<ProductDTO>();
 		try {
+			String token = httpServletRequest.getHeader("Authorization");
+			System.out.print( "\n" + token + "khansh \n");
+			User user = new User();
+			if(token != null && token.length() > 0) {
+				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+				user = userservice.getByUsername(username);
+			}
 			ModelMapper modelMapper = new ModelMapper();
 			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
@@ -79,6 +100,15 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					PayloadFavorite pf=  new PayloadFavorite();
+					if(user != null) {
+						pf.setId_product(prDto.getId());
+						pf.setUser(user);
+					}
+					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					if(fa != null) {
+						prDto.setIsFavorite(1);
+					}
 					productDTOs.add(prDto);
 				}
 				
@@ -98,11 +128,17 @@ public class CustomerProduct {
 	}
 	@RequestMapping(value = "/product/list-by-category", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?>  getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto) {
+	public ResponseEntity<?>  getListProductByCategory(@RequestBody ProductByCategoryBodyDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			
+			String token = httpServletRequest.getHeader("Authorization");
+			System.out.print( "\n" + token + "khansh \n");
+			User user = new User();
+			if(token != null && token.length() > 0) {
+				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+				user = userservice.getByUsername(username);
+			}
 			Category category = new Category();
 			category.setId(dto.getCategory_id());
 			List<Object> list =  this.productServiceImpl.getProductByCategory(category,dto.getPage(),dto.getTake());
@@ -124,6 +160,15 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					PayloadFavorite pf=  new PayloadFavorite();
+					if(user != null) {
+						pf.setId_product(prDto.getId());
+						pf.setUser(user);
+					}
+					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					if(fa != null) {
+						prDto.setIsFavorite(1);
+					}
 					productDTOs.add(prDto);
 				}
 			}
@@ -141,10 +186,17 @@ public class CustomerProduct {
 	
 	@RequestMapping(value = "/product/list-selling", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getListProductSelling() {
+	public ResponseEntity<?> getListProductSelling(HttpServletRequest httpServletRequest) {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
+			String token = httpServletRequest.getHeader("Authorization");
+			System.out.print( "\n" + token + "khansh \n");
+			User user = new User();
+			if(token != null && token.length() > 0) {
+				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+				user = userservice.getByUsername(username);
+			}
 			List<Object> list =  this.productServiceImpl.getSellingProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
@@ -164,6 +216,15 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					PayloadFavorite pf=  new PayloadFavorite();
+					if(user != null) {
+						pf.setId_product(prDto.getId());
+						pf.setUser(user);
+					}
+					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					if(fa != null) {
+						prDto.setIsFavorite(1);
+					}
 					productDTOs.add(prDto);
 				}
 			}
@@ -182,11 +243,18 @@ public class CustomerProduct {
 
 	@RequestMapping(value = "/product/detail/{product_id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getProductDetail(@PathVariable Integer product_id) {
+	public ResponseEntity<?> getProductDetail(@PathVariable Integer product_id,HttpServletRequest httpServletRequest) {
 		DataResponse<ProductDetailDto> response = new DataResponse<ProductDetailDto>();
 		try {
 			Object[] obj = (Object[]) this.productServiceImpl.getByIdProduct(product_id);
 			Product product=(Product) obj[0];
+			String token = httpServletRequest.getHeader("Authorization");
+			System.out.print( "\n" + token + "khansh \n");
+			User user = new User();
+			if(token != null && token.length() > 0) {
+				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+				user = userservice.getByUsername(username);
+			}
 			ProductDetailDto pr = new ProductDetailDto();
 			ModelMapper modelMapper = new ModelMapper();
 			List<OptionProductDto> optionProductDTOs =new ArrayList<OptionProductDto>();
@@ -212,6 +280,15 @@ public class CustomerProduct {
 			ProductDTO productDTO  = modelMapper.map(product, ProductDTO.class);
 			productDTO.setMin_price((Double) obj[1]);
 			productDTO.setMax_price((Double) obj[2]);
+			PayloadFavorite pf=  new PayloadFavorite();
+			if(user != null) {
+				pf.setId_product(productDTO.getId());
+				pf.setUser(user);
+			}
+			FavoriteDto fa = favoriteService.checkFavorite(pf);
+			if(fa != null) {
+				productDTO.setIsFavorite(1);
+			}
 			pr.setOptions_products(optionProductDTOs);
 			pr.setCategory(modelMapper.map(product.getCategory(), CategoryDTO.class));
 			pr.setProduct(productDTO);
@@ -228,7 +305,7 @@ public class CustomerProduct {
 	}
 	@RequestMapping(value = "/product/sku-price", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto) {
+	public ResponseEntity<?> getProductSkuPrice(@RequestBody ProductSkuPriceDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<ProductSkuDto> response = new DataResponse<ProductSkuDto>();
 		ModelMapper modelMapper = new ModelMapper();
 		try {

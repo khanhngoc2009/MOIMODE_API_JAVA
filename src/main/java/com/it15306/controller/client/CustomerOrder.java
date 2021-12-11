@@ -226,11 +226,11 @@ public class CustomerOrder {
 //			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
 				// lay danh dach order (phan trang) 
-				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01");
+				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null ?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null ? dto.getEnd_date() : "2099-01-01"));
+				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01"));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -239,8 +239,15 @@ public class CustomerOrder {
 					List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
 					int size_p_os = listProductOrders.size();
 					for(int j=0;j<size_p_os;j++) {
-						list_pro_o_dtos.add(modelMapper.map(listProductOrders.get(j), ProductOrderDto.class));
+						ProductOrderDto pro_o =  modelMapper.map(listProductOrders.get(j), ProductOrderDto.class);
+						pro_o.setProductName(listProductOrders.get(j).getProduct_name());
+						pro_o.setCreateDate(listProductOrders.get(j).getCreate_date());
+						list_pro_o_dtos.add(pro_o);
 					}
+					orderDto.setCreateDate(order.getCreate_date());
+					orderDto.setId(order.getOrder_id());
+					orderDto.setTotalPrice(order.getTotal_price());
+					orderDto.setPaymentStatus(order.getType_payment());
 					orderDto.setListProduct(list_pro_o_dtos);
 					AddressOrder ad = order.getAddress();
 					AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
@@ -253,8 +260,8 @@ public class CustomerOrder {
 					listOrders.add(orderDto);
 					data.setListData(listOrders);
 				}
-				
 				data.setCode(HttpStatus.OK.value());
+				data.setListData(listOrders);
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
 			}else {
@@ -274,24 +281,32 @@ public class CustomerOrder {
 	public ResponseEntity<DataResponse<OrderDto>> orderDetail(@RequestBody DataDetailDto dto) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>(); 
 		try {
-				Order order = orderServiceImpl.getDetailById(dto.getId());
-				OrderDto detailDto = modelMapper.map(order, OrderDto.class);
-				List<ProductOrderDto> list_product = new ArrayList<ProductOrderDto>();
-				for(int i= 0;i< order.getProduct_orders().size();i++) {
-					list_product.add(modelMapper.map(order.getProduct_orders().get(i), ProductOrderDto.class));
-				}
-				AddressOrder ad = order.getAddress();
-				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
-				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
-				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
-				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
-				detailDto.setAddressOrder(ad_dto);
-				detailDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
-				detailDto.setPaymentType(modelMapper.map(order.getPayment(), PaymentDTO.class));
-				data.setData(detailDto);
-				data.setCode(HttpStatus.OK.value());
-				data.setMessage("SUCCESS");
-				return new ResponseEntity<>(data,HttpStatus.OK);
+			Order order_after_update = orderServiceImpl.getDetailById(dto.getId());
+			OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
+			List<ProductOrderDto> list_product = new ArrayList<ProductOrderDto>();
+			for(int i= 0;i< order_after_update.getProduct_orders().size();i++) {
+				ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(i), ProductOrderDto.class);
+				pro_o.setProductName(order_after_update.getProduct_orders().get(i).getProduct_name());
+				pro_o.setCreateDate(order_after_update.getProduct_orders().get(i).getCreate_date());
+				list_product.add(pro_o);
+			}
+			orderDto.setCreateDate(order_after_update.getCreate_date());
+			orderDto.setId(order_after_update.getOrder_id());
+			orderDto.setTotalPrice(order_after_update.getTotal_price());
+			orderDto.setPaymentStatus(order_after_update.getType_payment());
+			orderDto.setListProduct(list_product);
+			AddressOrder ad = order_after_update.getAddress();
+			AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+			ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+			ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+			ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+			orderDto.setAddressOrder(ad_dto);
+			orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
+			orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
+			data.setData(orderDto);
+			data.setCode(HttpStatus.OK.value());
+			data.setMessage("SUCCESS");
+			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
