@@ -7,20 +7,20 @@ public class DataResponseListTKe<T>{
 	private String message;
 	private List<T> listData;
 	private Float tong;
-	private Integer countTotalElement;
+	private Integer count;
 	
 	
 	/**
 	 * @return the countTotalElement
 	 */
-	public Integer getCountTotalElement() {
-		return countTotalElement;
+	public Integer getCount() {
+		return count;
 	}
 	/**
 	 * @param countTotalElement the countTotalElement to set
 	 */
-	public void setCountTotalElement(Integer countTotalElement) {
-		this.countTotalElement = countTotalElement;
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 	/**
 	 * @return the code

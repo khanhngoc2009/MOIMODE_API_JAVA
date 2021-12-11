@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
@@ -24,8 +25,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "user")
-@Getter
-@Setter
 @Component
 public class User {
 	private static final long serialVersionUID = 1L;
@@ -42,6 +41,9 @@ public class User {
 	private String photo;
 	private String phone;
 	private String roles;
+	private String full_name;
+	private Integer gender;
+	private String birthday;
 	
 	@Basic
 	@Column(name = "create_date")
@@ -217,5 +219,75 @@ public class User {
 		this.phone = phone;
 	}
 
+	/**
+	 * @return the full_name
+	 */
+	public String getFull_name() {
+		return full_name;
+	}
+
+	/**
+	 * @param full_name the full_name to set
+	 */
+	public void setFull_name(String full_name) {
+		this.full_name = full_name;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public Integer getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * @return the birthday
+	 */
+	public String getBirthday() {
+		return birthday;
+	}
+
+	/**
+	 * @param birthday the birthday to set
+	 */
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	/**
+	 * @return the reviewProducts
+	 */
+	public List<ReviewProduct> getReviewProducts() {
+		return reviewProducts;
+	}
+
+	/**
+	 * @param reviewProducts the reviewProducts to set
+	 */
+	public void setReviewProducts(List<ReviewProduct> reviewProducts) {
+		this.reviewProducts = reviewProducts;
+	}
+
+	/**
+	 * @return the addressorder
+	 */
+	public List<AddressOrder> getAddressorder() {
+		return addressorder;
+	}
+
+	/**
+	 * @param addressorder the addressorder to set
+	 */
+	public void setAddressorder(List<AddressOrder> addressorder) {
+		this.addressorder = addressorder;
+	}
+	
 	
 }

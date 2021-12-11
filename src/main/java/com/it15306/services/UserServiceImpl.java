@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,7 @@ import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.category.CategoryDTO;
+import com.it15306.dto.user.customerUserBody;
 import com.it15306.dto.user.dataBodyUser;
 import com.it15306.dto.user.datatupdateUser;
 import com.it15306.dto.user.responUser;
@@ -30,6 +32,7 @@ import com.it15306.entities.District;
 import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.entities.Ward;
+import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.libs.HashUtil;
 import com.it15306.repository.DistrictRepository;
 import com.it15306.repository.ProvinceRepository;
@@ -55,6 +58,12 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	
 	@Autowired
 	WardRepository wardRepository;
+	
+	
+	
+	@Autowired
+	private JwtTokenProvider tokenProvider;
+	
 	@Override
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -285,5 +294,27 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	public User mapToEnyities(User model, User enti){
 		enti = modelMapper.map(model, User.class);
 		return enti;
+	}
+
+	@Override
+	public UserDTO updateUserCustomer(customerUserBody data,HttpServletRequest req) {
+		String token = req.getHeader("Authorization").substring(7);
+		String username = tokenProvider.getUserNameFromJWT(token);
+		ModelMapper modelMapper = new ModelMapper();
+		User user = getByUsername(username);
+		if(user != null) {
+			user.setPhone(data.getPhone());
+			user.setFull_name(data.getFull_name());
+			user.setPhoto(data.getPhoto());
+			user.setGender(data.getGender());
+			user.setBirthday(data.getBirthday());
+			userRepository.save(user);
+			
+			return modelMapper.map(user, UserDTO.class);
+			
+		}
+		
+		
+		return null;
 	}
 }
