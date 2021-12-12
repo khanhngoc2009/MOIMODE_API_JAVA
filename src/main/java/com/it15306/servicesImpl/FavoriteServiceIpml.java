@@ -86,7 +86,7 @@ public class FavoriteServiceIpml implements FavoriteService{
 	            }
 	            data.setCode(200);
 	        	data.setListData(listDto);
-	        	data.setCount(list.size());
+	        	data.setCount(favoriteRepository.countFavorite(user.getId()));
 	        	data.setMessage("SUCCESS");
 	        	return new ResponseEntity<DataResponseList<FavoriteDto>>(data,HttpStatus.OK);
 	        } else {
