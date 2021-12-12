@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it15306.config.ConfigDefine;
+import com.it15306.config.ConfigOrder;
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.AddressOrderDTO;
@@ -76,7 +78,7 @@ public class AdminOrder {
 
 	@Autowired 
 	private MailServiceImpl mailServiceImpl;
-	@RequestMapping(value = "/admin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/order-admin/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
@@ -143,7 +145,9 @@ public class AdminOrder {
 	@ResponseBody
 	public ResponseEntity<?> changeStatusOrder(@RequestBody DataChangeStatusDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
+		ConfigDefine config= new ConfigDefine();
 		try {
+				
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
 				order.setStatus(dto.getStatus());
 				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
@@ -163,6 +167,15 @@ public class AdminOrder {
 				orderDto.setTotalPrice(order_after_update.getTotal_price());
 				orderDto.setPaymentStatus(order_after_update.getType_payment());
 				orderDto.setListProduct(list_pro_o_dtos);
+				if(dto.getStatus() == config.CANCEL || dto.getStatus() == config.DENY) {
+					if(dto.getReason() == null || dto.getReason().length()==0) {
+						data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+						data.setMessage("Ban can nhap ly do");
+						return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+					}else {
+						orderDto.setReason(dto.getReason());
+					}
+				}
 				AddressOrder ad = order_after_update.getAddress();
 				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
 				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));

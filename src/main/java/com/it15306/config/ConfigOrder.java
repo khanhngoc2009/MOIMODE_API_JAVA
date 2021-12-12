@@ -7,15 +7,15 @@ public class ConfigOrder {
 		if(status == config.PENDDING ) {
 			return " chờ xác nhận " ; 
 		}else if(status == config.CONFIRM ) {
-			return " chờ xác nhận " ; 
+			return " đã được xác nhận  " ; 
 		}else if(status == config.SHIP ) {
-			return " chờ xác nhận " ; 
-		}else if(status == config.SHIP ) {
-			return " chờ xác nhận " ; 
+			return " đang giao  " ; 
+		}else if(status == config.SUCCESS ) {
+			return " hoàn thành  " ; 
 		}else if(status == config.CANCEL ) {
-			return " chờ xác nhận " ; 
+			return " huỷ " ; 
 		}else if(status == config.DENY ) {
-			return " chờ xác nhận " ; 
+			return " từ chối  " ; 
 		}else {
 			return "ERR";
 		}

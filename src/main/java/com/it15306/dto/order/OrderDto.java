@@ -29,8 +29,14 @@ public class OrderDto {
 	private String note = "";
 	private double transportationCost = 30000;
 	private Integer isEvaluate = 0;
-	
-	
+	private String reason="";
+
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	public Integer getIsEvaluate() {
 		return isEvaluate;
 	}
