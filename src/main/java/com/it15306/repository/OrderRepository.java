@@ -29,7 +29,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 //	private String phone;
 	final String SELECT_ORDER_BY_ID_VOUCHER = "SELECT o FROM Order o WHERE o.voucher.id =:id";
 	final String SELECT_ORDER = "SELECT * FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status = ?1 "
+			+ " WHERE orders.status like %?1% "
 			+ " and orders.user_id = ?2 "
 			+" and orders.create_date >= ?3 and orders.create_date <= ?4"
 			+ " order by orders.create_date desc";
@@ -39,7 +39,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+" and orders.create_date >= ?3 and orders.create_date <= ?4"
 			+ " order by orders.create_date desc";
 	final String COUNT_ORDER_CLIENT = "SELECT count(orders.order_id) FROM orders join user on user.user_id = orders.user_id "
-			+ " WHERE orders.status = ?1 "
+			+ " WHERE orders.status like %?1% "
 			+ " and orders.user_id = ?2 "
 			+ " and orders.create_date >= ?3 and orders.create_date <= ?4 "
 			+ " order by orders.create_date desc";
