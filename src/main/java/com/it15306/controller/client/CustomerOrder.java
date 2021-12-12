@@ -225,12 +225,29 @@ public class CustomerOrder {
 			User u = userservice.getByUsername(username);
 //			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
+				
+				String Statusteam;
+				if(dto.getStatus() == null || dto.getStatus().equals("")) {
+					Statusteam="";
+				}else {
+					Statusteam = String.valueOf(dto.getStatus());
+				}						
 				// lay danh dach order (phan trang) 
-				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+				List<Order> list_order = orderServiceImpl.getListOrders(
+						dto.getPage(), 
+						dto.getTake(), 
+						 Statusteam ,
+						u.getId(),
+						dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01");
+				
 				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01"));
+				data.setCount(orderServiceImpl.countOrderClient(
+						Statusteam,
+						u.getId(),
+						dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null && dto.getEnd_date().length()>0 ? dto.getEnd_date() : "2099-01-01"));
+				
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -270,6 +287,7 @@ public class CustomerOrder {
 				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
