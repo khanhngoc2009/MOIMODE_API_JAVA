@@ -195,8 +195,8 @@ public class CustomerOrder {
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-				order.setStatus(1);
-				mailServiceImpl.sendMailOrder(user.getEmail(), 1);
+				order.setStatus(5);
+				mailServiceImpl.sendMailOrder(user.getEmail(), 5);
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				data.setData(modelMapper.map(order_after_update, OrderDto.class));
 				data.setCode(HttpStatus.OK.value());
@@ -225,7 +225,7 @@ public class CustomerOrder {
 			User u = userservice.getByUsername(username);
 //			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
-				// lay danh dach order (phan trang) 
+				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01");
 				int size= list_order.size();
