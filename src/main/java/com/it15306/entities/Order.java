@@ -36,6 +36,15 @@ public class Order {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
+	
+	private String note;
+	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	private Integer type_payment;
 	
 	@ManyToOne

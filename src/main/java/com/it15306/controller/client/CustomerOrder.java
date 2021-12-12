@@ -10,6 +10,7 @@ import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataCancelOrderDto;
 import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderDto;
+import com.it15306.dto.order.DataResponseOrderList;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.payment.PaymentDTO;
@@ -133,7 +134,7 @@ public class CustomerOrder {
 						}
 						double total_payment = total_order - voucher_discount + 30000;
 						order.setTotal_price(total_payment>=0 ? total_payment:0);
-//						order.set
+						order.setNote(dto.getNote());
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
 							Product_Sku p_sku = list_product_sku.get(i);
@@ -211,14 +212,14 @@ public class CustomerOrder {
 	}
 	@RequestMapping(value = "/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
-		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
+	public ResponseEntity<DataResponseOrderList<OrderDto>> listOrder(@RequestBody DataListOrderDto dto,HttpServletRequest httpServletRequest) {
+		DataResponseOrderList<OrderDto> data = new DataResponseOrderList<OrderDto>();
 		try {
 //			 ly thong tin user
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User u = userservice.getByUsername(username);
-//			User u = userservice.getById(String.valueOf(32));
+//			User u = userservice.getById(String.valueOf(6));
 			if( u != null) {
 				
 				String Statusteam;
@@ -272,6 +273,9 @@ public class CustomerOrder {
 					listOrders.add(orderDto);
 					data.setListData(listOrders);
 				}
+				data.setCountUnConfirmred(orderServiceImpl.countClientStatus("1", u.getId()));
+				data.setCountConfirmred(orderServiceImpl.countClientStatus("2", u.getId()));
+				data.setCountBeginTranforted(orderServiceImpl.countClientStatus("3", u.getId()));
 				data.setCode(HttpStatus.OK.value());
 				data.setListData(listOrders);
 				data.setMessage("SUCCESS");

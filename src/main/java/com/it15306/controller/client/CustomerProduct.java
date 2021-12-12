@@ -75,11 +75,11 @@ public class CustomerProduct {
 		try {
 			String token = httpServletRequest.getHeader("Authorization");
 			System.out.print( "\n" + token + "khansh \n");
-			User user = new User();
-			if(token != null && token.length() > 0) {
-				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
-				user = userservice.getByUsername(username);
-			}
+//			User user = new User();
+//			if(token != null && token.length() > 0) {
+//				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+//				user = userservice.getByUsername(username);
+//			}
 			ModelMapper modelMapper = new ModelMapper();
 			List<Object> list = this.productServiceImpl.getAllProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
@@ -101,11 +101,13 @@ public class CustomerProduct {
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
-					if(user != null) {
+					if(token != null && token.length() > 0) {
+						User user = userservice.getById("32");
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
 					}
 					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					System.out.print("32" + fa.getId() + " \n");
 					if(fa != null) {
 						prDto.setIsFavorite(1);
 					}
@@ -134,11 +136,11 @@ public class CustomerProduct {
 			ModelMapper modelMapper = new ModelMapper();
 			String token = httpServletRequest.getHeader("Authorization");
 			System.out.print( "\n" + token + "khansh \n");
-			User user = new User();
-			if(token != null && token.length() > 0) {
-				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
-				user = userservice.getByUsername(username);
-			}
+//			User user = new User();
+//			if(token != null && token.length() > 0) {
+//				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+//				user = userservice.getByUsername(username);
+//			}
 			Category category = new Category();
 			category.setId(dto.getCategory_id());
 			List<Object> list =  this.productServiceImpl.getProductByCategory(category,dto.getPage(),dto.getTake());
@@ -161,11 +163,13 @@ public class CustomerProduct {
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
-					if(user != null) {
+					if(token != null && token.length() > 0) {
+						User user = userservice.getById("32");
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
 					}
 					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					System.out.print("32" + fa.getId() + " \n");
 					if(fa != null) {
 						prDto.setIsFavorite(1);
 					}
@@ -192,11 +196,6 @@ public class CustomerProduct {
 			ModelMapper modelMapper = new ModelMapper();
 			String token = httpServletRequest.getHeader("Authorization");
 			System.out.print( "\n" + token + "khansh \n");
-			User user = new User();
-			if(token != null && token.length() > 0) {
-				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
-				user = userservice.getByUsername(username);
-			}
 			List<Object> list =  this.productServiceImpl.getSellingProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
@@ -217,11 +216,13 @@ public class CustomerProduct {
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
-					if(user != null) {
+					if(token != null && token.length() > 0) {
+						User user = userservice.getById("32");
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
 					}
 					FavoriteDto fa = favoriteService.checkFavorite(pf);
+					System.out.print("32" + fa.getId() + " \n");
 					if(fa != null) {
 						prDto.setIsFavorite(1);
 					}
@@ -250,11 +251,7 @@ public class CustomerProduct {
 			Product product=(Product) obj[0];
 			String token = httpServletRequest.getHeader("Authorization");
 			System.out.print( "\n" + token + "khansh \n");
-			User user = new User();
-			if(token != null && token.length() > 0) {
-				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
-				user = userservice.getByUsername(username);
-			}
+			
 			ProductDetailDto pr = new ProductDetailDto();
 			ModelMapper modelMapper = new ModelMapper();
 			List<OptionProductDto> optionProductDTOs =new ArrayList<OptionProductDto>();
@@ -281,11 +278,13 @@ public class CustomerProduct {
 			productDTO.setMin_price((Double) obj[1]);
 			productDTO.setMax_price((Double) obj[2]);
 			PayloadFavorite pf=  new PayloadFavorite();
-			if(user != null) {
+			if(token != null && token.length() > 0) {
+				User user = userservice.getById("32");
 				pf.setId_product(productDTO.getId());
 				pf.setUser(user);
 			}
 			FavoriteDto fa = favoriteService.checkFavorite(pf);
+			System.out.print("32" + fa.getId() + " \n");
 			if(fa != null) {
 				productDTO.setIsFavorite(1);
 			}

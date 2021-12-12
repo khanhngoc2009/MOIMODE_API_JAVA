@@ -127,29 +127,43 @@ public class FavoriteServiceIpml implements FavoriteService{
 		// TODO Auto-generated method stub
 		DataResponse<FavoriteDto> data = new DataResponse<FavoriteDto>();
 		try {
-			Favorite favorite = new Favorite();
-			favorite.setCreate_time(new Date());
-			favorite.setStatus(1);
-			favorite.setProduct(productServiceImpl.getById(payload.getId_product()));
-			favorite.setUser(payload.getUser());
-			Favorite fa = favoriteRepository.save(favorite);
-        	Object[] obj = (Object[]) productServiceImpl.getByIdProduct(fa.getProduct().getId());
-        	ProductDTO productDTO = modelMapper.map( favorite.getProduct(), ProductDTO.class);
-        	FavoriteDto favoriteDto = modelMapper.map(favorite,FavoriteDto.class);
-        	if(obj != null) {
-        		System.out.print("\n" + obj + " khanh " + obj[2] );
-        		productDTO.setMin_price((Double) obj[1]);
-    			productDTO.setMax_price((Double) obj[2]);
-    			favoriteDto.setProduct(productDTO);
-        	}else {
-        		productDTO.setMin_price((Double) 0.0);
-    			productDTO.setMax_price((Double) 0.0);
-    			favoriteDto.setProduct(productDTO);
-        	}
-			data.setMessage("Thanh cong");
-			data.setCode(200);
-			data.setData(favoriteDto);
-			return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.OK);
+			Favorite f = favoriteRepository.checkFavorite(payload.getId_product(), payload.getUser().getId());
+			if(f != null) {
+				Favorite favorite = new Favorite();
+				favorite.setCreate_time(new Date());
+				favorite.setStatus(1);
+				favorite.setProduct(productServiceImpl.getById(payload.getId_product()));
+				favorite.setUser(payload.getUser());
+				Favorite fa = favoriteRepository.save(favorite);
+	        	Object[] obj = (Object[]) productServiceImpl.getByIdProduct(fa.getProduct().getId());
+	        	ProductDTO productDTO = modelMapper.map( favorite.getProduct(), ProductDTO.class);
+	        	FavoriteDto favoriteDto = modelMapper.map(favorite,FavoriteDto.class);
+	        	if(obj != null) {
+	        		System.out.print("\n" + obj + " khanh " + obj[2] );
+	        		productDTO.setMin_price((Double) obj[1]);
+	    			productDTO.setMax_price((Double) obj[2]);
+	    			favoriteDto.setProduct(productDTO);
+	        	}else {
+	        		productDTO.setMin_price((Double) 0.0);
+	    			productDTO.setMax_price((Double) 0.0);
+	    			favoriteDto.setProduct(productDTO);
+	        	}
+				data.setMessage("Follow thanh cong");
+				data.setCode(200);
+				data.setData(favoriteDto);
+				return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.OK);
+			}else {
+				try {
+					favoriteRepository.deleteById(payload.getId_product());
+					data.setMessage("Unfolow thanh cong");
+					data.setCode(200);
+					return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.OK);
+				} catch (Exception e) {
+					data.setMessage("Loi");
+					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+					 return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.FAILED_DEPENDENCY);
+				}
+			}
 		} catch (Exception e) {
 			data.setMessage("Loi");
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
@@ -159,10 +173,9 @@ public class FavoriteServiceIpml implements FavoriteService{
 
 	@Override
 	public FavoriteDto checkFavorite(PayloadFavorite payload) {
-		DataResponse<FavoriteDto> data= new DataResponse<FavoriteDto>();
+//		DataResponse<FavoriteDto> data= new DataResponse<FavoriteDto>();
 		try {
 			Favorite favorite = favoriteRepository.checkFavorite(payload.getId_product(), payload.getUser().getId());
-			
 			return modelMapper.map(favorite,FavoriteDto.class);
 		} catch (Exception e) {
 			return null;

@@ -26,6 +26,14 @@ public class OrderDto {
 	private Voucherdto voucher;
 	private AddressOrderDTO addressOrder;
 	private PaymentDTO paymentType;
+	private String note;
+	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public Integer getId() {
 		return id;
 	}

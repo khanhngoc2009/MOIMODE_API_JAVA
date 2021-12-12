@@ -48,6 +48,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " and orders.user_id = ?2 "
 			+ " and orders.create_date >= ?3 and orders.create_date <= ?4 "
 			+ " order by orders.create_date desc";
+	final String COUNT_ORDER_STATUS = "SELECT count(orders.order_id) FROM orders join user on user.user_id = orders.user_id "
+			+ " WHERE orders.status like %?1% "
+			+ " and orders.user_id = ?2 ";
 	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
 			+ " WHERE orders.status like %?1% "
 			+ " and email like %?2%"
@@ -131,5 +134,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	@Query(value = SELECT_ORDER_ADMIN, nativeQuery = true)
 	Page<Order> getOrdersAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
 	
+	@Query(value = COUNT_ORDER_STATUS, nativeQuery = true)
+	Integer getCountClientStatus(@Param("status") String status,@Param("user_id") Integer user_id);
 	
 }

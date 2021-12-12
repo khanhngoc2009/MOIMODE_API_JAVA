@@ -111,5 +111,9 @@ public class OrderServiceImpl implements OrderService{
 	public Order getDetailById(Integer order_id) {
 		return orderRepository.getDetailOrderId(order_id);
 	}
+	public Integer countClientStatus(String status,Integer user_id) {
+		return orderRepository.getCountClientStatus(status, user_id);
+	}
+	
 	
 }

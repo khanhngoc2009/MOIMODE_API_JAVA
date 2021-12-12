@@ -16,6 +16,14 @@ public class OrderDetailDto {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
+	private String note;
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
 	private Integer type_payment;
 	private List<ProductOrderDto> listProduct;
 	private PaymentDTO payment;
