@@ -286,7 +286,7 @@ public class CustomerProduct {
 //				String token = httpServletRequest.getHeader("Authorization").substring(7);
 				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
 				User user = userservice.getByUsername(username);
-				pf.setId_product(productDTO.getId());
+				pf.setId_product(product.getId());
 				pf.setUser(user);
 				FavoriteDto fa = favoriteService.checkFavorite(pf);
 				System.out.print("32" + fa.getId() + " \n");
