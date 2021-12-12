@@ -105,7 +105,7 @@ public class CustomerProduct {
 //						String token = httpServletRequest.getHeader("Authorization").substring(7);
 						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
 						User user = userservice.getByUsername(username);
-						pf.setId_product(prDto.getId());
+						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
 						System.out.print("32" + fa.getId() + " \n");
@@ -169,7 +169,7 @@ public class CustomerProduct {
 //						String token = httpServletRequest.getHeader("Authorization").substring(7);
 						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
 						User user = userservice.getByUsername(username);
-						pf.setId_product(prDto.getId());
+						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
 						System.out.print("32" + fa.getId() + " \n");
@@ -198,8 +198,7 @@ public class CustomerProduct {
 		DataResponseList<ProductDTO> data=  new DataResponseList<ProductDTO>();
 		try {
 			ModelMapper modelMapper = new ModelMapper();
-			String token = httpServletRequest.getHeader("Authorization");
-			System.out.print( "\n" + token + "khansh \n");
+			String token = httpServletRequest.getHeader("Authorization");	
 			List<Object> list =  this.productServiceImpl.getSellingProducts(0,10);
 			long count = (long) this.productServiceImpl.getCountClient();
 			List<Double> minPrice = new ArrayList<Double>();
@@ -221,10 +220,9 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
-//						String token = httpServletRequest.getHeader("Authorization").substring(7);
 						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
 						User user = userservice.getByUsername(username);
-						pf.setId_product(prDto.getId());
+						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
 						System.out.print("32" + fa.getId() + " \n");
