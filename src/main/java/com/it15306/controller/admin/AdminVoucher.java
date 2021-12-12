@@ -68,7 +68,7 @@ public class AdminVoucher {
 		
 		
 	}
-	@DeleteMapping("/admin/voucher/delete")
+	@PostMapping("/admin/voucher/delete")
 	@ResponseBody
 	public ResponseEntity<Integer> update(@RequestBody idBody data) {
 		
