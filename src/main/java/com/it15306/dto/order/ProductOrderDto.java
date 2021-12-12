@@ -14,9 +14,18 @@ public class ProductOrderDto {
 	private String productName;
 	private String properties;
 	private Integer status;
+	private Integer product_id;
+	
 	private Double price;
 	private String image;
 	private Integer quantity;
+	
+	public Integer getProduct_id() {
+		return product_id;
+	}
+	public void setProduct_id(Integer product_id) {
+		this.product_id = product_id;
+	}
 	public Integer getId() {
 		return id;
 	}

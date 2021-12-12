@@ -12,8 +12,11 @@ import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.DataResponseOrderList;
 import com.it15306.dto.order.OrderDto;
+import com.it15306.dto.order.PayloadReviewOrderDto;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.payment.PaymentDTO;
+import com.it15306.dto.reviewProduct.ResponReviewProduct;
+import com.it15306.dto.reviewProduct.ReviewProductDTO;
 import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.AddressOrder;
 import com.it15306.entities.CartProduct;
@@ -25,6 +28,7 @@ import com.it15306.entities.User;
 import com.it15306.entities.Voucher;
 import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.CartService;
+import com.it15306.services.ReviewProductService;
 import com.it15306.services.UserService;
 import com.it15306.services.VoucherService;
 import com.it15306.servicesImpl.MailServiceImpl;
@@ -71,6 +75,9 @@ public class CustomerOrder {
 	
 	@Autowired 
 	private VoucherService voucherService;
+	
+	@Autowired
+	ReviewProductService reviewProductService;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -135,6 +142,7 @@ public class CustomerOrder {
 						double total_payment = total_order - voucher_discount + 30000;
 						order.setTotal_price(total_payment>=0 ? total_payment:0);
 						order.setNote(dto.getNote());
+						order.setIsEvaluate(0);
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
 							Product_Sku p_sku = list_product_sku.get(i);
@@ -143,6 +151,7 @@ public class CustomerOrder {
 							product_order.setImage(p_sku.getUrl_media());
 							product_order.setOrder(order_after_save);
 							product_order.setPrice(p_sku.getPrice());
+							product_order.setProduct_id(p_sku.getProduct().getId());
 							List<Object> obj = productServiceImpl.getSkuOption(p_sku.getProduct_sku_id());
 							String optionValueProducts = "";
 							for(int k =  0;k<obj.size();k++) {
@@ -329,6 +338,49 @@ public class CustomerOrder {
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
+	}
+	
+
+	// danh gia san pham trong order
+	@RequestMapping(value = "/order/review", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<ReviewProductDTO> createReview(@RequestBody PayloadReviewOrderDto payload,HttpServletRequest httpServletRequest) {
+		try {
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			User u = userservice.getByUsername(username);
+//			User u = userservice.getById(String.valueOf(6));
+			if( u != null &&  payload.getOrderId() != null ) {
+				Order order = orderServiceImpl.getByOrderId(payload.getOrderId());
+				if(order !=null && order.getIsEvaluate() != 1) {
+					ResponReviewProduct data =new ResponReviewProduct();
+					data.setUserId(u.getId());
+					data.setComment(payload.getComment());
+					data.setRating(payload.getRating());
+					data.setProductId(payload.getId());
+					data.setId(payload.getId());
+					ReviewProductDTO dto = new ReviewProductDTO();
+					if(order !=null) {
+						order.setIsEvaluate(1);
+						orderServiceImpl.saveOrder(order);
+					}
+					return ResponseEntity.ok(dto);
+				}
+				else {
+					 return ResponseEntity.badRequest().build();
+					}
+				
+			}
+			else {
+			 return ResponseEntity.badRequest().build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			ResponseEntity.badRequest().build();
+		}
+		
+		return ResponseEntity.badRequest().build();	
 	}
 	
 	

@@ -43,8 +43,18 @@ public class ProductOrder {
 	private Double price;
 	private String image;
 	private Integer quantity;
+	private Integer product_id;
 	
-	
+	public Integer getProduct_id() {
+		return product_id;
+	}
+
+
+	public void setProduct_id(Integer product_id) {
+		this.product_id = product_id;
+	}
+
+
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Order order = new Order();

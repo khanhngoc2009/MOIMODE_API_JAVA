@@ -38,7 +38,15 @@ public class Order {
 	private Integer status;
 	
 	private String note;
+	private Integer isEvaluate;
 	
+	
+	public Integer getIsEvaluate() {
+		return isEvaluate;
+	}
+	public void setIsEvaluate(Integer isEvaluate) {
+		this.isEvaluate = isEvaluate;
+	}
 	public String getNote() {
 		return note;
 	}

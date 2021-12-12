@@ -17,6 +17,25 @@ public class OrderDetailDto {
 	private Double total_price;
 	private Integer status;
 	private String note;
+	private double transportationCost = 30000;
+	private Integer isEvaluate = 0;
+	
+	public double getTransportationCost() {
+		return transportationCost;
+	}
+
+	public void setTransportationCost(double transportationCost) {
+		this.transportationCost = transportationCost;
+	}
+
+	public Integer getIsEvaluate() {
+		return isEvaluate;
+	}
+
+	public void setIsEvaluate(Integer isEvaluate) {
+		this.isEvaluate = isEvaluate;
+	}
+
 	public String getNote() {
 		return note;
 	}
