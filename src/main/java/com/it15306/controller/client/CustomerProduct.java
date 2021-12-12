@@ -108,7 +108,7 @@ public class CustomerProduct {
 						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
-						System.out.print("32" + fa.getId() + " \n");
+						//System.out.print("32" + fa.getId() + " \n");
 						if(fa != null) {
 							prDto.setIsFavorite(1);
 						}
@@ -123,7 +123,7 @@ public class CustomerProduct {
 			l.setMessage("Success");
 			return new ResponseEntity<>(l,HttpStatus.OK);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 			l.setMessage("Fail");
 			l.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			return new ResponseEntity<>(l,HttpStatus.FAILED_DEPENDENCY);
@@ -172,7 +172,7 @@ public class CustomerProduct {
 						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
-						System.out.print("32" + fa.getId() + " \n");
+						//System.out.print("32" + fa.getId() + " \n");
 						if(fa != null) {
 							prDto.setIsFavorite(1);
 						}
@@ -225,7 +225,7 @@ public class CustomerProduct {
 						pf.setId_product(prs.get(i).getId());
 						pf.setUser(user);
 						FavoriteDto fa = favoriteService.checkFavorite(pf);
-						System.out.print("32" + fa.getId() + " \n");
+						//System.out.print("32" + fa.getId() + " \n");
 						if(fa != null) {
 							prDto.setIsFavorite(1);
 						}
@@ -289,7 +289,7 @@ public class CustomerProduct {
 				pf.setId_product(product.getId());
 				pf.setUser(user);
 				FavoriteDto fa = favoriteService.checkFavorite(pf);
-				System.out.print("32" + fa.getId() + " \n");
+				//System.out.print("32" + fa.getId() + " \n");
 				if(fa != null) {
 					productDTO.setIsFavorite(1);
 				}
@@ -304,6 +304,7 @@ public class CustomerProduct {
 			response.setData(pr);
 			return new ResponseEntity<>(response,HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			response.setMessage("Fail");
 			return new ResponseEntity<>(response,HttpStatus.FAILED_DEPENDENCY);
