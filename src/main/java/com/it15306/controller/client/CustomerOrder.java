@@ -1,24 +1,5 @@
 package com.it15306.controller.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.it15306.config.DataResponse;
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.AddressOrderDTO;
@@ -27,11 +8,8 @@ import com.it15306.dto.ProvinceDTO;
 import com.it15306.dto.WardDTO;
 import com.it15306.dto.order.CreateOrderDto;
 import com.it15306.dto.order.DataCancelOrderDto;
-import com.it15306.dto.order.DataChangeStatusDto;
-import com.it15306.dto.order.DataChangeTypePaymentDto;
 import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderDto;
-import com.it15306.dto.order.OrderDetailDto;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.payment.PaymentDTO;
@@ -48,10 +26,27 @@ import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.CartService;
 import com.it15306.services.UserService;
 import com.it15306.services.VoucherService;
-import com.it15306.servicesImpl.CartServiceImpl;
 import com.it15306.servicesImpl.MailServiceImpl;
 import com.it15306.servicesImpl.OrderServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -225,12 +220,29 @@ public class CustomerOrder {
 			User u = userservice.getByUsername(username);
 //			User u = userservice.getById(String.valueOf(32));
 			if( u != null) {
-				// lay danh dach order (phan trang)
-				List<Order> list_order = orderServiceImpl.getListOrders(dto.getPage(), dto.getTake(), dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+				
+				String Statusteam;
+				if(dto.getStatus() == null || dto.getStatus().equals("")) {
+					Statusteam="";
+				}else {
+					Statusteam = String.valueOf(dto.getStatus());
+				}						
+				// lay danh dach order (phan trang) 
+				List<Order> list_order = orderServiceImpl.getListOrders(
+						dto.getPage(), 
+						dto.getTake(), 
+						 Statusteam ,
+						u.getId(),
+						dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
 						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01");
+				
 				int size= list_order.size();
-				data.setCount(orderServiceImpl.countOrderClient(dto.getStatus()!=null && dto.getStatus().toString().length() > 0 ?String.valueOf(dto.getStatus()) : "",u.getId(),dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
-						dto.getEnd_date()!=null && dto.getEnd_date().length()>0? dto.getEnd_date() : "2099-01-01"));
+				data.setCount(orderServiceImpl.countOrderClient(
+						Statusteam,
+						u.getId(),
+						dto.getStart_date()!=null && dto.getStart_date().length()>0?dto.getStart_date() : "2000-01-01",
+						dto.getEnd_date()!=null && dto.getEnd_date().length()>0 ? dto.getEnd_date() : "2099-01-01"));
+				
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -270,6 +282,7 @@ public class CustomerOrder {
 				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);

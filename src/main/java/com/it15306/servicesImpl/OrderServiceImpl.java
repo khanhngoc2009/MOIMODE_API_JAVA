@@ -65,7 +65,8 @@ public class OrderServiceImpl implements OrderService{
 	
 	public List<Order> getListOrders(int page,int take,String status,Integer user_id,String start_date,String end_date) {
 		Pageable paging =  PageRequest.of(page, take); 
-        if(Integer.parseInt(status) >=5) {
+        
+		if(status.length() >0 && (Integer.parseInt(status) ==5 || Integer.parseInt(status) == 6)) {
         	Page<Order> pagedResult = orderRepository.getListOrdersCancel(status,user_id,start_date,end_date,paging);
             
             if(pagedResult.hasContent()) {
@@ -74,8 +75,7 @@ public class OrderServiceImpl implements OrderService{
             	return new ArrayList<Order>();
     		}
         }else {
-        	Page<Order> pagedResult = orderRepository.getListOrders(status,user_id,start_date,end_date,paging);
-            
+        	Page<Order> pagedResult = orderRepository.getListOrders(status.length() > 0 ? status:"",user_id,start_date,end_date,paging);
             if(pagedResult.hasContent()) {
                 return pagedResult.getContent();
             } else {
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService{
         }
 	}
 	public Integer countOrderClient(String status,Integer user_id,String start_date,String end_date) {
-		if(Integer.parseInt(status) >=5) {
+		if(status.length() >0 && (Integer.parseInt(status) ==5 || Integer.parseInt(status) == 6)) {
 			return orderRepository.getCountClientCancel(status, user_id,start_date,end_date);
         }else {
         	return orderRepository.getCountClient(status, user_id,start_date,end_date);
