@@ -102,14 +102,16 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
-						User user = userservice.getById("32");
+//						String token = httpServletRequest.getHeader("Authorization").substring(7);
+						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+						User user = userservice.getByUsername(username);
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
-					}
-					FavoriteDto fa = favoriteService.checkFavorite(pf);
-					System.out.print("32" + fa.getId() + " \n");
-					if(fa != null) {
-						prDto.setIsFavorite(1);
+						FavoriteDto fa = favoriteService.checkFavorite(pf);
+						System.out.print("32" + fa.getId() + " \n");
+						if(fa != null) {
+							prDto.setIsFavorite(1);
+						}
 					}
 					productDTOs.add(prDto);
 				}
@@ -164,14 +166,16 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
-						User user = userservice.getById("32");
+//						String token = httpServletRequest.getHeader("Authorization").substring(7);
+						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+						User user = userservice.getByUsername(username);
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
-					}
-					FavoriteDto fa = favoriteService.checkFavorite(pf);
-					System.out.print("32" + fa.getId() + " \n");
-					if(fa != null) {
-						prDto.setIsFavorite(1);
+						FavoriteDto fa = favoriteService.checkFavorite(pf);
+						System.out.print("32" + fa.getId() + " \n");
+						if(fa != null) {
+							prDto.setIsFavorite(1);
+						}
 					}
 					productDTOs.add(prDto);
 				}
@@ -217,14 +221,16 @@ public class CustomerProduct {
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
-						User user = userservice.getById("32");
+//						String token = httpServletRequest.getHeader("Authorization").substring(7);
+						String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+						User user = userservice.getByUsername(username);
 						pf.setId_product(prDto.getId());
 						pf.setUser(user);
-					}
-					FavoriteDto fa = favoriteService.checkFavorite(pf);
-					System.out.print("32" + fa.getId() + " \n");
-					if(fa != null) {
-						prDto.setIsFavorite(1);
+						FavoriteDto fa = favoriteService.checkFavorite(pf);
+						System.out.print("32" + fa.getId() + " \n");
+						if(fa != null) {
+							prDto.setIsFavorite(1);
+						}
 					}
 					productDTOs.add(prDto);
 				}
@@ -279,15 +285,18 @@ public class CustomerProduct {
 			productDTO.setMax_price((Double) obj[2]);
 			PayloadFavorite pf=  new PayloadFavorite();
 			if(token != null && token.length() > 0) {
-				User user = userservice.getById("32");
+//				String token = httpServletRequest.getHeader("Authorization").substring(7);
+				String username = tokenProvider.getUserNameFromJWT(token.substring(7));
+				User user = userservice.getByUsername(username);
 				pf.setId_product(productDTO.getId());
 				pf.setUser(user);
+				FavoriteDto fa = favoriteService.checkFavorite(pf);
+				System.out.print("32" + fa.getId() + " \n");
+				if(fa != null) {
+					productDTO.setIsFavorite(1);
+				}
 			}
-			FavoriteDto fa = favoriteService.checkFavorite(pf);
-			System.out.print("32" + fa.getId() + " \n");
-			if(fa != null) {
-				productDTO.setIsFavorite(1);
-			}
+			
 			pr.setOptions_products(optionProductDTOs);
 			pr.setCategory(modelMapper.map(product.getCategory(), CategoryDTO.class));
 			pr.setProduct(productDTO);
