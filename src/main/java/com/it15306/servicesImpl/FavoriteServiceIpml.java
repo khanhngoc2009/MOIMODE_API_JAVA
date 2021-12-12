@@ -55,13 +55,13 @@ public class FavoriteServiceIpml implements FavoriteService{
 	            for(int i=0;i<list.size();i++) {
 	            	listDto.add(modelMapper.map(list.get(i),FavoriteDto.class));
 	            }
-	            data.setCode(424);
+	            data.setCode(200);
 	        	data.setListData(listDto);
 	        	data.setCount(list.size());
 	        	data.setMessage("SUCCESS");
 	        	return new ResponseEntity<DataResponseList<FavoriteDto>>(data,HttpStatus.OK);
 	        } else {
-	        	data.setCode(424);
+	        	data.setCode(200);
 	        	data.setListData(new ArrayList<FavoriteDto>());
 	        	return new ResponseEntity<DataResponseList<FavoriteDto>>(data,HttpStatus.OK);
 			}
