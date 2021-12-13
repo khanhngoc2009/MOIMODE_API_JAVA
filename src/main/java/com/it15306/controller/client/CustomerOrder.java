@@ -143,6 +143,7 @@ public class CustomerOrder {
 						order.setTotal_price(total_payment>=0 ? total_payment:0);
 						order.setNote(dto.getNote());
 						order.setIsEvaluate(0);
+						order.setReason("");
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
 							Product_Sku p_sku = list_product_sku.get(i);
@@ -216,6 +217,7 @@ public class CustomerOrder {
 				}
 				orderDto.setCreateDate(order_after_update.getCreate_date());
 				orderDto.setId(order_after_update.getOrder_id());
+				orderDto.setReason(order_after_update.getReason()!= null ? order_after_update.getReason() : "");
 				orderDto.setTotalPrice(order_after_update.getTotal_price());
 				orderDto.setPaymentStatus(order_after_update.getType_payment());
 				orderDto.setListProduct(list_pro_o_dtos);
@@ -260,7 +262,7 @@ public class CustomerOrder {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User u = userservice.getByUsername(username);
-//			User u = userservice.getById(String.valueOf(6));
+//			User u = userservice.getById(String.valueOf());
 			if( u != null) {
 				
 				String Statusteam;
@@ -302,6 +304,7 @@ public class CustomerOrder {
 					orderDto.setId(order.getOrder_id());
 					orderDto.setTotalPrice(order.getTotal_price());
 					orderDto.setPaymentStatus(order.getType_payment());
+					orderDto.setReason(order.getReason()!= null ? order.getReason() : "");
 					orderDto.setListProduct(list_pro_o_dtos);
 					AddressOrder ad = order.getAddress();
 					AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
@@ -353,6 +356,7 @@ public class CustomerOrder {
 			orderDto.setTotalPrice(order_after_update.getTotal_price());
 			orderDto.setPaymentStatus(order_after_update.getType_payment());
 			orderDto.setListProduct(list_product);
+			orderDto.setReason(order_after_update.getReason()!= null ? order_after_update.getReason() : "");
 			AddressOrder ad = order_after_update.getAddress();
 			AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
 			ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
