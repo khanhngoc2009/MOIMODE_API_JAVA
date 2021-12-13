@@ -150,6 +150,15 @@ public class AdminOrder {
 				
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
 				order.setStatus(dto.getStatus());
+				if(dto.getStatus() == config.CANCEL || dto.getStatus() == config.DENY) {
+					if(dto.getReason() == null || dto.getReason().length()==0) {
+						data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+						data.setMessage("Ban can nhap ly do");
+						return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+					}else {
+						order.setReason(dto.getReason());
+					}
+				}
 				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				
