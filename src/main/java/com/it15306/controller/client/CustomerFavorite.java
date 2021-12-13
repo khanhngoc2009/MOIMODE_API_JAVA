@@ -81,6 +81,8 @@ public class CustomerFavorite {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
+//			User user = new User();
+//			user.setId(32);
 			PayloadFavorite pl= new PayloadFavorite();
 			pl.setUser(user);
 			pl.setId_product(payload.getProduct_id());

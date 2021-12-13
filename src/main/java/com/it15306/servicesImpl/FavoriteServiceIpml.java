@@ -128,7 +128,7 @@ public class FavoriteServiceIpml implements FavoriteService{
 		DataResponse<FavoriteDto> data = new DataResponse<FavoriteDto>();
 		try {
 			Favorite f = favoriteRepository.checkFavorite(payload.getId_product(), payload.getUser().getId());
-			if(f != null) {
+			if(f == null) {
 				Favorite favorite = new Favorite();
 				favorite.setCreate_time(new Date());
 				favorite.setStatus(1);
@@ -154,14 +154,14 @@ public class FavoriteServiceIpml implements FavoriteService{
 				return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.OK);
 			}else {
 				try {
-					favoriteRepository.deleteById(payload.getId_product());
+					favoriteRepository.deleteById(f.getId());
 					data.setMessage("Unfolow thanh cong");
 					data.setCode(200);
 					return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.OK);
 				} catch (Exception e) {
-					data.setMessage("Loi");
+					data.setMessage("Loi khong un fl dc");
 					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-					 return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.FAILED_DEPENDENCY);
+					return new ResponseEntity<DataResponse<FavoriteDto>>(data,HttpStatus.FAILED_DEPENDENCY);
 				}
 			}
 		} catch (Exception e) {
