@@ -189,7 +189,7 @@ public class CustomerOrder {
 		}
 		
 	}
-	@RequestMapping(value = "/order/cancel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/order/cancel-order", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> changeCancelOrder(@RequestBody DataCancelOrderDto dto,HttpServletRequest httpServletRequest) {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
@@ -197,6 +197,7 @@ public class CustomerOrder {
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
 		String username = tokenProvider.getUserNameFromJWT(token);
 		User user = userservice.getByUsername(username);
+//		User u = userservice.getById(String.valueOf(6));
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
