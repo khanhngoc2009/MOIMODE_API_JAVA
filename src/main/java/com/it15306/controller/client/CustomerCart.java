@@ -24,8 +24,9 @@ import com.it15306.entities.User;
 import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.CartService;
 import com.it15306.services.UserService;
+import com.it15306.utils.Const;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200",Const.urlServer })
 @RestController
 @RequestMapping("/miemode_api/v1")
 public class CustomerCart {
