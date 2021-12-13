@@ -202,55 +202,53 @@ public class CustomerOrder {
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
-				order.setStatus(5);
-				if(dto.getReason() != null && dto.getReason().length()>0) {
-					order.setReason(dto.getReason());
-				}else {
+				if(order.getStatus() != 5) {
+					order.setStatus(5);
+					order.setReason(dto.getReason());					
+					mailServiceImpl.sendMailOrder(order.getUser().getEmail(),5);
+					Order order_after_update = orderServiceImpl.saveOrder(order);
 					
-					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-					data.setMessage("Ban can nhap ly do");
-					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+					OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
+					List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
+					int size_p_os = order_after_update.getProduct_orders().size();
+					for(int j=0;j<size_p_os;j++) {
+						ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
+						pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
+						pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
+						list_pro_o_dtos.add(pro_o);
+					}
+					orderDto.setCreateDate(order_after_update.getCreate_date());
+					orderDto.setId(order_after_update.getOrder_id());
+					orderDto.setReason(order_after_update.getReason()!= null ? order_after_update.getReason() : "");
+					orderDto.setTotalPrice(order_after_update.getTotal_price());
+					orderDto.setPaymentStatus(order_after_update.getType_payment());
+					orderDto.setListProduct(list_pro_o_dtos);
+					if(dto.getReason() != null && dto.getReason().length()>0) {
+						orderDto.setReason(dto.getReason());
+					}else {
+						
+						data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+						data.setMessage("Ban can nhap ly do");
+						return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+					}
+					AddressOrder ad = order_after_update.getAddress();
+					AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+					ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
+					ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+					ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+					orderDto.setAddressOrder(ad_dto);
+					orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
+					orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
+					data.setData(orderDto);
+					data.setCode(HttpStatus.OK.value());
+					data.setMessage("SUCCESS");
+					return new ResponseEntity<>(data,HttpStatus.OK);
+				}else {
+					data.setCode(HttpStatus.FOUND.value());
+					data.setMessage("Da la don huy");
+					return new ResponseEntity<>(data,HttpStatus.FOUND);
 				}
 				
-				mailServiceImpl.sendMailOrder(order.getUser().getEmail(),5);
-				Order order_after_update = orderServiceImpl.saveOrder(order);
-				
-				OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
-				List<ProductOrderDto> list_pro_o_dtos = new ArrayList<ProductOrderDto>(); 
-				int size_p_os = order_after_update.getProduct_orders().size();
-				for(int j=0;j<size_p_os;j++) {
-					ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
-					pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
-					pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
-					list_pro_o_dtos.add(pro_o);
-				}
-				orderDto.setCreateDate(order_after_update.getCreate_date());
-				orderDto.setId(order_after_update.getOrder_id());
-				orderDto.setReason(order_after_update.getReason()!= null ? order_after_update.getReason() : "");
-				orderDto.setTotalPrice(order_after_update.getTotal_price());
-				orderDto.setPaymentStatus(order_after_update.getType_payment());
-				orderDto.setListProduct(list_pro_o_dtos);
-//				System.out.print(dto.getReason());
-				if(dto.getReason() != null && dto.getReason().length()>0) {
-					orderDto.setReason(dto.getReason());
-				}else {
-					
-					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-					data.setMessage("Ban can nhap ly do");
-					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-				}
-				AddressOrder ad = order_after_update.getAddress();
-				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
-				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
-				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
-				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
-				orderDto.setAddressOrder(ad_dto);
-				orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
-				orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
-				data.setData(orderDto);
-				data.setCode(HttpStatus.OK.value());
-				data.setMessage("SUCCESS");
-				return new ResponseEntity<>(data,HttpStatus.OK);
 			}else {
 				data.setCode(HttpStatus.UNAUTHORIZED.value());
 				data.setMessage("Fail");
