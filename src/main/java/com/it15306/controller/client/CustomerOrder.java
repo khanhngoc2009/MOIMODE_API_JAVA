@@ -198,11 +198,20 @@ public class CustomerOrder {
 		String token = httpServletRequest.getHeader("Authorization").substring(7);
 		String username = tokenProvider.getUserNameFromJWT(token);
 		User user = userservice.getByUsername(username);
-//		User u = userservice.getById(String.valueOf(6));
+//		User user = userservice.getById(String.valueOf(32));
 		try {
 			if(user != null) {
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
 				order.setStatus(5);
+				if(dto.getReason() != null && dto.getReason().length()>0) {
+					order.setReason(dto.getReason());
+				}else {
+					
+					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+					data.setMessage("Ban can nhap ly do");
+					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+				}
+				
 				mailServiceImpl.sendMailOrder(order.getUser().getEmail(),5);
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				
@@ -221,14 +230,15 @@ public class CustomerOrder {
 				orderDto.setTotalPrice(order_after_update.getTotal_price());
 				orderDto.setPaymentStatus(order_after_update.getType_payment());
 				orderDto.setListProduct(list_pro_o_dtos);
-				
-					if(dto.getReason() == null || dto.getReason().length()==0) {
-						data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-						data.setMessage("Ban can nhap ly do");
-						return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-					}else {
-						orderDto.setReason(dto.getReason());
-					}
+//				System.out.print(dto.getReason());
+				if(dto.getReason() != null && dto.getReason().length()>0) {
+					orderDto.setReason(dto.getReason());
+				}else {
+					
+					data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+					data.setMessage("Ban can nhap ly do");
+					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+				}
 				AddressOrder ad = order_after_update.getAddress();
 				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
 				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
