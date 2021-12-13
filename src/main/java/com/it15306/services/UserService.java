@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.user.customerUserBody;
 import com.it15306.dto.user.dataBodyUser;
+import com.it15306.dto.user.dataCreateUse;
 import com.it15306.dto.user.datatupdateUser;
 import com.it15306.dto.user.responUser;
 //import com.it15306.entities.Category;
@@ -21,8 +22,8 @@ public interface UserService {
 	void delete(String id);
 	List<UserDTO> getAllUsersv2(dataBodyUser data);
 	Long totalement();
-	UserDTO createUser(responUser data);
-	UserDTO updateUser(datatupdateUser data);
+	UserDTO createUser(dataCreateUse data);
+	UserDTO updateUser(dataCreateUse data);
 	
 	UserDTO updateUserCustomer(customerUserBody data, HttpServletRequest req);
 }

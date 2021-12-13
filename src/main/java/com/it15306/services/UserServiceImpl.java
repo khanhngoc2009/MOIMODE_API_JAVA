@@ -25,6 +25,7 @@ import com.it15306.dto.WardDTO;
 import com.it15306.dto.category.CategoryDTO;
 import com.it15306.dto.user.customerUserBody;
 import com.it15306.dto.user.dataBodyUser;
+import com.it15306.dto.user.dataCreateUse;
 import com.it15306.dto.user.datatupdateUser;
 import com.it15306.dto.user.responUser;
 import com.it15306.entities.Category;
@@ -187,7 +188,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	}
 
 	@Override
-	public UserDTO createUser(responUser data) {
+	public UserDTO createUser(dataCreateUse data) {
 		
 		try {
 			List<User> us=userRepository.SELECT_CHECK_USER(data.getUsername(),data.getEmail(), data.getPhone());
@@ -198,9 +199,9 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			mailServiceImpl.SendEmailCreateAcc(entity.getEmail(), entity.getUsername());
 			dto = modelMapper.map(entity, UserDTO.class);
 			dto.setId(entity.getId());
-			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));
-			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
-			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
+//			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));
+//			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
+//			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
 			 return dto;
 			}
 		} catch (Exception e) {
@@ -209,18 +210,22 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		
 		return null;
 	}
-	public User mapToUser(responUser data) {
+	public User mapToUser(dataCreateUse data) {
 		User user=new User();
 		District district=new District();
-		district.setId(data.getDistrict_id());
+		//district.setId(data.getDistrict_id());
+		district.setId(0);
 		Province province=new Province();
-		province.setId(data.getProvince_id());
+		//province.setId(data.getProvince_id());
+		province.setId(0);
 		Ward ward=new Ward();
-		ward.setId(data.getWard_id());
+		//ward.setId(data.getWard_id());
+		ward.setId(0);
 		//set password mặc định
 		String hashPass = HashUtil.hash("Miemode@1234");
 		user.setPassword(hashPass);
-		
+		user.setFull_name(data.getFull_name());
+		user.setBirthday(null);
 		user.setId(data.getId());
 		user.setEmail(data.getEmail());
 		//set mặc định hoạt động
@@ -239,7 +244,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	}
 	@org.springframework.transaction.annotation.Transactional
 	@Override
-	public UserDTO updateUser(datatupdateUser data) {
+	public UserDTO updateUser(dataCreateUse data) {
 		Optional<User> option= userRepository.findById(data.getId());
 		System.out.println("-----------1");
 		User entity = mapUserUpdate(data);
@@ -253,25 +258,32 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 			us.setPassword(user.getPassword()== null? "": user.getPassword());
 			userRepository.save(us);
 			dto = modelMapper.map(us, UserDTO.class);
-			dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.getProvince_id()).get(), ProvinceDTO.class));
-			dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.getDistrict_id()).get(), DistrictDTO.class));
-			dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get(), WardDTO.class));
+			/*
+			 * dto.setProvincedto(modelMapper.map(provinceRepository.findById(data.
+			 * getProvince_id()).get(), ProvinceDTO.class));
+			 * dto.setDistrictdto(modelMapper.map(districtRepository.findById(data.
+			 * getDistrict_id()).get(), DistrictDTO.class));
+			 * dto.setWarddto(modelMapper.map(wardRepository.findById(data.getWard_id()).get
+			 * (), WardDTO.class));
+			 */
 			return dto;
 		}
 		
 		return null;
 	}
-	public User mapUserUpdate(datatupdateUser data) {
+	public User mapUserUpdate(dataCreateUse data) {
 		System.out.println(data.toString());
 		User user=new User();
-		Province province=new Province();
-		province.setId(data.getProvince_id());
 		District district=new District();
-		district.setId(data.getDistrict_id());
-		district.setProvince(province);
+		//district.setId(data.getDistrict_id());
+		district.setId(0);
+		Province province=new Province();
+		//province.setId(data.getProvince_id());
+		province.setId(0);
 		Ward ward=new Ward();
-		ward.setId(data.getWard_id());
-		ward.setDistrict(district);
+		//ward.setId(data.getWard_id());
+		ward.setId(0);
+		///ward.setDistrict(district);
 		//String hashPass = HashUtil.hash(data.getPassword());
 		//user.setPassword(hashPass);
 		
@@ -284,7 +296,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		user.setWard(ward);
 		user.setRoles(data.getRoles());
 		user.setUsername(data.getUsername().trim());
-	
+		user.setFull_name(data.getFull_name());
 		user.setPhoto(data.getPhoto());
 		user.setPhone(data.getPhone());
 		//user.setCreate_date(new Date());

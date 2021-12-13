@@ -34,6 +34,7 @@ import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.UserDTO;
 import com.it15306.dto.user.dataBodyUser;
+import com.it15306.dto.user.dataCreateUse;
 import com.it15306.dto.user.datatupdateUser;
 import com.it15306.dto.user.responUser;
 import com.it15306.entities.District;
@@ -84,10 +85,33 @@ public class AdminUser {
 //		}
 //		return ResponseEntity.badRequest().build();
 //	}
+//	@PreAuthorize("hasAuthority('ADMIN')")
+//	@RequestMapping(value = "/admin/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<UserDTO> create(@Valid @RequestBody responUser data,  BindingResult bindingResult) {
+//		try {
+//			boolean check = bindingResult.hasErrors();
+//			System.out.println(check);
+//			System.out.println(data.toString());
+//			if(!check) {
+//			System.out.println("check ok");
+//			UserDTO dto = 	userService2.createUser(data);
+//				if(dto != null) {
+//					return ResponseEntity.ok(dto);
+//				}
+//				System.out.println("check trung user");
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			
+//		}
+//		return ResponseEntity.badRequest().build();
+//	}
+	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/admin/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<UserDTO> create(@Valid @RequestBody responUser data,  BindingResult bindingResult) {
+	public ResponseEntity<UserDTO> create(@Valid @RequestBody dataCreateUse data,  BindingResult bindingResult) {
 		try {
 			boolean check = bindingResult.hasErrors();
 			System.out.println(check);
@@ -196,9 +220,21 @@ public class AdminUser {
 	}
 	
 
+	/*
+	 * @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST,
+	 * produces = MediaType.APPLICATION_JSON_VALUE)
+	 * 
+	 * @ResponseBody public ResponseEntity<UserDTO>
+	 * updateUser(@Validated @RequestBody datatupdateUser data, BindingResult
+	 * bindingResult){ try { boolean check = bindingResult.hasErrors(); if(!check) {
+	 * UserDTO dto = userService2.updateUser(data); if(dto != null) { return
+	 * ResponseEntity.ok(dto); } } } catch (Exception e) { e.printStackTrace(); }
+	 * return ResponseEntity.badRequest().build(); }
+	 */
+	
 	@RequestMapping(value = "/admin/user/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<UserDTO> updateUser(@Validated @RequestBody datatupdateUser data,  BindingResult bindingResult){
+	public ResponseEntity<UserDTO> updateUser(@Validated @RequestBody dataCreateUse data,  BindingResult bindingResult){
 		try {
 			boolean check = bindingResult.hasErrors();
 			if(!check) {
