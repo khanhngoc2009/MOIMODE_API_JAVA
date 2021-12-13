@@ -3,7 +3,14 @@ package com.it15306.dto.order;
 public class DataChangeStatusDto {
 	private Integer order_id;
 	private Integer status;
+	private String reason;
 	
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	public Integer getStatus() {
 		return status;
 	}

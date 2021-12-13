@@ -26,6 +26,35 @@ public class OrderDto {
 	private Voucherdto voucher;
 	private AddressOrderDTO addressOrder;
 	private PaymentDTO paymentType;
+	private String note = "";
+	private double transportationCost = 30000;
+	private Integer isEvaluate = 0;
+	private String reason="";
+
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public Integer getIsEvaluate() {
+		return isEvaluate;
+	}
+	public void setIsEvaluate(Integer isEvaluate) {
+		this.isEvaluate = isEvaluate;
+	}
+	public double getTransportationCost() {
+		return transportationCost;
+	}
+	public void setTransportationCost(double transportationCost) {
+		this.transportationCost = transportationCost;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public Integer getId() {
 		return id;
 	}

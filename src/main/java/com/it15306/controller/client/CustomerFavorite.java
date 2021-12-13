@@ -20,6 +20,7 @@ import com.it15306.config.DataResponseList;
 import com.it15306.dto.PageDto;
 import com.it15306.dto.favorite.FavoriteDto;
 import com.it15306.dto.favorite.PayloadFavorite;
+import com.it15306.dto.favorite.PayloadFollowDto;
 import com.it15306.dto.favorite.PayloadList;
 import com.it15306.dto.voucher.ResponBodyVoucher;
 import com.it15306.dto.voucher.Voucherdto;
@@ -45,40 +46,46 @@ public class CustomerFavorite {
 	
 	@PostMapping("/favorite/list")
 	@ResponseBody
-	public ResponseEntity<DataResponseList<FavoriteDto>> getFavoriteList(@RequestBody PayloadList payload) {
-		try {
-			return favoriteService.listFavoriteByProduct(payload);
-		
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
-	@PostMapping("/favorite/unfollow")
-	@ResponseBody
-	public ResponseEntity<DataResponse<String>> unFollow(@RequestBody PayloadFavorite payload,HttpServletRequest httpServletRequest) {
-	
+	public ResponseEntity<DataResponseList<FavoriteDto>> getFavoriteList(@RequestBody PayloadList payload,HttpServletRequest httpServletRequest) {
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
-			PayloadFavorite pl= payload;
+//			User user = new User();
+//			user.setId(32);
+			return favoriteService.listFavoriteByProduct(payload,user);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+			
+	}
+	@PostMapping("/favorite/unfollow")
+	@ResponseBody
+	public ResponseEntity<DataResponse<String>> unFollow(@RequestBody PayloadFollowDto payload,HttpServletRequest httpServletRequest) {
+		try {
+			String token = httpServletRequest.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			User user = userservice.getByUsername(username);
+			PayloadFavorite pl= new PayloadFavorite();
 			pl.setUser(user);
+			pl.setId_product(payload.getProduct_id());
 			return favoriteService.disableFavorite(pl);
-		
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}
 	@PostMapping("/favorite/follow")
 	@ResponseBody
-	public ResponseEntity<DataResponse<FavoriteDto>> follow(@RequestBody PayloadFavorite payload,HttpServletRequest httpServletRequest) {
-	
+	public ResponseEntity<DataResponse<FavoriteDto>> follow(@RequestBody PayloadFollowDto payload,HttpServletRequest httpServletRequest) {
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User user = userservice.getByUsername(username);
-			PayloadFavorite pl= payload;
+//			User user = new User();
+//			user.setId(32);
+			PayloadFavorite pl= new PayloadFavorite();
 			pl.setUser(user);
+			pl.setId_product(payload.getProduct_id());
 			return favoriteService.enableFavorite(pl);
 		
 		} catch (Exception e) {

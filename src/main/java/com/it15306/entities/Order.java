@@ -36,6 +36,30 @@ public class Order {
 	private Date create_date;
 	private Double total_price;
 	private Integer status;
+	
+	private String note;
+	private Integer isEvaluate;
+	private String reason;
+	
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
+	public Integer getIsEvaluate() {
+		return isEvaluate;
+	}
+	public void setIsEvaluate(Integer isEvaluate) {
+		this.isEvaluate = isEvaluate;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	private Integer type_payment;
 	
 	@ManyToOne

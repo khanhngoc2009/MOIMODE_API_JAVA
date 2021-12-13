@@ -87,7 +87,7 @@ public class AdminProduct {
 			 // them san pham
 			product.setCreate_date(new Date());
 			product.setDescription(body.getProduct().getDescription());
-			product.setImage("http://34.87.157.20:8089/storages/"+ body.getProduct().getImage());
+			product.setImage(""+ body.getProduct().getImage());
 			product.setStatus(1);
 			product.setType(1);
 			category.setId(body.getProduct().getCategory_id());

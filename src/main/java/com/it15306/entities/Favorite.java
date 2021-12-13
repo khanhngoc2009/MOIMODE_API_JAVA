@@ -24,7 +24,7 @@ import org.springframework.data.annotation.Transient;
 
 
 @Entity
-@Table(name = "favotite")
+@Table(name = "favorite")
 public class Favorite implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
