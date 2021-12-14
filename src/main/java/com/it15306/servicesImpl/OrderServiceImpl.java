@@ -93,7 +93,12 @@ public class OrderServiceImpl implements OrderService{
 	
 	public List<Order> getListOrdersAdmin(int page,int take,String status,String email, String user_name, String phone, String start_date,String end_date ) {
 		Pageable paging =  PageRequest.of(page, take); 
-        Page<Order> pagedResult = orderRepository.getOrdersAdmin(status, email, user_name, phone, start_date, end_date,paging);
+		Page<Order> pagedResult = 
+				(status!=null && status.length()>0) ?
+						orderRepository.getOrdersAdmin(status, email, user_name, phone, start_date, end_date,paging)
+						: 
+						orderRepository.getOrdersAdminAll(email, user_name, phone, start_date, end_date,paging)
+						;
         List<Order> list =  pagedResult.getContent();
         for(int i = 0;i <list.size();i++) {
         	System.out.print(list.get(i).getCreate_date());
@@ -105,7 +110,8 @@ public class OrderServiceImpl implements OrderService{
 		}
 	}
 	public Integer countOrderAdmin(String status,String email, String user_name, String phone, String start_date,String end_date ) {
-		return orderRepository.getCountAdmin(status, email, user_name, phone, start_date, end_date);
+		return (status!=null && status.length()>0)
+				? orderRepository.getCountAdmin(status, email, user_name, phone, start_date, end_date) : orderRepository.getCountAdminAll(email, user_name, phone, start_date, end_date);
 	}
 	
 	public Order getDetailById(Integer order_id) {
