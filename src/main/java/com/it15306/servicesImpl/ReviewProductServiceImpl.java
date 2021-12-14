@@ -173,6 +173,18 @@ public class ReviewProductServiceImpl implements ReviewProductService{
 			}
 		return null;
 	}
+
+	@Override
+	public Double getAvgStar(Integer product_id) {
+		List<ReviewProduct> review_p = reviewProductRepository.findAllReviewProductsByProductId(product_id);
+		double result= 0;
+		int size = review_p.size();
+		for(int i=0;i<size;i++) {
+			result=result + review_p.get(i).getRating();
+		}
+		System.out.print(size +" ajhfjhaf "+ result);
+		return result>0 ? result/size : 0.0;
+	}
 	
 	
 

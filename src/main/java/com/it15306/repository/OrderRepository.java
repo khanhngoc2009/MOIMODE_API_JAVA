@@ -52,14 +52,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " WHERE orders.status like %?1% "
 			+ " and orders.user_id = ?2 ";
 	final String SELECT_ORDER_ADMIN = "SELECT * FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status like %?1% "
+			+ " WHERE orders.status like %?1% and orders.order_id like %?7%"
 			+ " and email like %?2%"
 			+ " and username  like %?3%  "
 			+ " and phone like %?4% "
 			+ " and orders.create_date >= ?5 and orders.create_date <= ?6 "
 			+ " order by orders.create_date desc";
 	final String COUNT_ORDER_ADMIN = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status like %?1% "
+			+ " WHERE orders.status like %?1% and orders.order_id like %?7%"
 			+ " and email like %?2%"
 			+ " and username like %?3% "
 			+ " and phone like %?4% "
@@ -67,14 +67,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+" order by orders.create_date desc";
 	
 	final String SELECT_ORDER_ADMIN_ALL = "SELECT * FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status >= 1 and orders.status <= 3  "
+			+ " WHERE orders.status >= 1 and orders.status <= 3  and orders.order_id like %?6% "
 			+ " and email like %?1%"
 			+ " and username  like %?2%  "
 			+ " and phone like %?3% "
 			+ " and orders.create_date >= ?4 and orders.create_date <= ?5 "
 			+ " order by orders.create_date desc";
 	final String COUNT_ORDER_ADMIN_ALL = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
-			+ " WHERE orders.status >= 1 and orders.status <= 3  "
+			+ " WHERE orders.status >= 1 and orders.status <= 3 and orders.order_id like %?6% "
 			+ " and email like %?1%"
 			+ " and username  like %?2%  "
 			+ " and phone like %?3% "
@@ -144,19 +144,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	// admin
 	@Query(value = COUNT_ORDER_ADMIN, nativeQuery = true)
-	Integer getCountAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
+	Integer getCountAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id );
 	
 	@Query(value = SELECT_ORDER_ADMIN, nativeQuery = true)
-	Page<Order> getOrdersAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
+	Page<Order> getOrdersAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id , Pageable paging );
 	
 	@Query(value = COUNT_ORDER_STATUS, nativeQuery = true)
 	Integer getCountClientStatus(@Param("status") String status,@Param("user_id") Integer user_id);
 	
 	// admin
 		@Query(value = COUNT_ORDER_ADMIN_ALL, nativeQuery = true)
-		Integer getCountAdminAll(@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate );
+		Integer getCountAdminAll(@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id  );
 		
 		@Query(value = SELECT_ORDER_ADMIN_ALL, nativeQuery = true)
-		Page<Order> getOrdersAdminAll(@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate, Pageable paging );
+		Page<Order> getOrdersAdminAll(@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id , Pageable paging );
 	
 }

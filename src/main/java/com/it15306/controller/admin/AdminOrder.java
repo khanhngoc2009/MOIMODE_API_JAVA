@@ -92,7 +92,8 @@ public class AdminOrder {
 						dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
 						dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
 						dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
-						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01");
+						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01",
+						dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): "");
 				int size= list_order.size();
 				System.out.print(size);
 				data.setCount(orderServiceImpl.countOrderAdmin(
@@ -101,7 +102,9 @@ public class AdminOrder {
 								dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
 								dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
 								dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
-								dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01"));
+								dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01",
+								dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): ""
+								));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);

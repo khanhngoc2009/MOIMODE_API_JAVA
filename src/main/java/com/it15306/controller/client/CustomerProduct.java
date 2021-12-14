@@ -51,9 +51,11 @@ import com.it15306.entities.Province;
 import com.it15306.entities.User;
 import com.it15306.jwt.JwtTokenProvider;
 import com.it15306.services.FavoriteService;
+import com.it15306.services.ReviewProductService;
 import com.it15306.services.UserService;
 import com.it15306.servicesImpl.ProductServiceImpl;
 import com.it15306.servicesImpl.ProvinceServiceImpl;
+import com.it15306.servicesImpl.ReviewProductServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -65,6 +67,9 @@ public class CustomerProduct {
 	private FavoriteService favoriteService;
 	@Autowired
 	private JwtTokenProvider tokenProvider;
+	
+	@Autowired
+	private ReviewProductService reviewProductService;
 	
 	@Autowired
 	private UserService userservice;
@@ -100,6 +105,7 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					prDto.setStarAvg(reviewProductService.getAvgStar(prs.get(i).getId()));
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
 //						String token = httpServletRequest.getHeader("Authorization").substring(7);
@@ -164,6 +170,7 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					prDto.setStarAvg(reviewProductService.getAvgStar(prs.get(i).getId()));
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
 //						String token = httpServletRequest.getHeader("Authorization").substring(7);
@@ -218,6 +225,7 @@ public class CustomerProduct {
 					prDto.setMin_price(minPrice.get(i));
 					prDto.setMax_price(maxPrice.get(i));
 					prDto.setCategory_id(prs.get(i).getCategory().getId());
+					prDto.setStarAvg(reviewProductService.getAvgStar(prs.get(i).getId()));
 					PayloadFavorite pf=  new PayloadFavorite();
 					if(token != null && token.length() > 0) {
 						String username = tokenProvider.getUserNameFromJWT(token.substring(7));

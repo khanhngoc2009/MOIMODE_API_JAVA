@@ -38,6 +38,16 @@ public class ProductDTO {
 	private Integer type;
 	private Integer category_id;
 	private String image;
+	private Double starAvg = 0.0;
+	
+	public Double getStarAvg() {
+		return starAvg;
+	}
+
+	public void setStarAvg(Double starAvg) {
+		this.starAvg = starAvg;
+	}
+
 	public String getImage() {
 		return image;
 	}

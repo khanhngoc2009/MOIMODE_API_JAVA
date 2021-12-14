@@ -17,4 +17,6 @@ public interface ReviewProductService {
 	Integer totalement();
 	
 	ReviewProductDTO updateTrangThai(String id);
+	
+	Double getAvgStar(Integer product_id);
 }
