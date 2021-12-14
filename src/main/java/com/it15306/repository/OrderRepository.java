@@ -92,8 +92,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	final String thongKeDonHang = "SELECT * from orders where status like %?1% and  create_date between ?2 and ?3";
 	final String countDonHang ="select count(order_id) from orders where status like %?1%  and create_date between ?2 and ?3";
 	
+	final String COUNT_VOUCHER_USEED = "select count(voucher_id) from orders where  voucher_id= ?1";
+	
+	
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
-
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
 	
 	@Query(ORDER_DETAIL)
@@ -158,5 +160,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 		
 		@Query(value = SELECT_ORDER_ADMIN_ALL, nativeQuery = true)
 		Page<Order> getOrdersAdminAll(@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id , Pageable paging );
-	
+		
+		@Query(value = COUNT_VOUCHER_USEED, nativeQuery = true)
+		Integer COUNT_VOUCHER_USE(@Param("voucher_id") String voucher_id);
 }
