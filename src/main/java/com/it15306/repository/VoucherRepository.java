@@ -31,7 +31,10 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	
 	final String FINTER ="select * from voucher  where   title like %?1%  and voucher_id < 10000 and create_time >= ?2 -1 and end_time <= ?3 and status like %?4% ORDER BY start_time desc" ;
 	final String FINTER_CUSTOMER ="select * from voucher where status = 1  and voucher_id < 10000 and start_time < ?1 and end_time > ?1 ORDER BY start_time desc";
-			
+	
+	
+	
+	
 	@Query(SELECT_ALL)
 	List<Voucher> findAllVoucher();
 	
@@ -65,4 +68,6 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	String START_DATE();
 	@Query(value = "select end_time from voucher order by end_time desc limit 1", nativeQuery = true)
 	String END_DATE();
+	
+	
 }

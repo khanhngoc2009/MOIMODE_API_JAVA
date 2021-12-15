@@ -171,6 +171,7 @@ public class AdminCategory {
 				//categoryParent parent=	modelMapper.map(categoryService.getCategoryByID(ct.getCategory_parent_id()), categoryParent.class);
 				cd.setId(ct.getId());
 				cd.setName(ct.getName());
+				cd.setCategory_parent_id(ct.getCategory_parent_id());
 				cd.setCreate_date(ct.getCreate_date());
 				cd.setStatus(ct.getStatus());
 				cd.setType(ct.getType());

@@ -1,5 +1,6 @@
 package com.it15306.controller.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ import com.it15306.dto.PageDto;
 import com.it15306.dto.idBody;
 import com.it15306.dto.voucher.RequetVoucher;
 import com.it15306.dto.voucher.ResponBodyVoucher;
+import com.it15306.dto.voucher.ResponVoucher;
 import com.it15306.dto.voucher.Voucherdto;
+import com.it15306.repository.OrderRepository;
+import com.it15306.repository.VoucherRepository;
 import com.it15306.services.VoucherService;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
@@ -31,6 +35,9 @@ public class AdminVoucher {
 	@Autowired
 	VoucherService voucherService;
 	
+	@Autowired
+	OrderRepository orderRepository;
+	 
 	@PostMapping("/admin/voucher/create")
 	@ResponseBody
 	public ResponseEntity<Voucherdto>  create(@Validated @RequestBody RequetVoucher data, BindingResult bindingResult) {
@@ -80,16 +87,33 @@ public class AdminVoucher {
 	}
 	@PostMapping("/admin/voucher/list")
 	@ResponseBody
-	public ResponseEntity< DataResponseList<Voucherdto>> getAllVouchers(@RequestBody ResponBodyVoucher data) {
-		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
+	public ResponseEntity< DataResponseList<ResponVoucher>> getAllVouchers(@RequestBody ResponBodyVoucher data) {
+		DataResponseList<ResponVoucher> rp=new DataResponseList<ResponVoucher>();
 		List<Voucherdto> list= voucherService.getAllVouchers(data);
+		List<ResponVoucher> listnew= new ArrayList<ResponVoucher>();
+		list.forEach(vc ->{
+			ResponVoucher vou=new ResponVoucher();
+			vou.setId(vc.getId());
+			vou.setCodeVoucher(vc.getCodeVoucher());
+			vou.setCountVoucherUsed(orderRepository.COUNT_VOUCHER_USE(String.valueOf(vc.getId())));
+			vou.setCreate_time(vc.getCreate_time());
+			vou.setDescription(vc.getDescription());
+			vou.setDiscount(vc.getDiscount());
+			vou.setEnd_time(vc.getEnd_time());
+			vou.setStart_time(vc.getStart_time());
+			vou.setTitle(vc.getTitle());
+			vou.setStatus(vc.getStatus());
+			vou.setType_discount(vc.getType_discount());
+			vou.setUrl(vc.getUrl());
+			listnew.add(vou);
+		});
 		Long n=voucherService.totalement();
 		Integer sobanghi=n.intValue();
 		if(list.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}else {
 			rp.setMessage("Success");
-		rp.setListData(list);
+		rp.setListData(listnew);
 		rp.setCount(sobanghi);
 		}	
 		return ResponseEntity.ok(rp);
