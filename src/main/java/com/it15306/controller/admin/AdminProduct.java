@@ -226,6 +226,15 @@ public class AdminProduct {
 //			Product s = new Product();
 			for(int i=0;i<size;i++) {
 				UpdateProductSkuDto up = dto.get(i);
+				if(up.getPrice() == 0) {
+					data.setCode(HttpStatus.NOT_FOUND.value());
+					data.setMessage("Bạn không được bỏ trống giá của phân loại nào (>0)");
+					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+					
+				}
+			}
+			for(int i=0;i<size;i++) {
+				UpdateProductSkuDto up = dto.get(i);
 				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class);
 //				s = p_sku.getProduct();
 				productServiceImpl.saveProductSku(p_sku);
