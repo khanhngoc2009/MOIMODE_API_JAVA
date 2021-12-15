@@ -33,12 +33,15 @@ import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderAdminDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.OrderDto;
+import com.it15306.dto.order.PayloadCreateOrderAdmin;
 import com.it15306.dto.order.ProductOrderDto;
+import com.it15306.dto.order.ProductSkuPayloadOrder;
 import com.it15306.dto.payment.PaymentDTO;
 import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.AddressOrder;
 import com.it15306.entities.CartProduct;
 import com.it15306.entities.Order;
+import com.it15306.entities.Payment;
 import com.it15306.entities.ProductOrder;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.User;
@@ -78,11 +81,11 @@ public class AdminOrder {
 
 	@Autowired 
 	private MailServiceImpl mailServiceImpl;
-	@RequestMapping(value = "/admin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/asdmin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
-		try {
+//		try {
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
 						dto.getPage(), 
@@ -138,11 +141,11 @@ public class AdminOrder {
 				data.setListData(listOrders);
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
-		} catch (Exception e) {
-			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-			data.setMessage("Fail");
-			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-		}
+//		} catch (Exception e) {
+//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+//			data.setMessage("Fail");
+//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+//		}
 	}
 	@RequestMapping(value = "/admin/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -150,7 +153,6 @@ public class AdminOrder {
 		DataResponse<OrderDto> data = new DataResponse<OrderDto>();
 		ConfigDefine config= new ConfigDefine();
 		try {
-				
 				Order order =  orderServiceImpl.getByOrderId(dto.getOrder_id());
 				order.setStatus(dto.getStatus());
 				if(dto.getStatus() == config.CANCEL || dto.getStatus() == config.DENY) {
@@ -162,7 +164,9 @@ public class AdminOrder {
 						order.setReason(dto.getReason());
 					}
 				}
-				mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
+				  if(order.getUser().getId() != 0) {
+					  mailServiceImpl.sendMailOrder(order.getUser().getEmail(), dto.getStatus());
+				  }
 				Order order_after_update = orderServiceImpl.saveOrder(order);
 				
 				OrderDto orderDto = modelMapper.map(order_after_update, OrderDto.class);
@@ -286,6 +290,102 @@ public class AdminOrder {
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
+	}
+	
+	/// tạo mới đơn hang admin
+	@RequestMapping(value = "/admin/order/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> createOrder(@RequestBody PayloadCreateOrderAdmin dto,HttpServletRequest httpServletRequest) {
+		DataResponse<String> data = new DataResponse<String>(); 
+		try {
+			// ly thong tin user
+			if( dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
+				User user = userservice.getById("0");
+				int size = dto.getListProductSku().size();
+				double voucher_discount = 0;
+				double total_order = 0;
+					if(size>0) {
+						for(int i=0;i<size;i++) {
+							ProductSkuPayloadOrder product_sku =   dto.getListProductSku().get(i);
+							total_order =  total_order + (product_sku.getPrice() * product_sku.getQuantity());
+						}
+						AddressOrder addressOrder = new AddressOrder();
+						addressOrder.setid(dto.getAddress_id());
+						dto.getAddress_id();
+						Order order = new Order();
+						order.setCreate_date(new Date());
+						order.setStatus(1); // chờ xác nhan
+						order.setUser(user);
+						Payment payment = new Payment();
+						payment.setPayment_id(dto.getPayment_id());
+						order.setPayment(payment);
+						order.setAddress(addressOrder);
+						order.setType_payment(0);
+						Voucher vou  = new Voucher();
+						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {
+							Voucherdto voucher = voucherService.getByIdVoucher(dto.getVoucher_id());
+							vou.setId(voucher.getId());
+							int type_discount =  voucher.getType_discount();
+//							
+							if(type_discount == 1 ) {
+								voucher_discount = voucher.getDiscount();
+							}else if(type_discount == 2) {
+								voucher_discount = voucher.getDiscount()/total_order * 100;
+							}
+							order.setVoucher(vou);
+						}else {
+							vou.setId(10000);
+							order.setVoucher(vou);
+						}
+						double total_payment = total_order - voucher_discount + 30000;
+						order.setTotal_price(total_payment>=0 ? total_payment:0);
+						order.setNote(dto.getNote());
+						order.setIsEvaluate(0);
+						order.setReason("");
+						Order  order_after_save =  orderServiceImpl.saveOrder(order);
+						for(int i=0;i<size;i++) {
+							ProductSkuPayloadOrder p_sku = dto.getListProductSku().get(i);
+							ProductOrder product_order = new ProductOrder();
+							product_order.setCreate_date(new Date());
+							product_order.setImage(p_sku.getUrl_media());
+							product_order.setOrder(order_after_save);
+							product_order.setPrice(p_sku.getPrice());
+							product_order.setProduct_id(p_sku.getProduct().getId());
+							List<Object> obj = productServiceImpl.getSkuOption(p_sku.getProduct_sku_id());
+							String optionValueProducts = "";
+							for(int k =  0;k<obj.size();k++) {
+								Object[] row = (Object[]) obj.get(k);
+								optionValueProducts = optionValueProducts + (k != 0 ? ", " : "") + (String) row[0];
+							}
+							product_order.setProperties(optionValueProducts);
+							product_order.setStatus(1);
+							product_order.setQuantity(p_sku.getQuantity()); // lay so luong cua san pham
+							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
+							orderServiceImpl.saveProductOrder(product_order);
+						}
+						data.setCode(200);
+						data.setMessage("Success");
+						data.setData("Success");
+						return new ResponseEntity<>(data,HttpStatus.OK);
+				
+				}else {
+					data.setCode(HttpStatus.NOT_FOUND.value());
+					data.setMessage("NOT_FOUND");
+					return new ResponseEntity<>(data,HttpStatus.NOT_FOUND);
+				}
+			}else {
+				data.setCode(HttpStatus.UNAUTHORIZED.value());
+				data.setMessage("AUTHEN");
+				return new ResponseEntity<>(data,HttpStatus.UNAUTHORIZED);
+			}
+			
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+		
 	}
 	
 }

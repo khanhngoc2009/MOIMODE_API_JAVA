@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.it15306.config.DataResponseList;
 import com.it15306.entities.Order;
 import com.it15306.entities.ProductOrder;
 import com.it15306.repository.OrderRepository;
@@ -121,6 +122,8 @@ public class OrderServiceImpl implements OrderService{
 	public Integer countClientStatus(String status,Integer user_id) {
 		return orderRepository.getCountClientStatus(status, user_id);
 	}
+	
+	
 	
 	
 }

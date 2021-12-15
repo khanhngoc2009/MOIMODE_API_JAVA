@@ -38,6 +38,7 @@ import com.it15306.dto.product.DataCreateProductDtos;
 import com.it15306.dto.product.DataImageProductDto;
 import com.it15306.dto.product.DataProductBodyDtos;
 import com.it15306.dto.product.ListSkuCreateDto;
+import com.it15306.dto.product.PayloadProductSkuAdmin;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductResponseAdminDto;
 import com.it15306.dto.product.ProductSkuDto;
@@ -287,6 +288,12 @@ public class AdminProduct {
 			data.setMessage("Fail");
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
+	}
+	
+	@RequestMapping(value = "/product-sku/list/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> getProductSkuAll(@RequestBody PayloadProductSkuAdmin payload) {
+		return productServiceImpl.getListProductSku(payload.getPage(), payload.getTake(), payload.getSku_value()!=null ?payload.getSku_value():"" );
 	}
 	
 	@RequestMapping(value = "/admin/image-product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -3,6 +3,8 @@ package com.it15306.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,6 +37,18 @@ public interface ProductSkuRepository extends JpaRepository<Product_Sku, Integer
 	@Query(SELECT_PRODUCT_SKU_BY_ID)
 	Product_Sku findProductSKUById(@Param("id") Integer id);
 	
+	
+	final String SELECT_PRODUCT_SKU = "SELECT P FROM Product_Sku  P join P.product pr"
+			+ " WHERE P.value_sku like %?1% and pr.type = 2 "
+			+ " order by P.create_date desc";
+	@Query(SELECT_PRODUCT_SKU)
+	Page<Product_Sku> findProductSKU(@Param("value_sku") String value_sku,Pageable page);
+	
+	
+	final String COUNT_PRODUCT_SKU_ADMIN = "SELECT count(product_sku_id) FROM Product_Sku  P join P.product pr "
+			+ "WHERE P.value_sku like %?1% and pr.type = 2";
+	@Query(COUNT_PRODUCT_SKU_ADMIN)
+	Integer countSku(@Param("value_sku") String value_sku);
 	
 	final String SELECT_PRODUCT_SKU_BY_PRODUCT_ID = "SELECT P FROM Product_Sku  P WHERE P.product.id=:id";
 	@Query(SELECT_PRODUCT_SKU_BY_PRODUCT_ID)

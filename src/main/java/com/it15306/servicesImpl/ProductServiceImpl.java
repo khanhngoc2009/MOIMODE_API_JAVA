@@ -6,16 +6,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.it15306.config.DataResponseList;
+import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.ImageProduct;
+import com.it15306.entities.Order;
 import com.it15306.entities.Product;
 import com.it15306.entities.Product_Sku;
 import com.it15306.entities.Sku;
@@ -168,6 +174,37 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		return skuRepository.getInfoBySku(id);
 	}
 	
+	public ResponseEntity<DataResponseList<ProductSkuDto>>  getListProductSku (int page,int take, String sku_value) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<ProductSkuDto> data = new DataResponseList<ProductSkuDto>();
+		try {
+			Pageable paging =  PageRequest.of(page, take); 
+			Page<Product_Sku> pagedResult = productSkuRepository.findProductSKU(sku_value, paging);
+			if(pagedResult.hasContent()) {
+				List<Product_Sku>  pr_skus = pagedResult.getContent();
+				List<ProductSkuDto> skuDtos= new ArrayList<ProductSkuDto>();
+				int size = pr_skus.size();
+				for(int i=0;i<size;i++) {
+					ProductSkuDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuDto.class);
+					skuDtos.add(p);
+				}
+				data.setCount(productSkuRepository.countSku(sku_value));
+				data.setListData(skuDtos);
+				data.setMessage("Success");
+				return new ResponseEntity<>(data,HttpStatus.OK);
+	        } else {
+	        	data.setListData(new ArrayList<ProductSkuDto>());
+	        	data.setCode(200);
+	        	data.setMessage("Thanh cong");
+	        	return new ResponseEntity<>(data,HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
 }
 
 
