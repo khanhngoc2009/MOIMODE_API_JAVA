@@ -212,7 +212,7 @@ public class Authen {
 				user.setWard(w);
 				user.setRoles("CUSTOMER");
 				user.setActivated(1);
-				user.setPhoto("https://hatgiongphuongnam.com/asset/upload/image/hat-giong-hoa-cuc-trang-1.1_1.jpg");
+				user.setPhoto("");
 				this.userService.saveUser(user);
 				resgister.setCode(200);
 				resgister.setMessage("Đăng kí thành công!");
