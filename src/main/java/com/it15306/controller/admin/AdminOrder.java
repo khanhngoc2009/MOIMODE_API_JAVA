@@ -297,6 +297,7 @@ public class AdminOrder {
 	@ResponseBody
 	public ResponseEntity<?> createOrder(@RequestBody PayloadCreateOrderAdmin dto,HttpServletRequest httpServletRequest) {
 		DataResponse<String> data = new DataResponse<String>(); 
+		ConfigDefine congig = new ConfigDefine();
 		try {
 			// ly thong tin user
 			if( dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
@@ -310,11 +311,11 @@ public class AdminOrder {
 							total_order =  total_order + (product_sku.getPrice() * product_sku.getQuantity());
 						}
 						AddressOrder addressOrder = new AddressOrder();
-						addressOrder.setid(dto.getAddress_id());
+						addressOrder.setid(0);
 						dto.getAddress_id();
 						Order order = new Order();
 						order.setCreate_date(new Date());
-						order.setStatus(1); // chờ xác nhan
+						order.setStatus(congig.SUCCESS); // chuyen thanh don thanh cong luon
 						order.setUser(user);
 						Payment payment = new Payment();
 						payment.setPayment_id(dto.getPayment_id());

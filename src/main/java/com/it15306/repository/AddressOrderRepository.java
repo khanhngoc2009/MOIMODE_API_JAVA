@@ -19,8 +19,8 @@ import com.it15306.entities.User;
 
 @Repository
 public interface AddressOrderRepository extends JpaRepository<AddressOrder, Integer>  {
-	final String SELECT_ALL = "SELECT u FROM AddressOrder u";
-	final String SELECT_AddressOrderByID = "SELECT u FROM AddressOrder u where user_id=:user_id";
+	final String SELECT_ALL = "SELECT u FROM AddressOrder u where id > 0 ";
+	final String SELECT_AddressOrderByID = "SELECT u FROM AddressOrder u where id > 0 and user_id=:user_id";
 	final String SELECT_AddressOrderByAddressOrderId = "SELECT u FROM AddressOrder u where id=:address_order_id";
 	final String UPDATE_ISDEFAULT = "update addressorder set isDefault = ?1 where user_id = ?2";
 	

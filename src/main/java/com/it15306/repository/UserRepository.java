@@ -23,15 +23,15 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
 	final String SELECT_BY_EMAIL = "SELECT u FROM User u WHERE u.email =:email";
 	final String SELECT_BY_ID = "SELECT u FROM User u WHERE u.id =:id";
 	final String SELECT_BY_USERNAME = "SELECT u FROM User u WHERE u.username =:username";
-	final String SELECT_FILTER_USER="select * from user where  username like %?1% and email like %?2% and create_date between ?3 and ?4 and activated like %?5% ORDER BY create_date desc";
+	final String SELECT_FILTER_USER="select * from user where user_id > 0 and  username like %?1% and email like %?2% and create_date between ?3 and ?4 and activated like %?5% ORDER BY create_date desc";
 	
-	final String SELECT_CHECK_USER = "select * from user where username = ?1 or email= ?2 or phone = ?3";
+	final String SELECT_CHECK_USER = "select * from user where  user_id > 0 and username = ?1 or email= ?2 or phone = ?3";
 	
 	@Query(value = "select create_date from user order by create_date asc limit 1", nativeQuery = true)
 	String START_DATE();
 	@Query(value = "select create_date from user order by create_date desc limit 1", nativeQuery = true)
 	String END_DATE();
-	final String thongKeCountUser = "SELECT COUNT(u.id) FROM User u where u.activated= ?1";
+	final String thongKeCountUser = "SELECT COUNT(u.id) FROM User u where  u.id > 0 and u.activated= ?1";
 
 
 	@Query(SELECT_ALL)
