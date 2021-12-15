@@ -94,6 +94,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	
 	final String COUNT_VOUCHER_USEED = "select count(voucher_id) from orders where  voucher_id= ?1";
 	
+	final String SELECT_YEAR_ORDERS = "select DISTINCT Year(create_date) from orders";
+	 
+	final String SELECT_DOANHTHU = "select  sum(total_price) from orders  where status= ?1 and  month(create_date) =  ?2 and year(create_date) = ?3";
+	final String SELECT_DONHANG = "select  count(order_id) from orders  where status= ?1 and  month(create_date) =  ?2  and year(create_date) = ?3";
+	
 	
 	@Query(SELECT_ORDER_BY_ID_VOUCHER)
 	List<Order> findOrderByIdVoucher(@Param("id") Integer id);
@@ -143,7 +148,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 	@Query(value = "select create_date from orders order by create_date desc limit 1", nativeQuery = true)
 	String END_DATE();
 	
+	//query nam
+	@Query(value = SELECT_YEAR_ORDERS, nativeQuery = true)
+	List<Integer> SELECT_YEAR_ORDERS();
 	
+
+	//query nam
+	@Query(value = SELECT_DONHANG, nativeQuery = true)
+	Integer SELECT_DONHANG(@Param("status") String status, @Param("month") String month,  @Param("year") String year);
+	
+	
+	@Query(value = SELECT_DOANHTHU, nativeQuery = true)
+	Float SELECT_DOANHTHU(@Param("status") String status, @Param("month") String month,  @Param("year") String year);
+		
 	// admin
 	@Query(value = COUNT_ORDER_ADMIN, nativeQuery = true)
 	Integer getCountAdmin(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id );

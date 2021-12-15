@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.it15306.dto.thongKeBody;
 import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
+import com.it15306.dto.dashboard.YearBody;
 import com.it15306.dto.order.OrderDto;
 
 @Service
@@ -34,4 +36,11 @@ public interface thongKeService {
 	public List<OrderDto> thongKeDonHang(ThongKeBody data);
 	public Integer  countDonHang(ThongKeBody data);
 	public Integer countTotalElement();
+	// thống kê đơn hàng
+	public List<Integer> listYears();
+	///
+	
+	public BienDoDThu thongKetBienDoanhThu(YearBody data);
+	
+	public BienDoDHang thongKetBienDonHang(YearBody data);
 }

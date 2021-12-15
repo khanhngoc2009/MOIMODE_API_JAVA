@@ -1,6 +1,5 @@
 package com.it15306.servicesImpl;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -24,6 +23,7 @@ import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
+import com.it15306.dto.dashboard.YearBody;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.entities.Order;
 import com.it15306.repository.CategoryRepository;
@@ -132,7 +132,6 @@ public class thongKeServiceImpl implements thongKeService {
 
 //		------------------------------------------
 		SimpleDateFormat fmY = new SimpleDateFormat("yyyy-MM-dd");
-		;
 		String nam = fmY.format(new Date());
 
 		Date date3 = new Date();
@@ -232,7 +231,7 @@ public class thongKeServiceImpl implements thongKeService {
 
 //		------------------------------------------
 		SimpleDateFormat fmY = new SimpleDateFormat("yyyy-MM-dd");
-		;
+		
 		String nam = fmY.format(new Date());
 
 		Date date3 = new Date();
@@ -442,6 +441,104 @@ public class thongKeServiceImpl implements thongKeService {
 		return sobanghi;
 	}
 
+	@Override
+	public BienDoDThu thongKetBienDoanhThu(YearBody data) {
+		BienDoDThu bienDoDThu = new BienDoDThu();
+		List<String> listMonth=new ArrayList<String>();
+		listMonth.add("1");
+		listMonth.add("2");
+		listMonth.add("3");
+		listMonth.add("4");
+		listMonth.add("5");
+		listMonth.add("6");
+		listMonth.add("7");
+		listMonth.add("8");
+		listMonth.add("9");
+		listMonth.add("10");
+		listMonth.add("11");
+		listMonth.add("12");
+		bienDoDThu.setThu(listMonth);
+		List<Float> listTong=new ArrayList<Float>();
+		for (int i = 0; i < listMonth.size(); i++) {
+		Float tong =	orderRepository.SELECT_DOANHTHU("4",  listMonth.get(i),String.valueOf( data.getYear()));
+		listTong.add(tong != null ? tong : 0);
+		}
+		bienDoDThu.setSumDoanhThu(listTong);
+		
+		return bienDoDThu;
+	}
+	
+	public static long daysBetween2Dates(String startDate, String EndDate) {
+		 long noDay;
+		try {
+			
+		
+        // Định dạng thời gian
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        // Định nghĩa 2 mốc thời gian ban đầu
+        Date date1 = dateFormat.parse(startDate);
+        Date date2 = dateFormat.parse(EndDate);
+
+        c1.setTime(date1);
+        c2.setTime(date2);
+
+        // Công thức tính số ngày giữa 2 mốc thời gian:
+       noDay = (c2.getTime().getTime() - c1.getTime().getTime()) / (24 * 3600 * 1000);
+
+        System.out.print("Số ngày giữa " + dateFormat.format(c1.getTime())
+
+                + " và " + dateFormat.format(c2.getTime()) + ": ");
+
+        System.out.println(noDay);
+        return noDay;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return 0;
+    }
+
+	@Override
+	public List<Integer> listYears() {
+		
+		return orderRepository.SELECT_YEAR_ORDERS();
+	}
+	
+public List<Integer> listMonth() {
+		
+		return orderRepository.SELECT_YEAR_ORDERS();
+	}
+
+@Override
+public BienDoDHang thongKetBienDonHang(YearBody data) {
+	BienDoDHang bienDoDHang = new BienDoDHang();
+	List<String> listMonth=new ArrayList<String>();
+	listMonth.add("1");
+	listMonth.add("2");
+	listMonth.add("3");
+	listMonth.add("4");
+	listMonth.add("5");
+	listMonth.add("6");
+	listMonth.add("7");
+	listMonth.add("8");
+	listMonth.add("9");
+	listMonth.add("10");
+	listMonth.add("11");
+	listMonth.add("12");
+	bienDoDHang.setThu(listMonth);
+	List<Integer> listTong=new ArrayList<Integer>();
+	for (int i = 0; i < listMonth.size(); i++) {
+	Integer tong =	orderRepository.SELECT_DONHANG("4",  listMonth.get(i),String.valueOf( data.getYear()));
+	listTong.add(tong != null ? tong : 0);
+	}
+	bienDoDHang.setSoLuongDHang(listTong);
+	
+	return bienDoDHang;
+}
+	
 //	Thứ hai – Monday. Viết tắt: Mon.
 //	Thứ ba – Tuesday. Viết tắt: Tue.
 //	Thứ tư – Wednesday. Viết tắt: Wed.
