@@ -155,8 +155,11 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
         }
 	}
 	
-	public Long getCountClientCategory(Integer min_price,Integer max_price,Category category) {
-		return productRepository.countProductClientCategory(getCountClient(), getCountAdmin(), category.getId());
+	public Integer getCountClientCategory(Integer min_price,Integer max_price,Category category) {
+		
+		List<Object> list= productRepository.countProductClientCategory(min_price, max_price, category.getId());
+		System.out.print(list.size());
+		return list.size();
 	}
 	
 	public Object findBySku(Integer product_is, Integer option_1,Integer option_2,Integer option_3 ) {

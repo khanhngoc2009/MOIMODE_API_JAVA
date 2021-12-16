@@ -188,7 +188,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	Page<Object> findProductByCategoryAll(@Param("min_price") double min_price,@Param("max_price") double max_price,@Param("category") Integer category,Pageable page);
 	
 	final String SELECT_COUNT_CLIENT_CATEGORY = 
-			"select count(p) from Product p"
+			"select p,min(sku.price),max(sku.price) from Product p"
 					+ " join p.product_sku sku "
 					+ " where"
 					+ " sku.price >= ?1 "
@@ -198,8 +198,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 					+ " and p.category.id = ?3 "
 					+ " group by sku.product "
 					+ " order by p.create_date asc";
-	@Query(SELECT_COUNT_CLIENT_CATEGORY)
-	Long countProductClientCategory(
+	@Query(SELECT_PRODUCT_BY_CATEGORY_FILTER_ALL)
+	List<Object> countProductClientCategory(
 			@Param("min_price") double min_price,
 			@Param("max_price") double max_price,
 			@Param("category") Integer category

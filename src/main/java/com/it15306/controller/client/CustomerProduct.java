@@ -158,7 +158,7 @@ public class CustomerProduct {
 					category,
 					dto.getPage(),
 					dto.getTake());
-			Long count = (Long) this.productServiceImpl.getCountClientCategory(
+			Integer count = (Integer) this.productServiceImpl.getCountClientCategory(
 					(dto.getMin_price() !=null&& dto.getMin_price().toString().length()>0) ?dto.getMin_price():0,
 					(dto.getMax_price() !=null&& dto.getMax_price().toString().length()>0) ?dto.getMax_price():100000000,
 					category);
@@ -197,7 +197,7 @@ public class CustomerProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(Integer.parseInt(count!=null ?  String.valueOf(count): "0"));
+			data.setCount(count!=null ? count: 0);
 			data.setListData(productDTOs);
 			data.setMessage("Success");	
 			return new ResponseEntity<>(data,HttpStatus.OK);
