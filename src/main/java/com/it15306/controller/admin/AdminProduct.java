@@ -76,7 +76,7 @@ public class AdminProduct {
 	private CategoryProductServiceImpl categoryProductServiceImpl;
 	
 
-	@RequestMapping(value = "/admin/product/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/prosduct/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> createProduct(@RequestBody DataCreateProductDtos body) {
 		DataResponse<Integer> res=  new DataResponse<Integer>();

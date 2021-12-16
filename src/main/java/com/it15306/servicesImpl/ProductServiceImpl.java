@@ -118,15 +118,45 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		productRepository.delete(product);
 	}
 
-	public List<Object> getProductByCategory(Category category,int page,int take){
+	public List<Object> getProductByCategory(Integer min_price,Integer max_price,Integer type , Category category,int page,int take){
 		Pageable paging =  PageRequest.of(page, take);
-        Page<Object> pagedResult = productRepository.findProductByCategory(category,paging);
-        
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-        	return new ArrayList<Object>();
-		}
+        if(type == 0) {
+        	Page<Object> pagedResult = productRepository.findProductByCategoryPriceRaise(min_price, max_price, category.getId(), paging);
+            
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+            	return new ArrayList<Object>();
+    		}
+        }else if(type==1) {
+        	Page<Object> pagedResult = productRepository.findProductByCategoryPriceDECREASE(min_price, max_price,category.getId(), paging);
+            
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+            	return new ArrayList<Object>();
+    		}
+        }else if(type==2) {
+        	Page<Object> pagedResult = productRepository.findProductByCategoryNameRaise(min_price, max_price, category.getId(), paging);
+            
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+            	return new ArrayList<Object>();
+    		}
+        }else {
+        	Page<Object> pagedResult = productRepository.findProductByCategoryAll(min_price, max_price, category.getId(), paging);
+            
+            if(pagedResult.hasContent()) {
+                return pagedResult.getContent();
+            } else {
+            	return new ArrayList<Object>();
+    		}
+        }
+	}
+	
+	public Long getCountClientCategory(Integer min_price,Integer max_price,Category category) {
+		return productRepository.countProductClientCategory(getCountClient(), getCountAdmin(), category.getId());
 	}
 	
 	public Object findBySku(Integer product_is, Integer option_1,Integer option_2,Integer option_3 ) {

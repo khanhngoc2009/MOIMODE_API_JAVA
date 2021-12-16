@@ -151,8 +151,17 @@ public class CustomerProduct {
 //			}
 			Category category = new Category();
 			category.setId(dto.getCategory_id());
-			List<Object> list =  this.productServiceImpl.getProductByCategory(category,dto.getPage(),dto.getTake());
-			long count = (long) this.productServiceImpl.getCountClient();
+			List<Object> list =  this.productServiceImpl.getProductByCategory(
+					(dto.getMin_price() !=null&& dto.getMin_price().toString().length()>0) ?dto.getMin_price():0,
+					(dto.getMax_price() !=null&& dto.getMax_price().toString().length()>0) ?dto.getMax_price():100000000,
+					(dto.getType_filter() !=null&& dto.getType_filter().toString().length()>0) ?dto.getType_filter():10,
+					category,
+					dto.getPage(),
+					dto.getTake());
+			Long count = (Long) this.productServiceImpl.getCountClientCategory(
+					(dto.getMin_price() !=null&& dto.getMin_price().toString().length()>0) ?dto.getMin_price():0,
+					(dto.getMax_price() !=null&& dto.getMax_price().toString().length()>0) ?dto.getMax_price():100000000,
+					category);
 			List<Double> minPrice = new ArrayList<Double>();
 			List<Double> maxPrice = new ArrayList<Double>();
 			List<Product> prs = new ArrayList<Product>();
@@ -188,7 +197,7 @@ public class CustomerProduct {
 				}
 			}
 			data.setCode(200);
-			data.setCount(Integer.parseInt(String.valueOf(count)));
+			data.setCount(Integer.parseInt(count!=null ?  String.valueOf(count): "0"));
 			data.setListData(productDTOs);
 			data.setMessage("Success");	
 			return new ResponseEntity<>(data,HttpStatus.OK);

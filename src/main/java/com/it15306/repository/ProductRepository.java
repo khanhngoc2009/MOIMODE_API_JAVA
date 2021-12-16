@@ -62,7 +62,9 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
 			+ " where p.id =:product_id AND p.status = 1 and p.type = 2  group by sku.product ";
-
+	
+	
+	
 	
 //	select * from product 
 //	where category_id like '%1%' and create_date between '2021-10-26' and '2021-11-02' and product_name like '%%'
@@ -118,4 +120,98 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	
 	@Query(value="select count(product_id) from product  where category_id= ?1", nativeQuery = true)
 	Integer countProductByCategory(@Param("category_id") Integer category_id);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// FILTER CATEGORY
+	final String SELECT_PRODUCT_BY_CATEGORY_FILTER_PRICE_RAISE ="select p,min(sku.price),max(sku.price) from Product p"
+			+ " join p.product_sku sku "
+			+ " where"
+			+ " sku.price >= ?1 "
+			+ " and sku.price <= ?2 "
+			+ " and p.status = 1 "
+			+ " and p.type = 2 "
+			+ " and p.category.id  = ?3 "
+			+ " group by sku.product "
+			+ " order by min(sku.price) asc";
+	final String SELECT_PRODUCT_BY_CATEGORY_FILTER_PRICE_DECREASE ="select p,min(sku.price),max(sku.price) from Product p"
+			+ " join p.product_sku sku "
+			+ " where"
+			+ " sku.price >= ?1 "
+			+ " and sku.price <= ?2 "
+			+ " and p.status = 1 "
+			+ " and p.type = 2 "
+			+ " and p.category.id  = ?3 "
+			+ " group by sku.product "
+			+ " order by min(sku.price) desc";
+	
+	final String SELECT_PRODUCT_BY_CATEGORY_FILTER_NAME_RAISE ="select p,min(sku.price),max(sku.price) from Product p"
+			+ " join p.product_sku sku "
+			+ " where"
+			+ " sku.price >= ?1 "
+			+ " and sku.price <= ?2 "
+			+ " and p.status = 1 "
+			+ " and p.type = 2 "
+			+ " and p.category.id = ?3 "
+			+ " group by sku.product "
+			+ " order by p.product_name asc ";
+	final String SELECT_PRODUCT_BY_CATEGORY_FILTER_ALL ="select p,min(sku.price),max(sku.price) from Product p"
+			+ " join p.product_sku sku "
+			+ " where"
+			+ " sku.price >= ?1 "
+			+ " and sku.price <= ?2 "
+			+ " and p.status = 1 "
+			+ " and p.type = 2 "
+			+ " and p.category.id = ?3 "
+			+ " group by sku.product "
+			+ " order by p.create_date asc";
+	@Query(SELECT_PRODUCT_BY_CATEGORY_FILTER_PRICE_RAISE)
+	Page<Object> findProductByCategoryPriceRaise(@Param("min_price") double min_price,@Param("max_price") double max_price,@Param("category") Integer category,Pageable page);
+	@Query(SELECT_PRODUCT_BY_CATEGORY_FILTER_PRICE_DECREASE)
+	Page<Object> findProductByCategoryPriceDECREASE(@Param("min_price") double min_price,@Param("max_price") double max_price,@Param("category") Integer category,Pageable page);
+	@Query(SELECT_PRODUCT_BY_CATEGORY_FILTER_NAME_RAISE)
+	Page<Object> findProductByCategoryNameRaise(@Param("min_price") double min_price,@Param("max_price") double max_price,@Param("category") Integer category,Pageable page);
+	@Query(SELECT_PRODUCT_BY_CATEGORY_FILTER_ALL)
+	Page<Object> findProductByCategoryAll(@Param("min_price") double min_price,@Param("max_price") double max_price,@Param("category") Integer category,Pageable page);
+	
+	final String SELECT_COUNT_CLIENT_CATEGORY = 
+			"select count(p) from Product p"
+					+ " join p.product_sku sku "
+					+ " where"
+					+ " sku.price >= ?1 "
+					+ " and sku.price <= ?2 "
+					+ " and p.status = 1 "
+					+ " and p.type = 2 "
+					+ " and p.category.id = ?3 "
+					+ " group by sku.product "
+					+ " order by p.create_date asc";
+	@Query(SELECT_COUNT_CLIENT_CATEGORY)
+	Long countProductClientCategory(
+			@Param("min_price") double min_price,
+			@Param("max_price") double max_price,
+			@Param("category") Integer category
+	);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
