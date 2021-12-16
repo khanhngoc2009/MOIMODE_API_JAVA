@@ -164,7 +164,11 @@ public class CustomerOrder {
 							product_order.setQuantity(list_cart_product.get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
 							orderServiceImpl.saveProductOrder(product_order);
+							
 							cartService.deleteCartProductByID(list_cart_product.get(i).getId());
+							int rest =p_sku.getQuantiy_rest() + list_cart_product.get(i).getQuantity();
+							p_sku.setQuantiy_rest(rest>=0?rest:0);
+							productServiceImpl.saveProductSku(p_sku);
 						}
 						data.setCode(200);
 						data.setMessage("Success");
