@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,13 +43,23 @@ public class CustomerCart {
 	
 	@RequestMapping(value = "/cart/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<CartProductDTO> Create(@RequestBody dataBodyCart data) {
-		try {			
-			CartProductDTO  dto =	cartService.insertProductToCart(data);
-			if(dto != null) {
-				return ResponseEntity.ok(dto);
+	public ResponseEntity<CartProductDTO> Create(@Validated @RequestBody dataBodyCart data,BindingResult bindingResult , HttpServletRequest httpServletRequest) {
+		boolean check = bindingResult.hasErrors();
+		try {
+			if(!check) {
+				String token = httpServletRequest.getHeader("Authorization").substring(7);
+				String username = tokenProvider.getUserNameFromJWT(token);
+				User user = userservice.getByUsername(username);
+				System.out.println("id: "+user.getId());
+				if(user != null) {
+				data.setUserId(user.getId());
+				CartProductDTO  dto =	cartService.insertProductToCart(data);
+					if(dto != null) {
+						return ResponseEntity.ok(dto);
+					}
+				}
 			}
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.badRequest().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -55,11 +67,20 @@ public class CustomerCart {
 	}
 	@RequestMapping(value = "/cart/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<CartProductDTO> updateQuantity(@RequestBody dataBodyCart data) {
-		try {			
-			CartProductDTO  dto =	cartService.updateProductToCart(data);
-			if(dto != null) {
-				return ResponseEntity.ok(dto);
+	public ResponseEntity<CartProductDTO> updateQuantity(@Validated  @RequestBody dataBodyCart data,BindingResult bindingResult , HttpServletRequest req) {
+		boolean check = bindingResult.hasErrors();
+		try {
+			if(!check) {
+			String token = req.getHeader("Authorization").substring(7);
+			String username = tokenProvider.getUserNameFromJWT(token);
+			User user = userservice.getByUsername(username);
+			if(user != null) {
+				data.setUserId(user.getId());
+				CartProductDTO  dto =	cartService.updateProductToCart(data);
+				if(dto != null) {
+					return ResponseEntity.ok(dto);
+				}
+			}
 			}
 			return ResponseEntity.noContent().build();
 		} catch (Exception e) {
@@ -70,9 +91,16 @@ public class CustomerCart {
 	
 	@RequestMapping(value = "/cart/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public void delete(@RequestBody dataDeleteCart data) {
+	public void delete(@RequestBody dataDeleteCart data, HttpServletRequest req) {
+		String token = req.getHeader("Authorization").substring(7);
+		String username = tokenProvider.getUserNameFromJWT(token);
+		User user = userservice.getByUsername(username);
 		
-		cartService.delete(data);
+		if( user != null) {
+			data.setUserId(user.getId());
+			cartService.delete(data);
+		}
+		
 		
 	}
 	

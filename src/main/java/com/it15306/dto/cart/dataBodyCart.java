@@ -1,8 +1,16 @@
 package com.it15306.dto.cart;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class dataBodyCart {
+	@NotNull
+	@Min(value  = 1)
+	@Max(value = 100)
 	private Integer quantity;
 	private Integer userId;
+	@NotNull
 	private Integer productSKUId;
 	/**
 	 * @return the userId
