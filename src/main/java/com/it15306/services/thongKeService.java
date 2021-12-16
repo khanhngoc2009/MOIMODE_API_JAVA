@@ -9,6 +9,7 @@ import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
+import com.it15306.dto.dashboard.Year;
 import com.it15306.dto.dashboard.YearBody;
 import com.it15306.dto.order.OrderDto;
 
@@ -37,7 +38,7 @@ public interface thongKeService {
 	public Integer  countDonHang(ThongKeBody data);
 	public Integer countTotalElement();
 	// thống kê đơn hàng
-	public List<Integer> listYears();
+	public List<Year> listYears();
 	///
 	
 	public BienDoDThu thongKetBienDoanhThu(YearBody data);

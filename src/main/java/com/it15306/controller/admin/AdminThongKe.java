@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.it15306.dto.thongKeBody;
 import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
+import com.it15306.dto.dashboard.Year;
 import com.it15306.dto.dashboard.YearBody;
 import com.it15306.services.thongKeService;
 
@@ -59,7 +60,7 @@ public class AdminThongKe {
 	@ApiOperation(value = "API thống kê năm")
 	@PostMapping("/admin/thong-ke/nam")
 	@ResponseBody
-	public ResponseEntity<List<Integer>>  thongKenam() {
+	public ResponseEntity<List<Year>>  thongKenam() {
 		
 		try {
 			return ResponseEntity.ok(keService.listYears());

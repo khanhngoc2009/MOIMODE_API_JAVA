@@ -23,6 +23,7 @@ import com.it15306.dto.dashboard.BienDoDHang;
 import com.it15306.dto.dashboard.BienDoDThu;
 import com.it15306.dto.dashboard.ThongKeBody;
 import com.it15306.dto.dashboard.TongHopDonHang;
+import com.it15306.dto.dashboard.Year;
 import com.it15306.dto.dashboard.YearBody;
 import com.it15306.dto.order.OrderDto;
 import com.it15306.entities.Order;
@@ -502,9 +503,22 @@ public class thongKeServiceImpl implements thongKeService {
     }
 
 	@Override
-	public List<Integer> listYears() {
+	public List<Year> listYears() {
+		List<Year> lt=new ArrayList<Year>();
+		try {
+			List<Integer> list= orderRepository.SELECT_YEAR_ORDERS();
+			
+			for (int i = 0; i < list.size(); i++) {
+				Year year =new Year();
+				year.setId(i+1);			
+				year.setName(list.get(i));
+				lt.add(year);
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lt;		
 		
-		return orderRepository.SELECT_YEAR_ORDERS();
 	}
 	
 public List<Integer> listMonth() {
