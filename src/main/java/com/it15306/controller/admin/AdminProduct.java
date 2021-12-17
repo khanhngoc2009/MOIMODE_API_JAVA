@@ -163,7 +163,7 @@ public class AdminProduct {
 	}
 	
 	
-	@RequestMapping(value = "/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getAllProducts(@RequestBody DataBodyListProductDto dto) throws ParseException {
 		ModelMapper modelMapper = new ModelMapper();
