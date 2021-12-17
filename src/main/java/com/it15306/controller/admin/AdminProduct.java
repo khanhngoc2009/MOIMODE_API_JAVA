@@ -163,14 +163,12 @@ public class AdminProduct {
 	}
 	
 	
-	@RequestMapping(value = "/admin/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getAllProducts(@RequestBody DataBodyListProductDto dto) throws ParseException {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductResponseAdminDto> data = new DataResponseList<ProductResponseAdminDto>();
-		
 		try {
-			
 		    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
 			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
 			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
@@ -179,19 +177,18 @@ public class AdminProduct {
 			List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
 			List<Product> prs = new ArrayList<Product>();
 			BigInteger count = this.productServiceImpl.getCountAdminByQuery(category_id,start_date,end_start,name,status);
-			System.out.print(obj.size());
 			for (int i=0; i<obj.size(); i++){
 				   Object[] row = (Object[]) obj.get(i);
 				   Product pr = new Product();
 				   pr.setId((Integer) ((BigInteger) row[0]).intValue());
 				   pr.setProduct_name((String) row[1]);
 				   pr.setCreate_date((Date) row[2]);
-				   pr.setDescription((String) row[3]);
-				   Category cate = categoryProductServiceImpl.getCayegoryChildrenById((Integer) ((BigInteger) row[4]).intValue());
+				   pr.setDescription((String) row[7]);
+				   Category cate = categoryProductServiceImpl.getCayegoryChildrenById((Integer) ((BigInteger) row[3]).intValue());
 				   pr.setCategory(cate);
-				   pr.setStatus((Integer) row[5]);
-				   pr.setType((Integer) row[6]);
-				   pr.setImage((String) row[7]);
+				   pr.setStatus((Integer) row[4]);
+				   pr.setType((Integer) row[5]);
+				   pr.setImage((String) row[6]);
 				   prs.add(pr);
 			}
 			List<ProductResponseAdminDto> productDTOs =new ArrayList<ProductResponseAdminDto>();
