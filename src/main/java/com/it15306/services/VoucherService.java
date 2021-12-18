@@ -36,5 +36,7 @@ public interface VoucherService {
 	Long totalement();
 	
 	List<Voucherdto> listVoucherCustomer();
+
+	Boolean checkGiamTien_pTram(Integer type, Integer discount);
 	
 }

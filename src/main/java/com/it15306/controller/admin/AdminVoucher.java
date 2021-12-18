@@ -50,7 +50,8 @@ public class AdminVoucher {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 		Long soday =	thongKeServiceImpl.daysBetween2Dates(dateFormat.format(data.getStart_time()),dateFormat.format(data.getEnd_time()));
-			if(!check && soday.intValue() > 0) {
+		Boolean checkgiam=voucherService.checkGiamTien_pTram(data.getType_discount(), data.getDiscount());
+			if(!check && soday.intValue() > 0 && checkgiam) {
 				Voucherdto vo = 	voucherService.create(data);
 				if(vo == null || data.equals(null)) {
 					return ResponseEntity.noContent().build();
@@ -69,8 +70,9 @@ public class AdminVoucher {
 		boolean check = bindingResult.hasErrors();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
+			Boolean checkgiam=voucherService.checkGiamTien_pTram(data.getType_discount(), data.getDiscount());
 			Long soday =	thongKeServiceImpl.daysBetween2Dates(dateFormat.format(data.getStart_time()),dateFormat.format(data.getEnd_time()));
-			if(!check && soday.intValue() > 0) {
+			if(!check && soday.intValue() > 0 && checkgiam) {
 			Voucherdto vo = 	voucherService.update(data);
 			if(vo == null || data.equals(null)) {
 				return ResponseEntity.noContent().build();
