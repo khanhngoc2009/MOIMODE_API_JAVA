@@ -158,8 +158,11 @@ public class CartServiceImpl implements CartService{
 		}else {
 			//check update			
 		cartproduct =	cartProductReponsitory.selectCheck(cvo.getId(), data.getProductSKUId());
+		
 		if(cartproduct == null) {
-			//luu cart product	 new
+			//luu cart product	 new.
+		
+
 			System.out.println("vo tao maoi cart product qlt");
 			carpro.setCarts(cvo);
 			carpro.setProductSkus(productSKU);
@@ -172,6 +175,11 @@ public class CartServiceImpl implements CartService{
 			return resp;
 		}else {
 			// update quantity
+			Integer checkQuantity= cartproduct.getQuantity() + data.getQuantity();
+			if(checkQuantity > 100) {
+				System.out.println("check so luong tren 100. ko update dc");
+				return null;
+			}
 			System.out.println("vo uodate qlt");
 			Integer soluong=cartproduct.getQuantity()+data.getQuantity();
 			cartProductReponsitory.updateQuantitys(soluong,cvo.getId(), data.getProductSKUId());
@@ -196,6 +204,11 @@ public class CartServiceImpl implements CartService{
 		if(cvo != null) {
 			cartproduct =	cartProductReponsitory.selectCheck(cvo.getId(), data.getProductSKUId());
 			if(cartproduct != null) {
+				Integer checkQuantity= cartproduct.getQuantity() + data.getQuantity();
+				if(checkQuantity > 100) {
+					System.out.println("check so luong tren 100. ko tao dc");
+					return null;
+				}
 				Integer soluong=data.getQuantity();
 				cartProductReponsitory.updateQuantitys(soluong,cvo.getId(), data.getProductSKUId());
 				CartProductDTO resp= modelMapper.map(carpro, CartProductDTO.class);

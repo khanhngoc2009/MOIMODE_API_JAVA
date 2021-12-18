@@ -1,5 +1,6 @@
 package com.it15306.controller.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.repository.OrderRepository;
 import com.it15306.repository.VoucherRepository;
 import com.it15306.services.VoucherService;
+import com.it15306.servicesImpl.thongKeServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -37,13 +39,18 @@ public class AdminVoucher {
 	
 	@Autowired
 	OrderRepository orderRepository;
-	 
+	@Autowired
+	thongKeServiceImpl thongKeServiceImpl;
+	
+	
 	@PostMapping("/admin/voucher/create")
 	@ResponseBody
 	public ResponseEntity<Voucherdto>  create(@Validated @RequestBody RequetVoucher data, BindingResult bindingResult) {
 		boolean check = bindingResult.hasErrors();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
-			if(!check) {
+		Long soday =	thongKeServiceImpl.daysBetween2Dates(dateFormat.format(data.getStart_time()),dateFormat.format(data.getEnd_time()));
+			if(!check && soday.intValue() > 0) {
 				Voucherdto vo = 	voucherService.create(data);
 				if(vo == null || data.equals(null)) {
 					return ResponseEntity.noContent().build();
