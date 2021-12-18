@@ -30,7 +30,22 @@ public class OrderDto {
 	private double transportationCost = 30000;
 	private Integer isEvaluate = 0;
 	private String reason="";
+	private String name="";
+	private String phone= "";
+	
 
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public String getReason() {
 		return reason;
 	}

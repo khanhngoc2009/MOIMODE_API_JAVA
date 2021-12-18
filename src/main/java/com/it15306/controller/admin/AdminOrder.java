@@ -85,7 +85,7 @@ public class AdminOrder {
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
-//		try {
+		try {
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
 						dto.getPage(), 
@@ -131,6 +131,13 @@ public class AdminOrder {
 					ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
 					ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
 					ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+					if(order.getPhone_guest()!= null 
+							&& order.getName_guest()!=null 
+							&& order.getName_guest().length()>0 
+							&& order.getPhone_guest().length()>0) {
+							ad_dto.setPhone_persion(order.getPhone_guest());
+							ad_dto.setName_persion(order.getName_guest());
+						}
 					orderDto.setAddressOrder(ad_dto);
 					orderDto.setVoucher(modelMapper.map(order.getVoucher(), Voucherdto.class));
 					orderDto.setPaymentType(modelMapper.map(order.getPayment(), PaymentDTO.class));
@@ -141,11 +148,11 @@ public class AdminOrder {
 				data.setListData(listOrders);
 				data.setMessage("SUCCESS");
 				return new ResponseEntity<>(data,HttpStatus.OK);
-//		} catch (Exception e) {
-//			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
-//			data.setMessage("Fail");
-//			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
-//		}
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
 	}
 	@RequestMapping(value = "/admin/order/change-status", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -194,6 +201,13 @@ public class AdminOrder {
 				}
 				AddressOrder ad = order_after_update.getAddress();
 				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
+				if(order_after_update.getPhone_guest()!= null 
+						&& order_after_update.getName_guest()!=null 
+						&& order_after_update.getName_guest().length()>0 
+						&& order_after_update.getPhone_guest().length()>0) {
+						ad_dto.setPhone_persion(order_after_update.getPhone_guest());
+						ad_dto.setName_persion(order_after_update.getName_guest());
+					}
 				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
 				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
 				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
@@ -241,6 +255,13 @@ public class AdminOrder {
 			ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
 			ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
 			ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
+			if(order_after_update.getPhone_guest()!= null 
+					&& order_after_update.getName_guest()!=null 
+					&& order_after_update.getName_guest().length()>0 
+					&& order_after_update.getPhone_guest().length()>0) {
+					ad_dto.setPhone_persion(order_after_update.getPhone_guest());
+					ad_dto.setName_persion(order_after_update.getName_guest());
+				}
 			orderDto.setAddressOrder(ad_dto);
 			orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
 			orderDto.setPaymentType(modelMapper.map(order_after_update.getPayment(), PaymentDTO.class));
@@ -277,6 +298,13 @@ public class AdminOrder {
 				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
 				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
 				ad_dto.setDistrictdto(modelMapper.map(ad.getDistrict(), DistrictDTO.class));
+				if(order_after_update.getPhone_guest()!= null 
+					&& order_after_update.getName_guest()!=null 
+					&& order_after_update.getName_guest().length()>0 
+					&& order_after_update.getPhone_guest().length()>0) {
+					ad_dto.setPhone_persion(order_after_update.getPhone_guest());
+					ad_dto.setName_persion(order_after_update.getName_guest());
+				}
 				ad_dto.setWarddto(modelMapper.map(ad.getWard(), WardDTO.class));
 				orderDto.setAddressOrder(ad_dto);
 				orderDto.setVoucher(modelMapper.map(order_after_update.getVoucher(), Voucherdto.class));
@@ -322,6 +350,8 @@ public class AdminOrder {
 						order.setPayment(payment);
 						order.setAddress(addressOrder);
 						order.setType_payment(0);
+						order.setPhone_guest(dto.getPhone());
+						order.setName_guest(dto.getName());
 						Voucher vou  = new Voucher();
 						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {
 							Voucherdto voucher = voucherService.getByIdVoucher(dto.getVoucher_id());

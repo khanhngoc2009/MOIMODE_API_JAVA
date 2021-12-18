@@ -40,7 +40,22 @@ public class Order {
 	private String note;
 	private Integer isEvaluate;
 	private String reason;
+	private String name_guest;
+	private String phone_guest;
 	
+	
+	public String getName_guest() {
+		return name_guest;
+	}
+	public void setName_guest(String name_guest) {
+		this.name_guest = name_guest;
+	}
+	public String getPhone_guest() {
+		return phone_guest;
+	}
+	public void setPhone_guest(String phone_guest) {
+		this.phone_guest = phone_guest;
+	}
 	public String getReason() {
 		return reason;
 	}

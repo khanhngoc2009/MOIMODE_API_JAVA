@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.it15306.config.DataResponseList;
 import com.it15306.dto.product.ProductSkuDto;
+import com.it15306.dto.product.ProductSkuListAdminDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.ImageProduct;
 import com.it15306.entities.Order;
@@ -207,18 +208,28 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 		return skuRepository.getInfoBySku(id);
 	}
 	
-	public ResponseEntity<DataResponseList<ProductSkuDto>>  getListProductSku (int page,int take, String sku_value) {
+	public ResponseEntity<DataResponseList<ProductSkuListAdminDto>>  getListProductSku (int page,int take, String sku_value) {
 		ModelMapper modelMapper = new ModelMapper();
-		DataResponseList<ProductSkuDto> data = new DataResponseList<ProductSkuDto>();
+		DataResponseList<ProductSkuListAdminDto> data = new DataResponseList<ProductSkuListAdminDto>();
 		try {
 			Pageable paging =  PageRequest.of(page, take); 
 			Page<Product_Sku> pagedResult = productSkuRepository.findProductSKU(sku_value, paging);
 			if(pagedResult.hasContent()) {
 				List<Product_Sku>  pr_skus = pagedResult.getContent();
-				List<ProductSkuDto> skuDtos= new ArrayList<ProductSkuDto>();
+				List<ProductSkuListAdminDto> skuDtos= new ArrayList<ProductSkuListAdminDto>();
 				int size = pr_skus.size();
 				for(int i=0;i<size;i++) {
-					ProductSkuDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuDto.class);
+					ProductSkuListAdminDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuListAdminDto.class);
+					List<Object> obj =  skuRepository.getInfoBySku(pr_skus.get(i).getProduct_sku_id());
+					String optionValueProducts = "";
+					String name_product = "";
+					for(int k =  0;k<obj.size();k++) {
+						Object[] row = (Object[]) obj.get(k);
+						optionValueProducts = optionValueProducts + (k != 0 ? ", " : "") + (String) row[0];
+						name_product = (String) row[1];
+					}
+					p.setProduct_name(name_product);
+					p.setOption_value(optionValueProducts);
 					skuDtos.add(p);
 				}
 				data.setCount(productSkuRepository.countSku(sku_value));
@@ -226,7 +237,7 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 				data.setMessage("Success");
 				return new ResponseEntity<>(data,HttpStatus.OK);
 	        } else {
-	        	data.setListData(new ArrayList<ProductSkuDto>());
+	        	data.setListData(new ArrayList<ProductSkuListAdminDto>());
 	        	data.setCode(200);
 	        	data.setMessage("Thanh cong");
 	        	return new ResponseEntity<>(data,HttpStatus.OK);
