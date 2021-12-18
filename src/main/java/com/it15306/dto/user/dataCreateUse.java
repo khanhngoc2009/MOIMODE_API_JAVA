@@ -28,8 +28,8 @@ public class dataCreateUse{
 	@NotBlank
 	@Length(min = 10,max = 15)
 	private String phone;
-	@NotBlank
-	private String roles;
+//	@NotBlank
+//	private String roles;
 	
 	
 	
@@ -145,16 +145,16 @@ public class dataCreateUse{
 	/**
 	 * @return the roles
 	 */
-	public String getRoles() {
-		return roles;
-	}
-	/**
-	 * @param roles the roles to set
-	 */
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-	
+//	public String getRoles() {
+//		return roles;
+//	}
+//	/**
+//	 * @param roles the roles to set
+//	 */
+//	public void setRoles(String roles) {
+//		this.roles = roles;
+//	}
+//	
 	
 	
 }

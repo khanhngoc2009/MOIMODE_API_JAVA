@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		user.setAdmin(data.getAdmin());
 		user.setDistrict(district);
 		user.setWard(ward);
-		user.setRoles(data.getRoles().toUpperCase());
+		user.setRoles(data.getAdmin() == 1 ? "ADMIN" : "CUSTOMER" );
 		user.setUsername(data.getUsername().trim());
 		user.setProvince(province);
 		user.setPhoto(data.getPhoto());
@@ -294,7 +294,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		user.setProvince(province);
 		user.setDistrict(district);
 		user.setWard(ward);
-		user.setRoles(data.getRoles());
+		user.setRoles(data.getAdmin() == 1 ? "ADMIN" : "CUSTOMER");
 		user.setUsername(data.getUsername().trim());
 		user.setFull_name(data.getFull_name());
 		user.setPhoto(data.getPhoto());
