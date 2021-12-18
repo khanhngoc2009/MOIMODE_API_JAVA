@@ -300,7 +300,7 @@ public class AdminOrder {
 		ConfigDefine congig = new ConfigDefine();
 		try {
 			// ly thong tin user
-			if( dto.getAddress_id()!=null && dto.getPayment_id()!=null) {
+			if(dto.getName()!=null && dto.getPhone()!=null && dto.getPayment_id()!=null) {
 				User user = userservice.getById("0");
 				int size = dto.getListProductSku().size();
 				double voucher_discount = 0;
@@ -312,7 +312,7 @@ public class AdminOrder {
 						}
 						AddressOrder addressOrder = new AddressOrder();
 						addressOrder.setid(0);
-						dto.getAddress_id();
+//						dto.getAddress_id();
 						Order order = new Order();
 						order.setCreate_date(new Date());
 						order.setStatus(congig.SUCCESS); // chuyen thanh don thanh cong luon

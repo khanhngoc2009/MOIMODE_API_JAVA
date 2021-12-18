@@ -7,8 +7,9 @@ import com.it15306.dto.cart.CartProductDTO;
 public class PayloadCreateOrderAdmin {
 	private Integer voucher_id;
 	private Integer payment_id;
-	private Integer address_id;
 	private String note;
+	private String phone;
+	private String name;
 	private List<ProductSkuPayloadOrder> listProductSku;
 	public Integer getVoucher_id() {
 		return voucher_id;
@@ -21,12 +22,6 @@ public class PayloadCreateOrderAdmin {
 	}
 	public void setPayment_id(Integer payment_id) {
 		this.payment_id = payment_id;
-	}
-	public Integer getAddress_id() {
-		return address_id;
-	}
-	public void setAddress_id(Integer address_id) {
-		this.address_id = address_id;
 	}
 	
 	public List<ProductSkuPayloadOrder> getListProductSku() {
@@ -41,4 +36,18 @@ public class PayloadCreateOrderAdmin {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }

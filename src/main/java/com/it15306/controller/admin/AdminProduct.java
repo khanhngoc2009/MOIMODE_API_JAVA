@@ -296,10 +296,10 @@ public class AdminProduct {
 		}
 	}
 	
-	@RequestMapping(value = "/product-sku/list/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-sku/list/all", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getProductSkuAll(@RequestBody PayloadProductSkuAdmin payload) {
-		return productServiceImpl.getListProductSku(payload.getPage(), payload.getTake(), payload.getSku_value()!=null ?payload.getSku_value():"" );
+		return productServiceImpl.getListProductSku(payload.getPage(), payload.getTake(), payload.getSkuValue()!=null ?payload.getSkuValue():"" );
 	}
 	
 	@RequestMapping(value = "/admin/image-product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
