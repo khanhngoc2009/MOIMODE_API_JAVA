@@ -10,7 +10,7 @@ public class PayloadCreateOrderAdmin {
 	private String note;
 	private String phone;
 	private String name;
-	private List<ProductSkuPayloadOrder> listProductSku;
+	private List<ObjectCreateOrderDto> listProductSku;
 	public Integer getVoucher_id() {
 		return voucher_id;
 	}
@@ -24,12 +24,7 @@ public class PayloadCreateOrderAdmin {
 		this.payment_id = payment_id;
 	}
 	
-	public List<ProductSkuPayloadOrder> getListProductSku() {
-		return listProductSku;
-	}
-	public void setListProductSku(List<ProductSkuPayloadOrder> listProductSku) {
-		this.listProductSku = listProductSku;
-	}
+	
 	public String getNote() {
 		return note;
 	}
@@ -47,6 +42,12 @@ public class PayloadCreateOrderAdmin {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public List<ObjectCreateOrderDto> getListProductSku() {
+		return listProductSku;
+	}
+	public void setListProductSku(List<ObjectCreateOrderDto> listProductSku) {
+		this.listProductSku = listProductSku;
 	}
 	
 	

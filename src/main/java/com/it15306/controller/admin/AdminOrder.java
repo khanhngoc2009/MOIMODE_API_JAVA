@@ -37,6 +37,7 @@ import com.it15306.dto.order.PayloadCreateOrderAdmin;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.order.ProductSkuPayloadOrder;
 import com.it15306.dto.payment.PaymentDTO;
+import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.dto.voucher.Voucherdto;
 import com.it15306.entities.AddressOrder;
 import com.it15306.entities.CartProduct;
@@ -335,8 +336,8 @@ public class AdminOrder {
 				double total_order = 0;
 					if(size>0) {
 						for(int i=0;i<size;i++) {
-							ProductSkuPayloadOrder product_sku =   dto.getListProductSku().get(i);
-							total_order =  total_order + (product_sku.getPrice() * product_sku.getQuantity());
+							ProductSkuDto product_sku =   dto.getListProductSku().get(i).getSku();
+							total_order =  total_order + (product_sku.getPrice() * dto.getListProductSku().get(i).getQuantity());
 						}
 						AddressOrder addressOrder = new AddressOrder();
 						addressOrder.setid(0);
@@ -365,17 +366,17 @@ public class AdminOrder {
 							}
 							order.setVoucher(vou);
 						}else {
-							vou.setId(10000);
+							vou.setId(0);
 							order.setVoucher(vou);
 						}
-						double total_payment = total_order - voucher_discount + 30000;
+						double total_payment = total_order - voucher_discount + 0;
 						order.setTotal_price(total_payment>=0 ? total_payment:0);
 						order.setNote(dto.getNote());
 						order.setIsEvaluate(0);
 						order.setReason("");
 						Order  order_after_save =  orderServiceImpl.saveOrder(order);
 						for(int i=0;i<size;i++) {
-							ProductSkuPayloadOrder p_sku = dto.getListProductSku().get(i);
+							ProductSkuDto p_sku = dto.getListProductSku().get(i).getSku();
 							ProductOrder product_order = new ProductOrder();
 							product_order.setCreate_date(new Date());
 							product_order.setImage(p_sku.getUrl_media());
@@ -390,7 +391,7 @@ public class AdminOrder {
 							}
 							product_order.setProperties(optionValueProducts);
 							product_order.setStatus(1);
-							product_order.setQuantity(p_sku.getQuantity()); // lay so luong cua san pham
+							product_order.setQuantity(dto.getListProductSku().get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
 							orderServiceImpl.saveProductOrder(product_order);
 						}

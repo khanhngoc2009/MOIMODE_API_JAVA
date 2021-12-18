@@ -20,17 +20,17 @@ import com.it15306.entities.Voucher;
 
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
-	final String SELECT_ALL = "SELECT v FROM Voucher v where v.status = 1 and v.id < 10000";
-	final String SELECT_BY_Id = "SELECT v FROM Voucher v WHERE  v.status = 1 and v.id =:id and v.id < 10000";
+	final String SELECT_ALL = "SELECT v FROM Voucher v where v.status = 1 and v.id > 0";
+	final String SELECT_BY_Id = "SELECT v FROM Voucher v WHERE  v.status = 1 and v.id =:id and v.id > 0";
 	final String SELECT_BY_TITLE = "SELECT v FROM Voucher v WHERE v.title =:title and v.id < 10000";
-	final String SELECT_BY_TYPE_DISCOUNT = "SELECT v FROM Voucher v WHERE v.type_discount =:type_discount  and v.id < 10000";
-	final String SELECT_BY_STATUS = "SELECT v FROM Voucher v WHERE v.status =:status and v.id < 10000";
-	final String SELECT_BY_BETWEEN_TIME = "SELECT v FROM Voucher v WHERE v.id < 10000 and v.start_time >= :start_time and v.end_time <= :end_time ";
+	final String SELECT_BY_TYPE_DISCOUNT = "SELECT v FROM Voucher v WHERE v.type_discount =:type_discount  and v.id > 0";
+	final String SELECT_BY_STATUS = "SELECT v FROM Voucher v WHERE v.status =:status and v.id > 0";
+	final String SELECT_BY_BETWEEN_TIME = "SELECT v FROM Voucher v WHERE v.id > 0 and v.start_time >= :start_time and v.end_time <= :end_time ";
 	
-	final String SELECT_ALL_TYPE_PAGE = "SELECT v FROM Voucher v where v.status = 1 and v.id < 10000";
+	final String SELECT_ALL_TYPE_PAGE = "SELECT v FROM Voucher v where v.status = 1 and v.id > 0";
 	
-	final String FINTER ="select * from voucher  where   title like %?1%  and voucher_id < 10000 and create_time >= ?2 -1 and end_time <= ?3 and status like %?4% ORDER BY start_time desc" ;
-	final String FINTER_CUSTOMER ="select * from voucher where status = 1  and voucher_id < 10000 and start_time < ?1 and end_time > ?1 ORDER BY start_time desc";
+	final String FINTER ="select * from voucher  where   title like %?1%  and voucher_id > 0 and create_time >= ?2 -1 and end_time <= ?3 and status like %?4% ORDER BY start_time desc" ;
+	final String FINTER_CUSTOMER ="select * from voucher where status = 1  and voucher_id > 0 and start_time < ?1 and end_time > ?1 ORDER BY start_time desc";
 	
 	
 	

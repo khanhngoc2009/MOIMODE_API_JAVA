@@ -136,7 +136,7 @@ public class CustomerOrder {
 							}
 							order.setVoucher(vou);
 						}else {
-							vou.setId(10000);
+							vou.setId(0);
 							order.setVoucher(vou);
 						}
 						double total_payment = total_order - voucher_discount + 30000;
