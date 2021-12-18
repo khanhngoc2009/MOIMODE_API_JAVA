@@ -458,7 +458,7 @@ public class thongKeServiceImpl implements thongKeService {
 		listMonth.add("10");
 		listMonth.add("11");
 		listMonth.add("12");
-		bienDoDThu.setThu(listMonth);
+		bienDoDThu.setThu(listthang());
 		List<Float> listTong=new ArrayList<Float>();
 		for (int i = 0; i < listMonth.size(); i++) {
 		Float tong =	orderRepository.SELECT_DOANHTHU("4",  listMonth.get(i),String.valueOf( data.getYear()));
@@ -542,7 +542,7 @@ public BienDoDHang thongKetBienDonHang(YearBody data) {
 	listMonth.add("10");
 	listMonth.add("11");
 	listMonth.add("12");
-	bienDoDHang.setThu(listMonth);
+	bienDoDHang.setThu(listthang());
 	List<Integer> listTong=new ArrayList<Integer>();
 	for (int i = 0; i < listMonth.size(); i++) {
 	Integer tong =	orderRepository.SELECT_DONHANG("4",  listMonth.get(i),String.valueOf( data.getYear()));
@@ -552,7 +552,22 @@ public BienDoDHang thongKetBienDonHang(YearBody data) {
 	
 	return bienDoDHang;
 }
-	
+public List<String> listthang() {
+	List<String> listMonth=new ArrayList<String>();
+	listMonth.add("Tháng 1");
+	listMonth.add("Tháng 2");
+	listMonth.add("Tháng 3");
+	listMonth.add("Tháng 4");
+	listMonth.add("Tháng 5");
+	listMonth.add("Tháng 6");
+	listMonth.add("Tháng 7");
+	listMonth.add("Tháng 8");
+	listMonth.add("Tháng 9");
+	listMonth.add("Tháng 10");
+	listMonth.add("Tháng 11");
+	listMonth.add("Tháng 12");
+	return listMonth;
+}
 //	Thứ hai – Monday. Viết tắt: Mon.
 //	Thứ ba – Tuesday. Viết tắt: Tue.
 //	Thứ tư – Wednesday. Viết tắt: Wed.

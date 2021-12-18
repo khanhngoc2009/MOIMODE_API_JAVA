@@ -260,10 +260,26 @@ public class VoucherServiceImpl implements VoucherService {
 		}
 		return null;
 	}
-	
+
 	@Override
-	public Boolean checkGiamTien_pTram(Integer type, Integer discount ) {
+	public Boolean checkGiamTien(Integer type, Integer discount ) {
 		
+		if(type == 1) {
+			if(discount >= 1000)
+				return true;
+		}
+		if(type == 2) {
+			if(discount <= 100 && discount >= 0)
+							return true;
+		}
+		return false;
+	}
+
+
+
+	@Override
+	public Boolean checkGiamTien_pTram(Integer type, Integer discount) {
+
 		if(type == 1) {
 			if(discount >= 1000)
 				return true;

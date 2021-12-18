@@ -38,5 +38,7 @@ public interface VoucherService {
 	List<Voucherdto> listVoucherCustomer();
 
 	Boolean checkGiamTien_pTram(Integer type, Integer discount);
+
+	Boolean checkGiamTien(Integer type, Integer discount);
 	
 }
