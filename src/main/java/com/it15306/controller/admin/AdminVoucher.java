@@ -67,8 +67,10 @@ public class AdminVoucher {
 	@ResponseBody
 	public ResponseEntity<Voucherdto> update(@Validated @RequestBody Voucherdto data, BindingResult bindingResult) {
 		boolean check = bindingResult.hasErrors();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		try {
-			if(!check) {
+			Long soday =	thongKeServiceImpl.daysBetween2Dates(dateFormat.format(data.getStart_time()),dateFormat.format(data.getEnd_time()));
+			if(!check && soday.intValue() > 0) {
 			Voucherdto vo = 	voucherService.update(data);
 			if(vo == null || data.equals(null)) {
 				return ResponseEntity.noContent().build();
@@ -84,7 +86,7 @@ public class AdminVoucher {
 	}
 	@PostMapping("/admin/voucher/delete")
 	@ResponseBody
-	public ResponseEntity<Integer> update(@RequestBody idBody data) {
+	public ResponseEntity<Integer> delete(@RequestBody idBody data) {
 		
 		Integer id_voucher = 	voucherService.delete(data.getId());
 		if(id_voucher == null || data.getId().equals(null)) {
