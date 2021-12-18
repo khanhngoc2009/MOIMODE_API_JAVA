@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 		user.setAdmin(data.getAdmin());
 		user.setDistrict(district);
 		user.setWard(ward);
-		user.setRoles(data.getRoles());
+		user.setRoles(data.getRoles().toUpperCase());
 		user.setUsername(data.getUsername().trim());
 		user.setProvince(province);
 		user.setPhoto(data.getPhoto());
