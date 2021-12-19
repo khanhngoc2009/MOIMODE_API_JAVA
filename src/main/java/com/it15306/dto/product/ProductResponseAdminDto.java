@@ -12,7 +12,16 @@ public class ProductResponseAdminDto {
 	private Integer status;
 	private Integer type;
 	private String category_name;
-//	private Integer ware_house_id;
+	private String url_media;
+	
+	public String getUrl_media() {
+		return url_media;
+	}
+
+	public void setUrl_media(String url_media) {
+		this.url_media = url_media;
+	}
+
 	private Double min_price;
 	private Double max_price;
 	public Integer getId() {

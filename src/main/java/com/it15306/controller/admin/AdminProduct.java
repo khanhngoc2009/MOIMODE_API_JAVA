@@ -89,7 +89,7 @@ public class AdminProduct {
 			product.setCreate_date(new Date());
 			product.setDescription(body.getProduct().getDescription());
 			product.setImage(""+ body.getProduct().getImage());
-			product.setStatus(1);
+			product.setStatus(0);
 			product.setType(1);
 			category.setId(body.getProduct().getCategory_id());
 			product.setCategory(category);
@@ -196,6 +196,7 @@ public class AdminProduct {
 				for (int i = 0; i < prs.size(); i++) {
 					ProductResponseAdminDto prDto = (modelMapper.map(prs.get(i), ProductResponseAdminDto.class));
 					prDto.setCategory_name(prs.get(i).getCategory().getName());
+					prDto.setUrl_media(prs.get(i).getImage());
 					productDTOs.add(prDto);
 				}
 			}
@@ -239,6 +240,7 @@ public class AdminProduct {
 			System.out.print(dto.get(0).getProduct().getId());
 			Product product = productServiceImpl.getById(dto.get(0).getProduct().getId());
 			product.setType(2);
+			product.setStatus(1);
 			productServiceImpl.saveProduct(product);
 			data.setCount(size);
 			data.setCode(200);
@@ -283,6 +285,7 @@ public class AdminProduct {
 			int size = pr_skus.size();
 			for(int i=0;i<size;i++) {
 				ProductSkuDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuDto.class);
+				p.setUrl_media(pr_skus.get(i).getUrl_media());
 				skuDtos.add(p);
 			}
 			data.setCount(0);
