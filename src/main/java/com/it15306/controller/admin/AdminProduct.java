@@ -302,7 +302,7 @@ public class AdminProduct {
 		return productServiceImpl.getListProductSku(payload.getPage(), payload.getTake(), payload.getSkuValue()!=null ?payload.getSkuValue():"" );
 	}
 	
-	@RequestMapping(value = "/admin/image-product/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/admin/product-image/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<?> getImageProduct(@RequestBody idBody product_id) {
 		ModelMapper modelMapper = new ModelMapper();

@@ -1,6 +1,9 @@
 package com.it15306.controller.admin;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.util.DateUtils;
 
 import com.it15306.config.ConfigDefine;
 import com.it15306.config.ConfigOrder;
@@ -82,21 +86,39 @@ public class AdminOrder {
 
 	@Autowired 
 	private MailServiceImpl mailServiceImpl;
+	
+	private String getDate (String startDate) {
+		try {
+//			String sDate1="2021/12/19";  
+			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");  
+			Calendar cal = Calendar.getInstance();
+			cal.setTime( format.parse( startDate ) );
+			cal.add( Calendar.DATE, 1 );
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+			String strDate = dateFormat.format(cal.getTime());
+			return strDate;
+		} catch (Exception e) {
+		}
+		return null;
+	}
 	@RequestMapping(value = "/admin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
 		try {
+			String startDate =  getDate(dto.getStartTime());
+			String endDate = getDate(dto.getEndTime());
+			System.out.println(startDate + " ./ " + endDate);
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
 						dto.getPage(), 
 						dto.getTake(), 
-						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
+						dto.getStatus()!=null && dto.getStatus()!= 0 ? String.valueOf(dto.getStatus()) : "",
 						dto.getEmail()!=null && dto.getEmail().length()>0 ?dto.getEmail() : "",
 						dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
 						dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
-						dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
-						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01",
+						dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?getDate(dto.getStartTime()) : "2000-01-01",
+						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? getDate(dto.getEndTime()) : "2099-01-01",
 						dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): "");
 				int size= list_order.size();
 				System.out.print(size);

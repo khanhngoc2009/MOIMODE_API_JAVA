@@ -74,7 +74,7 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 	}
 	
 	public List<Object> getAllProductsAdmin(int page,int take,String category_id,String start_date, String end_date, String name, String status ) {
-		Pageable paging =  PageRequest.of(page, take,Sort.by("create_date"));
+		Pageable paging =  PageRequest.of(page, take);
 		System.out.print("k" + category_id + "k\n");
         Page<Object> pagedResult = productRepository.findAllProductsAdmin(paging, category_id, start_date, end_date, name, status);
        
