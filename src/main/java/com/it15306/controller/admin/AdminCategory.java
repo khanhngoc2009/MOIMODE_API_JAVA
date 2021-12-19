@@ -134,6 +134,7 @@ public class AdminCategory {
 		try {
 			if(lis.size() > 0) {
 				Long n=categoryService.totalement();
+				System.out.println("so ban ghi cha: "+n);
 				Integer sobanghi=n.intValue();
 				data.setCount(sobanghi);
 				data.setMessage("Success");
@@ -187,7 +188,9 @@ public class AdminCategory {
 				lisdatarespon.add(cd);
 			});
 			if(lisdatarespon.size() > 0) {
+				
 				Long n=categoryService.totalement();
+				System.out.println("so ban ghi con: "+n);
 				Integer sobanghi=n.intValue();
 				data.setCount(sobanghi);
 				data.setMessage("Success");
