@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService, IUserService, UserDetailsSe
 	public UserDTO createUser(dataCreateUse data) {
 		
 		try {
-			List<User> us=userRepository.SELECT_CHECK_USER(data.getUsername(),data.getEmail(), data.getPhone());
+			List<User> us=userRepository.SELECT_CHECK_USER(data.getUsername(),data.getEmail());
 			if(us.size() <= 0) {
 			User entity = mapToUser(data);
 			UserDTO dto=new UserDTO();
