@@ -58,6 +58,7 @@ import com.it15306.services.VoucherService;
 import com.it15306.servicesImpl.MailServiceImpl;
 import com.it15306.servicesImpl.OrderServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
+import com.it15306.utils.Const;
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200","http://35.198.241.56" })
 @RestController
@@ -87,28 +88,15 @@ public class AdminOrder {
 	@Autowired 
 	private MailServiceImpl mailServiceImpl;
 	
-	private String getDate (String startDate) {
-		try {
-//			String sDate1="2021/12/19";  
-			SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");  
-			Calendar cal = Calendar.getInstance();
-			cal.setTime( format.parse( startDate ) );
-			cal.add( Calendar.DATE, 1 );
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-			String strDate = dateFormat.format(cal.getTime());
-			return strDate;
-		} catch (Exception e) {
-		}
-		return null;
-	}
 	@RequestMapping(value = "/admin/order/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<DataResponseList<OrderDto>> listOrder(@RequestBody DataListOrderAdminDto dto,HttpServletRequest httpServletRequest) {
 		DataResponseList<OrderDto> data = new DataResponseList<OrderDto>();
+		Const constFig = new Const();
 		try {
-			String startDate =  getDate(dto.getStartTime());
-			String endDate = getDate(dto.getEndTime());
-			System.out.println(startDate + " ./ " + endDate);
+//			String startDate =  constFig.getDate(dto.getStartTime());
+//			String endDate = constFig.getDate(dto.getEndTime());
+//			System.out.println(startDate + " ./ " + endDate);
 				// lay danh dach order (phan trang)
 				List<Order> list_order = orderServiceImpl.getListOrdersAdmin(
 						dto.getPage(), 
@@ -117,8 +105,8 @@ public class AdminOrder {
 						dto.getEmail()!=null && dto.getEmail().length()>0 ?dto.getEmail() : "",
 						dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
 						dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
-						dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?getDate(dto.getStartTime()) : "2000-01-01",
-						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? getDate(dto.getEndTime()) : "2099-01-01",
+						dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?constFig.getDate(dto.getStartTime()) : "2000-01-01",
+						dto.getEndTime()!=null && dto.getEndTime().length()>0 ? constFig.getDate(dto.getEndTime()) : "2099-01-01",
 						dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): "");
 				int size= list_order.size();
 				System.out.print(size);
@@ -127,8 +115,8 @@ public class AdminOrder {
 								dto.getEmail()!=null && dto.getEmail().length()>0 ?dto.getEmail() : "",
 								dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
 								dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
-								dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
-								dto.getEndTime()!=null && dto.getEndTime().length()>0 ? dto.getEndTime() : "2099-01-01",
+								dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?constFig.getDate(dto.getStartTime()) : "2000-01-01",
+								dto.getEndTime()!=null && dto.getEndTime().length()>0 ? constFig.getDate(dto.getEndTime()) : "2099-01-01",
 								dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): ""
 								));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();

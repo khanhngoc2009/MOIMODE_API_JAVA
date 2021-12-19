@@ -26,13 +26,13 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 //			+ " order by p.create_date desc";
 	final String SELECT_ALL = "select * from product \r\n"
 			+ "where category_id like CONCAT('%', ?1, '%') "
-			+ "and create_date between ?2 "
-			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ "and create_date >= ?2 "
+			+ "and create_date <= ?3 and product_name like CONCAT('%', ?4, '%')"
 			+ " and status like CONCAT('%', ?5, '%') order by create_date desc";
 	final String SELECT_COUNT_ADMIN_QUERY = "select count(*) from product \r\n"
 			+ "where category_id like CONCAT('%', ?1, '%') "
-			+ "and create_date between ?2 "
-			+ "and ?3 and product_name like CONCAT('%', ?4, '%')"
+			+ "and create_date >= ?2 "
+			+ "and create_date <= ?3 and product_name like CONCAT('%', ?4, '%')"
 			+ " and status like CONCAT('%', ?5, '%')";
 	
 	final String SELECT_COUNT_ADMIN = "SELECT count(p) FROM Product p ";

@@ -39,10 +39,12 @@ import com.it15306.dto.product.DataImageProductDto;
 import com.it15306.dto.product.DataProductBodyDtos;
 import com.it15306.dto.product.ListSkuCreateDto;
 import com.it15306.dto.product.PayloadProductSkuAdmin;
+import com.it15306.dto.product.PayloadUpdateProductDto;
 import com.it15306.dto.product.ProductDTO;
 import com.it15306.dto.product.ProductResponseAdminDto;
 import com.it15306.dto.product.ProductSkuDto;
 import com.it15306.dto.product.ProductSkuGetBodyDto;
+import com.it15306.dto.product.ProductSkuListAdminDto;
 import com.it15306.dto.product.UpdateProductSkuDto;
 import com.it15306.entities.Category;
 import com.it15306.entities.ImageProduct;
@@ -58,6 +60,7 @@ import com.it15306.servicesImpl.OptionValueServiceImpl;
 import com.it15306.servicesImpl.OptionsProductsServiceImpl;
 import com.it15306.servicesImpl.OptionsServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
+import com.it15306.utils.Const;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -168,11 +171,12 @@ public class AdminProduct {
 	public ResponseEntity<?> getAllProducts(@RequestBody DataBodyListProductDto dto) throws ParseException {
 		ModelMapper modelMapper = new ModelMapper();
 		DataResponseList<ProductResponseAdminDto> data = new DataResponseList<ProductResponseAdminDto>();
+		Const constFig = new Const();
 		try {
 		    String category_id = dto.getCategory_id()!=null ? dto.getCategory_id().toString() : "" ;
 			String name = dto.getName()!= null && dto.getName().length() > 0 ? dto.getName() : "";
-			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? dto.getStart_date() : "2000-01-01"; 
-			String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? dto.getEnd_date() : "2099-01-01"; 
+			String start_date = dto.getStart_date() !=null && dto.getStart_date().length() > 0 ? constFig.getDate(dto.getStart_date()) : "2000-01-01"; 
+			String end_start = dto.getEnd_date() !=null && dto.getEnd_date().length() > 0 ? constFig.getDate(dto.getEnd_date()) : "2099-01-01"; 
 			String status = dto.getStatus() !=null ? dto.getStatus().toString() : "";
 			List<Object> obj = this.productServiceImpl.getAllProductsAdmin(dto.getPage(), dto.getTake(),category_id,start_date,end_start,name,status);
 			List<Product> prs = new ArrayList<Product>();
@@ -257,14 +261,34 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/product/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> updateProduct(@RequestBody List<ProductDTO> dto) {
+	public ResponseEntity<?> updateProduct(@RequestBody PayloadUpdateProductDto dto) {
 		ModelMapper modelMapper = new ModelMapper();
-		DataResponseList<String> data = new DataResponseList<String>();
+		DataResponse<String> data = new DataResponse<String>();
 		long count = (long) this.productServiceImpl.getCountAdmin();
 		try {
-			Product product = new Product();
-			data.setCount(Integer.parseInt(String.valueOf(count)));
+			// phan cap nhat thong tin sku
+			int size = dto.getListSKU().size();
+			for(int i=0;i<size;i++) {
+				ProductSkuDto up = dto.getListSKU().get(i);
+				if(up.getPrice() == 0) {
+					data.setCode(HttpStatus.NOT_FOUND.value());
+					data.setMessage("Bạn không được bỏ trống giá của phân loại nào (>0)");
+					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+				}
+			}
+			for(int i=0;i<size;i++) {
+				ProductSkuDto up = dto.getListSKU().get(i);
+				Product_Sku p_sku=modelMapper.map(up, Product_Sku.class);
+				productServiceImpl.saveProductSku(p_sku);
+			}
+			// phan cap nhat san pham
+			Product product = productServiceImpl.getById(dto.getProduct().getId());
+			product.setProduct_name(dto.getProduct().getProduct_name());
+			product.setImage(dto.getProduct().getImage());
+			product.setStatus(dto.getProduct().getStatus());
+			productServiceImpl.saveProduct(product);
 			data.setMessage("Success");
+			data.setData("SUCCESS");
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		} catch (Exception e) {
 			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
@@ -276,16 +300,26 @@ public class AdminProduct {
 	
 	@RequestMapping(value = "/admin/product-sku/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<?> getProductSku(@RequestBody idBody product_id) {
+	public ResponseEntity<DataResponseList<ProductSkuListAdminDto>> getProductSku(@RequestBody idBody product_id) {
 		ModelMapper modelMapper = new ModelMapper();
-		DataResponseList<ProductSkuDto> data = new DataResponseList<ProductSkuDto>();
+		DataResponseList<ProductSkuListAdminDto> data = new DataResponseList<ProductSkuListAdminDto>();
 		try {
 			List<Product_Sku>  pr_skus = productServiceImpl.getListProductSkuByProductId(product_id.getId());
-			List<ProductSkuDto> skuDtos= new ArrayList<ProductSkuDto>();
+			List<ProductSkuListAdminDto> skuDtos= new ArrayList<ProductSkuListAdminDto>();
 			int size = pr_skus.size();
 			for(int i=0;i<size;i++) {
-				ProductSkuDto  p=  modelMapper.map(pr_skus.get(i), ProductSkuDto.class);
+				ProductSkuListAdminDto p=  modelMapper.map(pr_skus.get(i), ProductSkuListAdminDto.class);
 				p.setUrl_media(pr_skus.get(i).getUrl_media());
+				List<Object> obj =  productServiceImpl.getSkuOption(pr_skus.get(i).getProduct_sku_id());
+				String optionValueProducts = "";
+				String name_product = "";
+				for(int k =  0;k<obj.size();k++) {
+					Object[] row = (Object[]) obj.get(k);
+					optionValueProducts = optionValueProducts + (k != 0 ? ", " : "") + (String) row[0];
+					name_product = (String) row[1];
+				}
+				p.setProduct_name(name_product);
+				p.setOption_value(optionValueProducts);
 				skuDtos.add(p);
 			}
 			data.setCount(0);
