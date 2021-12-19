@@ -182,11 +182,11 @@ public class Authen {
 		User emailExist = userService.getByEmail(dto.getEmail());
 		User userExist = userService.getByUsername(dto.getUsername());
 		if(emailExist !=null ) {
-			resgister.setCode(205);
+			resgister.setCode(HttpStatus.FOUND.value());
 			resgister.setMessage("Email đã tồn tại!");
 			return new ResponseEntity<>(resgister,HttpStatus.FOUND);
 		}else if(userExist!=null) {
-			resgister.setCode(205);
+			resgister.setCode(HttpStatus.FOUND.value());
 			resgister.setMessage("Tên đăng nhập đã tồn tại!");
 			return new ResponseEntity<>(resgister,HttpStatus.FOUND);
 		}
