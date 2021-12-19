@@ -284,7 +284,7 @@ public class AdminProduct {
 			// phan cap nhat san pham
 			Product product = productServiceImpl.getById(dto.getProduct().getId());
 			product.setProduct_name(dto.getProduct().getProduct_name());
-			product.setImage(dto.getProduct().getImage());
+			product.setImage(dto.getProduct().getUrl_media());
 			product.setStatus(dto.getProduct().getStatus());
 			productServiceImpl.saveProduct(product);
 			data.setMessage("Success");

@@ -3,12 +3,13 @@ package com.it15306.dto.product;
 import java.util.List;
 
 public class PayloadUpdateProductDto {
-	private ProductDTO product;
+	private ProductUpdateDto product;
 	private  List<ProductSkuDto> listSKU;
-	public ProductDTO getProduct() {
+	
+	public ProductUpdateDto getProduct() {
 		return product;
 	}
-	public void setProduct(ProductDTO product) {
+	public void setProduct(ProductUpdateDto product) {
 		this.product = product;
 	}
 	public List<ProductSkuDto> getListSKU() {
