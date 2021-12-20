@@ -1,10 +1,10 @@
 package com.it15306.dto.order;
 
+import java.util.List;
+
 public class PayloadReviewOrderDto {
-	private Integer id;	// day la cai gi khong biet
-	private Integer rating;	// vote
-	private String comment;		// 	
-	private  Integer productId; // 
+
+	private  List<PayloadReviewOrder> listReview;
 	private Integer orderId;
 	
 
@@ -14,29 +14,12 @@ public class PayloadReviewOrderDto {
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-	public Integer getId() {
-		return id;
+	public List<PayloadReviewOrder> getListReview() {
+		return listReview;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setListReview(List<PayloadReviewOrder> listReview) {
+		this.listReview = listReview;
 	}
-	public Integer getRating() {
-		return rating;
-	}
-	public void setRating(Integer rating) {
-		this.rating = rating;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	public Integer getProductId() {
-		return productId;
-	}
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
+	
 	
 }

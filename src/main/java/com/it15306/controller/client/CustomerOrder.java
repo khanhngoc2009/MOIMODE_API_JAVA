@@ -12,6 +12,7 @@ import com.it15306.dto.order.DataDetailDto;
 import com.it15306.dto.order.DataListOrderDto;
 import com.it15306.dto.order.DataResponseOrderList;
 import com.it15306.dto.order.OrderDto;
+import com.it15306.dto.order.PayloadReviewOrder;
 import com.it15306.dto.order.PayloadReviewOrderDto;
 import com.it15306.dto.order.ProductOrderDto;
 import com.it15306.dto.payment.PaymentDTO;
@@ -37,6 +38,7 @@ import com.it15306.servicesImpl.OrderServiceImpl;
 import com.it15306.servicesImpl.ProductServiceImpl;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
@@ -421,31 +423,39 @@ public class CustomerOrder {
 	// danh gia san pham trong order
 	@RequestMapping(value = "/order/review", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<ReviewProductDTO> createReview(@RequestBody PayloadReviewOrderDto payload,HttpServletRequest httpServletRequest) {
+	public ResponseEntity<DataResponse<String>> createReview(@RequestBody PayloadReviewOrderDto dtos,HttpServletRequest httpServletRequest) {
 		try {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User u = userservice.getByUsername(username);
 //			User u = userservice.getById(String.valueOf(6));
-			if( u != null &&  payload.getOrderId() != null ) {
-				Order order = orderServiceImpl.getByOrderId(payload.getOrderId());
+			if( u != null &&  dtos.getOrderId() != null && dtos.getListReview().size() > 0 ) {
+				Order order = orderServiceImpl.getByOrderId(dtos.getOrderId());
+				DataResponse<String> datas = new DataResponse<String>();
+				
 				if(order !=null && order.getIsEvaluate() != 1) {
-					ResponReviewProduct data =new ResponReviewProduct();
-					data.setUserId(u.getId());
-					data.setComment(payload.getComment());
-					data.setRating(payload.getRating());
-					data.setProductId(payload.getId());
-					data.setId(payload.getId());
-					ReviewProductDTO dto = new ReviewProductDTO();
+					for(int i=0;i<dtos.getListReview().size();i++) {
+						PayloadReviewOrder payload =  dtos.getListReview().get(i);
+						ResponReviewProduct data =new ResponReviewProduct();
+						data.setUserId(u.getId());
+						data.setComment(payload.getComment());
+						data.setRating(payload.getRating());
+						data.setProductId(payload.getId());
+						data.setId(payload.getId());
+						reviewProductService.create(data);
+					}
 					if(order !=null) {
 						order.setIsEvaluate(1);
 						orderServiceImpl.saveOrder(order);
 					}
-					return ResponseEntity.ok(dto);
+					datas.setMessage("Thanh cong");
+					datas.setCode(200);
+					datas.setMessage("SUCCESS");
+					return ResponseEntity.ok(datas);
 				}
 				else {
 					 return ResponseEntity.badRequest().build();
-					}
+				}
 				
 			}
 			else {
