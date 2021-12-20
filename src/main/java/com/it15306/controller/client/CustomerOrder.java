@@ -167,7 +167,9 @@ public class CustomerOrder {
 							
 							cartService.deleteCartProductByID(list_cart_product.get(i).getId());
 							int rest =p_sku.getQuantiy_rest() + list_cart_product.get(i).getQuantity();
+							int total =p_sku.getQuantity_total() - list_cart_product.get(i).getQuantity();
 							p_sku.setQuantiy_rest(rest>=0?rest:0);
+							p_sku.setQuantity_total(total>=0?total:0);
 							productServiceImpl.saveProductSku(p_sku);
 						}
 						data.setCode(200);

@@ -88,27 +88,33 @@ public class AdminProduct {
 		Category category = new Category();
 		
 		try {
-			 // them san pham
-			product.setCreate_date(new Date());
-			product.setDescription(body.getProduct().getDescription());
-			product.setImage(""+ body.getProduct().getImage());
-			product.setStatus(0);
-			product.setType(1);
-			category.setId(body.getProduct().getCategory_id());
-			product.setCategory(category);
-			product.setProduct_name(body.getProduct().getProduct_name());
-			Product p =  productServiceImpl.saveProduct(product);
-			// them vao ban option_product
-			int sizeListOption =  body.getListOption().size();
-			if(sizeListOption>0) {
-				for(int i=0;i<sizeListOption;i++) {
-					optionsProductsServiceImpl.save_value(body.getListOption().get(i).getId(), p.getId());
+			if(body.getListOption().size()>0){
+					// them san pham
+				product.setCreate_date(new Date());
+				product.setDescription(body.getProduct().getDescription());
+				product.setImage(""+ body.getProduct().getImage());
+				product.setStatus(0);
+				product.setType(1);
+				category.setId(body.getProduct().getCategory_id());
+				product.setCategory(category);
+				product.setProduct_name(body.getProduct().getProduct_name());
+				Product p =  productServiceImpl.saveProduct(product);
+				// them vao ban option_product
+				int sizeListOption =  body.getListOption().size();
+				if(sizeListOption>0) {
+					for(int i=0;i<sizeListOption;i++) {
+						optionsProductsServiceImpl.save_value(body.getListOption().get(i).getId(), p.getId());
+					}
 				}
+				res.setCode(200);
+				res.setMessage("Thanh cong");
+				res.setData(p.getId());
+				return new ResponseEntity<>(res,HttpStatus.OK);
+			}else{
+				res.setCode(HttpStatus.NOT_FOUND.value());
+				res.setMessage("Không được bỏ trống option");
+				return new ResponseEntity<>(res,HttpStatus.NOT_FOUND);
 			}
-			res.setCode(200);
-			res.setMessage("Thanh cong");
-			res.setData(p.getId());
-			return new ResponseEntity<>(res,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
 			res.setCode(HttpStatus.FAILED_DEPENDENCY.value());
@@ -235,6 +241,11 @@ public class AdminProduct {
 					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 					
 				}
+				if( up.getQuantity_total() < 0){
+					data.setCode(HttpStatus.NOT_FOUND.value());
+					data.setMessage("Không được nhập số âm và bỏ trống");
+					return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+				}
 			}
 			for(int i=0;i<size;i++) {
 				UpdateProductSkuDto up = dto.get(i);
@@ -288,6 +299,7 @@ public class AdminProduct {
 			product.setImage(dto.getProduct().getUrl_media());
 			product.setStatus(dto.getProduct().getStatus());
 			product.setDescription(dto.getProduct().getDescription());
+			
 			product.setType(2);
 			productServiceImpl.saveProduct(product);
 			data.setMessage("Success");

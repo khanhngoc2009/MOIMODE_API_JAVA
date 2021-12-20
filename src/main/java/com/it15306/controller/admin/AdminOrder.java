@@ -336,9 +336,9 @@ public class AdminOrder {
 	@ResponseBody
 	public ResponseEntity<?> createOrder(@RequestBody PayloadCreateOrderAdmin dto,HttpServletRequest httpServletRequest) {
 		DataResponse<String> data = new DataResponse<String>(); 
-		ConfigDefine congig = new ConfigDefine();
+		ConfigDefine config = new ConfigDefine();
 		try {
-			// ly thong tin user
+			
 			if(dto.getName()!=null && dto.getPhone()!=null && dto.getPayment_id()!=null) {
 				User user = userservice.getById("0");
 				int size = dto.getListProductSku().size();
@@ -354,7 +354,7 @@ public class AdminOrder {
 //						dto.getAddress_id();
 						Order order = new Order();
 						order.setCreate_date(new Date());
-						order.setStatus(congig.SUCCESS); // chuyen thanh don thanh cong luon
+						order.setStatus(config.SUCCESS); // chuyen thanh don thanh cong luon
 						order.setUser(user);
 						Payment payment = new Payment();
 						payment.setPayment_id(dto.getPayment_id());
@@ -404,6 +404,12 @@ public class AdminOrder {
 							product_order.setQuantity(dto.getListProductSku().get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
 							orderServiceImpl.saveProductOrder(product_order);
+							Product_Sku productSku =  productServiceImpl.getProductSkuById(dto.getListProductSku().get(i).getSku().getProduct_sku_id());
+							int rest =productSku.getQuantiy_rest() + dto.getListProductSku().get(i).getQuantity();
+							int total =p_sku.getQuantity_total() - dto.getListProductSku().get(i).getQuantity();
+							productSku.setQuantiy_rest(rest>=0?rest:0);
+							productSku.setQuantity_total(total>=0?total:0);
+							productServiceImpl.saveProductSku(productSku);
 						}
 						data.setCode(200);
 						data.setMessage("Success");
