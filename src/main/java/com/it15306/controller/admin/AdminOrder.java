@@ -309,6 +309,7 @@ public class AdminOrder {
 				orderDto.setTotalPrice(order_after_update.getTotal_price());
 				orderDto.setPaymentStatus(order_after_update.getType_payment());
 				orderDto.setListProduct(list_product);
+				
 				AddressOrder ad = order_after_update.getAddress();
 				AddressOrderDTO ad_dto = modelMapper.map(ad, AddressOrderDTO.class);
 				ad_dto.setProvincedto(modelMapper.map(ad.getProvince(), ProvinceDTO.class));
