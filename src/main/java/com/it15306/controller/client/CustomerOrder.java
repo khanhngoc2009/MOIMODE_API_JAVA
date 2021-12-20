@@ -126,7 +126,7 @@ public class CustomerOrder {
 						}
 						AddressOrderDTO addressOrder = addressService.getAddressOrderById(dto.getAddress_id());
 						
-						String address = addressOrder.getAddress_detail() + " - " + addressOrder.getWarddto().getName() + " - " + addressOrder.getDistrictdto().getName() + " - " + addressOrder.getProvincedto().getName();
+						String address = addressOrder.getAddress_detail() +  (addressOrder.getAddress_detail()!=null && addressOrder.getAddress_detail().length()>0 ? " - " : "") + addressOrder.getWarddto().getName() + " - " + addressOrder.getDistrictdto().getName() + " - " + addressOrder.getProvincedto().getName();
 
 						dto.getAddress_id();
 						Order order = new Order();
