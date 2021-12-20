@@ -194,6 +194,7 @@ public class AdminOrder {
 					ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
 					Product_Sku p_sku = productServiceImpl.getProductSkuById(pro_o.getSku_id());
 					p_sku.setQuantity_total(p_sku.getQuantity_total() + pro_o.getQuantity());
+					p_sku.setQuantiy_rest(p_sku.getQuantiy_rest() - pro_o.getQuantity());
 					productServiceImpl.saveProductSku(p_sku);
 					pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
 					pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
