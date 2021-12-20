@@ -19,6 +19,16 @@ public class ProductOrderDto {
 	private Double price;
 	private String image;
 	private Integer quantity;
+	private Integer sku_id;
+
+	public Integer getSku_id() {
+		return sku_id;
+	}
+
+
+	public void setSku_id(Integer sku_id) {
+		this.sku_id = sku_id;
+	}
 	
 	public Integer getProduct_id() {
 		return product_id;

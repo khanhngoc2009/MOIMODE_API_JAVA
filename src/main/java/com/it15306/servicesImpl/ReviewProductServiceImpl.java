@@ -103,7 +103,6 @@ public class ReviewProductServiceImpl implements ReviewProductService{
 	public Integer delete(Integer id) {
 		try {
 			Optional<ReviewProduct> optional= reviewProductRepository.findById(id);
-			
 			if(optional.isPresent()) {
 				ReviewProduct entity=optional.get();
 				reviewProductRepository.delete(entity);

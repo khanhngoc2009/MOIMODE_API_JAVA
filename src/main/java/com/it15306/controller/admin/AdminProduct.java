@@ -377,6 +377,23 @@ public class AdminProduct {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+
+	@RequestMapping(value = "/admin/product/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<?> deleteProduct(@RequestBody idBody product_id) {
+		ModelMapper modelMapper = new ModelMapper();
+		DataResponseList<DataImageProductDto> data = new DataResponseList<DataImageProductDto>();
+		try {
+			
+			
+			data.setMessage("Success");
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		} catch (Exception e) {
+			data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
+			data.setMessage("Fail");
+			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
+		}
+	}
 	
 	@RequestMapping(value = "/admin/product/upload-multi/{product_id}", method = RequestMethod.POST)
 	public ResponseEntity<?> upload_multi(
@@ -420,6 +437,7 @@ public class AdminProduct {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+
 	
 	
 	

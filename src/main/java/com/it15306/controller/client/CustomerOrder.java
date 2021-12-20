@@ -107,6 +107,11 @@ public class CustomerOrder {
 							CartProduct cart_product = cartService.getByCartProductId(dto.getListCartId().get(i).getId());
 							Product_Sku product_sku =  cart_product.getProductSkus();
 							total_order =  total_order + (product_sku.getPrice() * cart_product.getQuantity());
+							if(dto.getListCartId().get(i).getProductSkuDTOs().getQuantity_total() == 0){
+								data.setCode(HttpStatus.EXPECTATION_FAILED.value());
+								data.setMessage("Số lượng không đủ, vui lòng kiểm tra lại giỏ hàng!");
+								return new ResponseEntity<>(data,HttpStatus.EXPECTATION_FAILED);
+							}
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
 						}
@@ -153,6 +158,7 @@ public class CustomerOrder {
 							product_order.setOrder(order_after_save);
 							product_order.setPrice(p_sku.getPrice());
 							product_order.setProduct_id(p_sku.getProduct().getId());
+							product_order.setSku_id(p_sku.getProduct_sku_id());
 							List<Object> obj = productServiceImpl.getSkuOption(p_sku.getProduct_sku_id());
 							String optionValueProducts = "";
 							for(int k =  0;k<obj.size();k++) {
@@ -219,6 +225,11 @@ public class CustomerOrder {
 					int size_p_os = order_after_update.getProduct_orders().size();
 					for(int j=0;j<size_p_os;j++) {
 						ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
+						if(pro_o.getSku_id()!=null){
+							Product_Sku p_sku = productServiceImpl.getProductSkuById(pro_o.getSku_id());
+							p_sku.setQuantity_total(p_sku.getQuantity_total() + pro_o.getQuantity());
+							productServiceImpl.saveProductSku(p_sku);
+						}
 						pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
 						pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
 						list_pro_o_dtos.add(pro_o);
@@ -232,7 +243,6 @@ public class CustomerOrder {
 					if(dto.getReason() != null && dto.getReason().length()>0) {
 						orderDto.setReason(dto.getReason());
 					}else {
-						
 						data.setCode(HttpStatus.FAILED_DEPENDENCY.value());
 						data.setMessage("Ban can nhap ly do");
 						return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);

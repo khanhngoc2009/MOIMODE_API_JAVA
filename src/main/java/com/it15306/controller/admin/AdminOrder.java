@@ -111,14 +111,14 @@ public class AdminOrder {
 				int size= list_order.size();
 				System.out.print(size);
 				data.setCount(orderServiceImpl.countOrderAdmin(
-						dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
-								dto.getEmail()!=null && dto.getEmail().length()>0 ?dto.getEmail() : "",
-								dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
-								dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
-								dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
-								dto.getEndTime()!=null && dto.getEndTime().length()>0 ? constFig.getDate(dto.getEndTime()) : "2099-01-01",
-								dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): ""
-								));
+					dto.getStatus()!=null ?String.valueOf(dto.getStatus()) : "",
+					dto.getEmail()!=null && dto.getEmail().length()>0 ?dto.getEmail() : "",
+					dto.getUserName() !=null && dto.getUserName().length()>0  ?dto.getUserName() : "",
+					dto.getPhone()!=null && dto.getPhone().length()> 0?dto.getPhone() : "",
+					dto.getStartTime()!=null&& dto.getStartTime().length()>0 ?dto.getStartTime() : "2000-01-01",
+					dto.getEndTime()!=null && dto.getEndTime().length()>0 ? constFig.getDate(dto.getEndTime()) : "2099-01-01",
+					dto.getId()!=null && dto.getId().length()>0 ? dto.getId(): ""
+					));
 				List<OrderDto> listOrders= new ArrayList<OrderDto>();
 				for(int i= 0;i< size;i++) {
 					Order order = list_order.get(i);
@@ -346,7 +346,12 @@ public class AdminOrder {
 				double total_order = 0;
 					if(size>0) {
 						for(int i=0;i<size;i++) {
-							ProductSkuDto product_sku =   dto.getListProductSku().get(i).getSku();
+							ProductSkuDto product_sku =  dto.getListProductSku().get(i).getSku();
+							if(dto.getListProductSku().get(i).getSku().getQuantity_total()==0){
+								data.setCode(HttpStatus.EXPECTATION_FAILED.value());
+								data.setMessage("Số lượng không đủ, vui lòng kiểm tra lại giỏ hàng!");
+								return new ResponseEntity<>(data,HttpStatus.EXPECTATION_FAILED);
+							}
 							total_order =  total_order + (product_sku.getPrice() * dto.getListProductSku().get(i).getQuantity());
 						}
 						AddressOrder addressOrder = new AddressOrder();
@@ -393,6 +398,7 @@ public class AdminOrder {
 							product_order.setOrder(order_after_save);
 							product_order.setPrice(p_sku.getPrice());
 							product_order.setProduct_id(p_sku.getProduct().getId());
+							product_order.setSku_id(p_sku.getProduct_sku_id());
 							List<Object> obj = productServiceImpl.getSkuOption(p_sku.getProduct_sku_id());
 							String optionValueProducts = "";
 							for(int k =  0;k<obj.size();k++) {
