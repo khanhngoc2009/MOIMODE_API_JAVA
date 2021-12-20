@@ -13,7 +13,16 @@ public class ProductResponseAdminDto {
 	private Integer type;
 	private String category_name;
 	private String url_media;
+	private Integer quantiy_rest = 0;
 	
+	public Integer getQuantiy_rest() {
+		return quantiy_rest;
+	}
+
+	public void setQuantiy_rest(Integer quantiy_rest) {
+		this.quantiy_rest = quantiy_rest;
+	}
+
 	public String getUrl_media() {
 		return url_media;
 	}

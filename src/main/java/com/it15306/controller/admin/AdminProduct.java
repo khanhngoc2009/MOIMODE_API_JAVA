@@ -201,6 +201,7 @@ public class AdminProduct {
 					ProductResponseAdminDto prDto = (modelMapper.map(prs.get(i), ProductResponseAdminDto.class));
 					prDto.setCategory_name(prs.get(i).getCategory().getName());
 					prDto.setUrl_media(prs.get(i).getImage());
+					prDto.setQuantiy_rest(productServiceImpl.getTotalProduct(prs.get(i).getId()) != null ? productServiceImpl.getTotalProduct(prs.get(i).getId()) : 0);
 					productDTOs.add(prDto);
 				}
 			}

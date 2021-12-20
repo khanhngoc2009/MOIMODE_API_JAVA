@@ -249,6 +249,9 @@ public class ProductServiceImpl implements com.it15306.services.ProductService {
 			return new ResponseEntity<>(data,HttpStatus.FAILED_DEPENDENCY);
 		}
 	}
+	public Integer getTotalProduct(Integer product_id) {
+		return productRepository.getTotal(product_id);
+	}
 }
 
 

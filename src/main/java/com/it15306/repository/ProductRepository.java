@@ -62,8 +62,13 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 	final String SELECT_BY_ID ="select p,min(sku.price),max(sku.price)"
 			+ " from Product p join p.product_sku sku"
 			+ " where p.id =:product_id AND p.status = 1 and p.type = 2  group by sku.product ";
+	final String SELECT_TOTAL = " select sum(product_sku.quantiy_rest) from product join product_sku on product_sku.product_id =product.product_id\r\n"
+			+ "			where product_sku.product_id = ?1"
+			+ "			group by product_sku.product_id; ";
 	
-	
+//	select sum(miemode.product_sku.quantiy_rest) from product join product_sku on product_sku.product_id =product.product_id
+//			where product_sku.product_id = 106
+//			group by product_sku.product_id;
 	
 	
 //	select * from product 
@@ -203,6 +208,10 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 			@Param("min_price") double min_price,
 			@Param("max_price") double max_price,
 			@Param("category") Integer category
+	);
+	@Query(value = SELECT_TOTAL,nativeQuery = true)
+	Integer getTotal(
+			@Param("product_id") Integer product_id			
 	);
 	
 	
