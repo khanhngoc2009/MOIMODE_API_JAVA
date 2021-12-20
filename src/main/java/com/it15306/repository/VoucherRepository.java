@@ -32,6 +32,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	final String FINTER ="select * from voucher  where   title like %?1%  and voucher_id > 0 and create_time >= ?2 -1 and end_time <= ?3 and status like %?4% ORDER BY start_time desc" ;
 	final String FINTER_CUSTOMER ="select * from voucher where status = 1  and voucher_id > 0 and start_time < ?1 and end_time > ?1 ORDER BY start_time desc";
 	
+	final String SELECT_VOUECHE_CUSTOMER_ACTIVE ="select * from voucher where status = 1  and voucher_id > 0 and end_time >= ?1  ORDER BY end_time asc";
 	
 	
 	
@@ -63,6 +64,8 @@ public interface VoucherRepository extends JpaRepository<Voucher, Integer>  {
 	@Query(value=FINTER_CUSTOMER, nativeQuery = true )
 	Page<Voucher> locVoucherCustomer(@Param("today") String today,Pageable page);
 	
+	@Query(value=SELECT_VOUECHE_CUSTOMER_ACTIVE, nativeQuery = true)
+	List<Voucher> selectListVoucherCustomer(@Param("today") String today);
 	
 	@Query(value = "select create_time from voucher order by create_time asc limit 1", nativeQuery = true)
 	String START_DATE();

@@ -241,17 +241,17 @@ public class VoucherServiceImpl implements VoucherService {
 		Date date = new Date();
 		//Page<Voucher> listenti2 = voucherRepository.findAllVoucherByTypePage(paging);
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-		Pageable paging = PageRequest.of(0, 100);
-		Page<Voucher> listenti2=voucherRepository.locVoucherCustomer(dt.format(date),paging);
-		totalElement = listenti2.getTotalElements();
-		System.out.println("cout size:"+listenti2.getContent().size());
-		System.out.println("total element:"+ totalElement);
-		listenti2.getContent().forEach(l -> System.out.println(l.getId()));
+		Pageable paging = PageRequest.of(0, 1000000);
+		List<Voucher> listenti2=voucherRepository.selectListVoucherCustomer(dt.format(date));
+		//totalElement = listenti2.getTotalElements();
+		//System.out.println("cout size:"+listenti2.getContent().size());
+		//System.out.println("total element:"+ totalElement);
+		listenti2.forEach(l -> System.out.println(l.getId()));
 		Voucherdto dto = new Voucherdto();
 		try {
-			for (Voucher voucher : listenti2.getContent()) {
+			for (Voucher voucher : listenti2) {
 				dto = mapToModel(voucher, null);
-				System.out.println("22222: " + dto.toString());
+				
 				list.add(dto);
 			}
 			return list;

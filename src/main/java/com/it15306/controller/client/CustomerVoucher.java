@@ -35,10 +35,11 @@ public class CustomerVoucher {
 		DataResponseList<Voucherdto> rp=new DataResponseList<Voucherdto>();
 		List<Voucherdto> list= voucherService.listVoucherCustomer();
 		if(list.size() > 0) {
+			rp.setMessage("select thành công");
 			rp.setListData(list);
-			rp.setCount(voucherService.count());
 			return ResponseEntity.ok(rp);
 		}else {
+			rp.setMessage("Không có dữ liệu");
 			return ResponseEntity.ok(rp);
 		}	
 		
