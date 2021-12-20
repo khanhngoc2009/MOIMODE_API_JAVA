@@ -150,6 +150,10 @@ public class CartServiceImpl implements CartService {
 			if (data.getQuantity() > 100) {
 				System.out.println("check so luong tren 100. ko tao dc");
 				return null;
+			}else if(productSKU.getQuantity_total() < data.getQuantity() ) {
+				System.out.println("check so mua lon hon hon sl trong db");
+				return null;
+				
 			}
 			cart.setId(cart.getId());			
 			carpro.setCarts(cart);
@@ -172,6 +176,10 @@ public class CartServiceImpl implements CartService {
 				if (data.getQuantity() > 100) {
 					System.out.println("check so luong tren 100. ko tao dc");
 					return null;
+				}else if( data.getQuantity() > productSKU.getQuantity_total()) {
+					System.out.println("check so mua lon hon hon sl trong db");
+					return null;
+					
 				}
 				System.out.println("vo tao maoi cart product qlt");
 				carpro.setCarts(cvo);
@@ -190,6 +198,10 @@ public class CartServiceImpl implements CartService {
 				if (checkQuantity > 100) {
 					System.out.println("check so luong tren 100. ko update dc");
 					return null;
+				}else if( checkQuantity > productSKU.getQuantity_total()  ) {
+					System.out.println("check so mua lon hon hon sl trong db");
+					return null;
+					
 				}
 				System.out.println("vo uodate qlt");
 				Integer soluong = cartproduct.getQuantity() + data.getQuantity();
@@ -220,10 +232,16 @@ public class CartServiceImpl implements CartService {
 				if (data.getQuantity() > 100) {
 					System.out.println("check so luong tren 100. ko tao dc");
 					return null;
+				}else if(data.getQuantity() > productSKU.getQuantity_total() ) {
+					System.out.println("check so mua lon hon hon sl trong db");
+					return null;
+					
 				}
 				Integer soluong = data.getQuantity();
 				cartProductReponsitory.updateQuantitys(soluong, cvo.getId(), data.getProductSKUId());
 				CartProductDTO resp = modelMapper.map(carpro, CartProductDTO.class);
+				resp.setId(productSKU.getProduct_sku_id());
+				resp.setProduct_name(productSKU.getProduct().getProduct_name());
 				resp.setQuantity(soluong);
 				resp.setProductSkuDTOs(modelMapper.map(productSKU, ProductSkuDto.class));
 				return resp;

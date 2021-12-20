@@ -55,6 +55,8 @@ public class CustomerCart {
 				data.setUserId(user.getId());
 				CartProductDTO  dto =	cartService.insertProductToCart(data);
 					if(dto != null) {
+						if(dto.getQuantity() >= dto.getProductSkuDTOs().getQuantity_total())
+							dto.setStill(0);
 						return ResponseEntity.ok(dto);
 					}
 				}
@@ -78,6 +80,8 @@ public class CustomerCart {
 				data.setUserId(user.getId());
 				CartProductDTO  dto =	cartService.updateProductToCart(data);
 				if(dto != null) {
+					if(dto.getQuantity() >= dto.getProductSkuDTOs().getQuantity_total())
+								dto.setStill(0);
 					return ResponseEntity.ok(dto);
 				}
 			}
@@ -114,7 +118,13 @@ public class CustomerCart {
 		User user = userservice.getByUsername(username);
 		if( user != null) {
 			CartDTO cart= cartService.getCartByUser(user.getId());
+			
 			if(cart != null) {
+				cart.getCartProductsDTO().forEach(c ->{
+					if(c.getQuantity() >= c.getProductSkuDTOs().getQuantity_total())
+						c.setStill(0);
+					
+				});
 				return ResponseEntity.ok(cart);
 			}
 			return  ResponseEntity.noContent().build();

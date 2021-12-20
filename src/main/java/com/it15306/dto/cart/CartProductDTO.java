@@ -11,8 +11,20 @@ public class CartProductDTO {
 	private CartDTO CartDTO;
 	private String product_name;
 	private String option_value;
+	private Integer still=1;
 	
-	
+	/**
+	 * @return the still
+	 */
+	public Integer getStill() {
+		return still;
+	}
+	/**
+	 * @param still the still to set
+	 */
+	public void setStill(Integer still) {
+		this.still = still;
+	}
 	public String getProduct_name() {
 		return product_name;
 	}
