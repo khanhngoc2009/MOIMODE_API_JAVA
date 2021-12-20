@@ -287,6 +287,7 @@ public class AdminProduct {
 			product.setProduct_name(dto.getProduct().getProduct_name());
 			product.setImage(dto.getProduct().getUrl_media());
 			product.setStatus(dto.getProduct().getStatus());
+			product.setDescription(dto.getProduct().getDescription());
 			product.setType(2);
 			productServiceImpl.saveProduct(product);
 			data.setMessage("Success");
