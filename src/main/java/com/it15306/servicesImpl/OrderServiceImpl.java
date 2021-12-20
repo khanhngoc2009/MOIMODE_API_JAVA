@@ -94,26 +94,44 @@ public class OrderServiceImpl implements OrderService{
 	
 	public List<Order> getListOrdersAdmin(int page,int take,String status,String email, String user_name, String phone, String start_date,String end_date ,String id ) {
 		Pageable paging =  PageRequest.of(page, take); 
-		Page<Order> pagedResult = 
+		if(status.length()>0 && Integer.parseInt(status)<5){
+			Page<Order> pagedResult = 
 				(status!=null && status.length()>0) ?
 						orderRepository.getOrdersAdmin(status, email, user_name, phone, start_date, end_date,id,paging)
 						: 
 						orderRepository.getOrdersAdminAll(email, user_name, phone, start_date, end_date,id,paging)
 						;
-        List<Order> list =  pagedResult.getContent();
-        for(int i = 0;i <list.size();i++) {
-        	System.out.print(list.get(i).getCreate_date());
-        }
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-        	return new ArrayList<Order>();
+				List<Order> list =  pagedResult.getContent();
+				for(int i = 0;i <list.size();i++) {
+					System.out.print(list.get(i).getCreate_date());
+				}
+				if(pagedResult.hasContent()) {
+					return pagedResult.getContent();
+				} else {
+					return new ArrayList<Order>();
+				}
+		}else{
+			Page<Order> pagedResult = 
+						orderRepository.getOrdersAdminCancel(status, email, user_name, phone, start_date, end_date,id,paging);
+			List<Order> list =  pagedResult.getContent();
+			for(int i = 0;i <list.size();i++) {
+				System.out.print(list.get(i).getCreate_date());
+			}
+			if(pagedResult.hasContent()) {
+				return pagedResult.getContent();
+			} else {
+				return new ArrayList<Order>();
+			}
 		}
 	}
 	public Integer countOrderAdmin(String status,String email, String user_name, String phone, String start_date,String end_date,String id ) {
-		return (status!=null && status.length()>0)
+		if(status.length()>0 && Integer.parseInt(status)>=5){
+			return orderRepository.getCountAdminCancel(status,email, user_name, phone, start_date, end_date,id);
+		}else{
+			return (status!=null && status.length()>0)
 				? orderRepository.getCountAdmin(status, email, user_name, phone, start_date, end_date,id) 
 						: orderRepository.getCountAdminAll(email, user_name, phone, start_date, end_date,id);
+		}
 	}
 	
 	public Order getDetailById(Integer order_id) {

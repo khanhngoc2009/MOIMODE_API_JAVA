@@ -65,6 +65,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 			+ " and phone like %?4% "
 			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
 			+" order by orders.create_date desc";
+	final String SELECT_ORDER_ADMIN_CANCEL = "SELECT * FROM orders join user on user.user_id = orders.user_id"
+			+ " WHERE orders.status >= ?1 and orders.order_id like %?7%"
+			+ " and email like %?2%"
+			+ " and username  like %?3%  "
+			+ " and phone like %?4% "
+			+ " and orders.create_date >= ?5 and orders.create_date <= ?6 "
+			+ " order by orders.create_date desc";
+	final String COUNT_ORDER_ADMIN_CANCEL = "SELECT count(order_id) FROM orders join user on user.user_id = orders.user_id"
+			+ " WHERE orders.status >= ?1 and orders.order_id like %?7%"
+			+ " and email like %?2%"
+			+ " and username like %?3% "
+			+ " and phone like %?4% "
+			+" and orders.create_date >= ?5 and orders.create_date <= ?6"
+			+" order by orders.create_date desc";
 	
 	final String SELECT_ORDER_ADMIN_ALL = "SELECT * FROM orders join user on user.user_id = orders.user_id"
 			+ " WHERE orders.status >= 1 and orders.status <= 3  and orders.order_id like %?6% "
@@ -180,4 +194,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer>  {
 		
 		@Query(value = COUNT_VOUCHER_USEED, nativeQuery = true)
 		Integer COUNT_VOUCHER_USE(@Param("voucher_id") String voucher_id);
+
+
+		@Query(value = COUNT_ORDER_ADMIN_CANCEL, nativeQuery = true)
+	Integer getCountAdminCancel(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id );
+	
+	@Query(value = SELECT_ORDER_ADMIN_CANCEL, nativeQuery = true)
+	Page<Order> getOrdersAdminCancel(@Param("status") String status,@Param("email") String email,@Param("user_name") String user_name,@Param("phone") String phone,@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("id") String id , Pageable paging );
+	
 }

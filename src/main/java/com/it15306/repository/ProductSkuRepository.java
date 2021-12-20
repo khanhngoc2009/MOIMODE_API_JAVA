@@ -39,14 +39,14 @@ public interface ProductSkuRepository extends JpaRepository<Product_Sku, Integer
 	
 	
 	final String SELECT_PRODUCT_SKU = "SELECT P FROM Product_Sku  P join P.product pr"
-			+ " WHERE P.value_sku like %?1% and pr.type = 2 "
+			+ " WHERE P.value_sku like %?1% and pr.type = 2 and p.status = 1"
 			+ " order by P.create_date desc";
 	@Query(SELECT_PRODUCT_SKU)
 	Page<Product_Sku> findProductSKU(@Param("value_sku") String value_sku,Pageable page);
 	
 	
 	final String COUNT_PRODUCT_SKU_ADMIN = "SELECT count(product_sku_id) FROM Product_Sku  P join P.product pr "
-			+ "WHERE P.value_sku like %?1% and pr.type = 2";
+			+ "WHERE P.value_sku like %?1% and pr.type = 2 and p.status = 1";
 	@Query(COUNT_PRODUCT_SKU_ADMIN)
 	Integer countSku(@Param("value_sku") String value_sku);
 	

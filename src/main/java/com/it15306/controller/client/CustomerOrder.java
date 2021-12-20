@@ -112,6 +112,11 @@ public class CustomerOrder {
 								data.setMessage("Số lượng không đủ, vui lòng kiểm tra lại giỏ hàng!");
 								return new ResponseEntity<>(data,HttpStatus.EXPECTATION_FAILED);
 							}
+							if(dto.getListCartId().get(i).getProductSkuDTOs().getStatus() == 0){
+								data.setCode(HttpStatus.EXPECTATION_FAILED.value());
+								data.setMessage("Sản phẩm đã ngưng hoạt động, vui lòng cập nhật lại giỏ hàng!");
+								return new ResponseEntity<>(data,HttpStatus.EXPECTATION_FAILED);
+							}
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
 						}
@@ -225,11 +230,11 @@ public class CustomerOrder {
 					int size_p_os = order_after_update.getProduct_orders().size();
 					for(int j=0;j<size_p_os;j++) {
 						ProductOrderDto pro_o =  modelMapper.map(order_after_update.getProduct_orders().get(j), ProductOrderDto.class);
-						if(pro_o.getSku_id()!=null){
+						// if(pro_o.getSku_id()!=null){
 							Product_Sku p_sku = productServiceImpl.getProductSkuById(pro_o.getSku_id());
 							p_sku.setQuantity_total(p_sku.getQuantity_total() + pro_o.getQuantity());
 							productServiceImpl.saveProductSku(p_sku);
-						}
+						// }
 						pro_o.setProductName(order_after_update.getProduct_orders().get(j).getProduct_name());
 						pro_o.setCreateDate(order_after_update.getProduct_orders().get(j).getCreate_date());
 						list_pro_o_dtos.add(pro_o);
