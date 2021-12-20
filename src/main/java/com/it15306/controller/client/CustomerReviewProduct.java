@@ -45,12 +45,8 @@ public class CustomerReviewProduct {
 	public ResponseEntity<List<ReviewProductDTO>> listreview(@PathVariable("id") String idProduct) {
 		try {
 			List<ReviewProductDTO> list=reviewProductService.getAllReviewProductsByProductId(idProduct);
-			if(list.size() > 0) {
-				return ResponseEntity.ok(list);
-			}else {
-				return ResponseEntity.noContent().build();
-			}
 			
+				return ResponseEntity.ok(list);					
 		} catch (Exception e) {
 			e.printStackTrace();
 			ResponseEntity.badRequest().build();
