@@ -42,8 +42,15 @@ public class Order {
 	private String reason;
 	private String name_guest;
 	private String phone_guest;
+	private String address_order;
 	
 	
+	public String getAddress_order() {
+		return address_order;
+	}
+	public void setAddress_order(String address_order) {
+		this.address_order = address_order;
+	}
 	public String getName_guest() {
 		return name_guest;
 	}

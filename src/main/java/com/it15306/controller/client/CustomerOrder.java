@@ -27,6 +27,7 @@ import com.it15306.entities.Product_Sku;
 import com.it15306.entities.User;
 import com.it15306.entities.Voucher;
 import com.it15306.jwt.JwtTokenProvider;
+import com.it15306.services.AddressService;
 import com.it15306.services.CartService;
 import com.it15306.services.ReviewProductService;
 import com.it15306.services.UserService;
@@ -83,6 +84,9 @@ public class CustomerOrder {
 	ModelMapper modelMapper;
 
 	@Autowired 
+	AddressService addressService;
+
+	@Autowired 
 	private MailServiceImpl mailServiceImpl;
 	@RequestMapping(value = "/order/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -120,8 +124,10 @@ public class CustomerOrder {
 							list_product_sku.add(product_sku);
 							list_cart_product.add(cart_product);
 						}
-						AddressOrder addressOrder = new AddressOrder();
-						addressOrder.setid(dto.getAddress_id());
+						AddressOrderDTO addressOrder = addressService.getAddressOrderById(dto.getAddress_id());
+						
+						String address = addressOrder.getAddress_detail() +  (addressOrder.getAddress_detail()!=null && addressOrder.getAddress_detail().length()>0 ? " - " : "") + addressOrder.getWarddto().getName() + " - " + addressOrder.getDistrictdto().getName() + " - " + addressOrder.getProvincedto().getName();
+
 						dto.getAddress_id();
 						Order order = new Order();
 						order.setCreate_date(new Date());
@@ -130,8 +136,13 @@ public class CustomerOrder {
 						Payment payment = new Payment();
 						payment.setPayment_id(dto.getPayment_id());
 						order.setPayment(payment);
-						order.setAddress(addressOrder);
+						AddressOrder ad = new AddressOrder();
+						ad.setid(0);
+						order.setAddress(ad);
 						order.setType_payment(0);
+						order.setAddress_order(address);
+						order.setPhone_guest(addressOrder.getPhone_persion());
+						order.setName_guest(addressOrder.getName_persion());
 						Voucher vou  = new Voucher();
 						if(dto.getVoucher_id()!= null && dto.getVoucher_id()!= 0) {
 							

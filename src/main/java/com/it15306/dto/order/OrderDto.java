@@ -32,7 +32,15 @@ public class OrderDto {
 	private String reason="";
 	private String name="";
 	private String phone= "";
+	private String address_order;
 	
+	
+	public String getAddress_order() {
+		return address_order;
+	}
+	public void setAddress_order(String address_order) {
+		this.address_order = address_order;
+	}
 
 	public String getName() {
 		return name;
