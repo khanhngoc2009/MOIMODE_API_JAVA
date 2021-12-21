@@ -428,7 +428,7 @@ public class CustomerOrder {
 			String token = httpServletRequest.getHeader("Authorization").substring(7);
 			String username = tokenProvider.getUserNameFromJWT(token);
 			User u = userservice.getByUsername(username);
-//			User u = userservice.getById(String.valueOf(6));
+//			User u = userservice.getById(String.valueOf(32));
 			if( u != null &&  dtos.getOrderId() != null && dtos.getListReview().size() > 0 ) {
 				Order order = orderServiceImpl.getByOrderId(dtos.getOrderId());
 				DataResponse<String> datas = new DataResponse<String>();
@@ -440,9 +440,10 @@ public class CustomerOrder {
 						data.setUserId(u.getId());
 						data.setComment(payload.getComment());
 						data.setRating(payload.getRating());
-						data.setProductId(payload.getId());
+						data.setProductId(payload.getProductId());
 						data.setId(payload.getId());
 						reviewProductService.create(data);
+						
 					}
 					if(order !=null) {
 						order.setIsEvaluate(1);
@@ -450,7 +451,6 @@ public class CustomerOrder {
 					}
 					datas.setMessage("Thanh cong");
 					datas.setCode(200);
-					datas.setMessage("SUCCESS");
 					return ResponseEntity.ok(datas);
 				}
 				else {
