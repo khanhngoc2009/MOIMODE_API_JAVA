@@ -417,12 +417,15 @@ public class AdminOrder {
 							product_order.setQuantity(dto.getListProductSku().get(i).getQuantity()); // lay so luong cua san pham
 							product_order.setProduct_name(p_sku.getProduct().getProduct_name()); // lay ten cua product
 							orderServiceImpl.saveProductOrder(product_order);
-							Product_Sku productSku =  productServiceImpl.getProductSkuById(dto.getListProductSku().get(i).getSku().getProduct_sku_id());
-							int rest =productSku.getQuantiy_rest() + dto.getListProductSku().get(i).getQuantity();
-							int total =p_sku.getQuantity_total() - dto.getListProductSku().get(i).getQuantity();
-							productSku.setQuantiy_rest(rest>=0?rest:0);
-							productSku.setQuantity_total(total>=0?total:0);
-							productServiceImpl.saveProductSku(productSku);
+							if(dto.getListProductSku().get(i).getSku().getProduct_sku_id()!=null){
+								Product_Sku productSku =  productServiceImpl.getProductSkuById(dto.getListProductSku().get(i).getSku().getProduct_sku_id());
+								int rest =productSku.getQuantiy_rest() + dto.getListProductSku().get(i).getQuantity();
+								int total =p_sku.getQuantity_total() - dto.getListProductSku().get(i).getQuantity();
+								productSku.setQuantiy_rest(rest>=0?rest:0);
+								productSku.setQuantity_total(total>=0?total:0);
+								productServiceImpl.saveProductSku(productSku);
+							}
+							
 						}
 						data.setCode(200);
 						data.setMessage("Success");
